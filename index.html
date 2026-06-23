@@ -13,7 +13,7 @@
     --crema: #fdf0ed;
     --azul: #312783;
     --negro: #000000;
-    --blanco: #ffffff;
+    --blanco: #fefae0;
     --naranja: #f07030;
   }
 
@@ -138,7 +138,7 @@
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.85);
+    color: rgba(254,250,224,0.85);
     text-decoration: none;
   }
   .mobile-menu.open { display: flex; }
@@ -242,6 +242,30 @@
     z-index: 1;
   }
 
+  /* Grilla SVG — líneas que se dibujan creciendo (estilo Cipher Digital), con nodos en las intersecciones */
+  .grid-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .grid-svg .grid-line {
+    fill: none;
+    stroke-width: 1;
+  }
+
+  .grid-svg .grid-dot {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .grid-svg.dots-visible .grid-dot {
+    opacity: 1;
+  }
+
   /* ── SECCIÓN 1: HERO ── */
   #hero {
     position: relative;
@@ -341,28 +365,60 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: opacity 0.6s ease;
   }
 
-  .hero-img-stack .img-1 { opacity: 1; }
-  .hero-img-stack .img-2 { opacity: 0; }
-  .hero-img-stack .img-3 { opacity: 0; }
-  .hero-img-stack .img-4 { opacity: 0; }
+  /* Imagen base: siempre visible */
+  .hero-img-stack .img-base {
+    opacity: 1;
+  }
 
-  .hero-img-stack.state-2 .img-1 { opacity: 0; }
-  .hero-img-stack.state-2 .img-2 { opacity: 1; }
-  .hero-img-stack.state-2 .img-3 { opacity: 0; }
-  .hero-img-stack.state-2 .img-4 { opacity: 0; }
+  /* Imagen revelada: solo visible dentro del cuadrado que sigue al cursor, borde nítido */
+  .hero-img-stack .img-reveal {
+    opacity: 0;
+    clip-path: inset(var(--ry,50%) var(--rx-r,50%) var(--ry-b,50%) var(--rx,50%));
+    transition: opacity 0.25s ease;
+  }
 
-  .hero-img-stack.state-3 .img-1 { opacity: 0; }
-  .hero-img-stack.state-3 .img-2 { opacity: 0; }
-  .hero-img-stack.state-3 .img-3 { opacity: 1; }
-  .hero-img-stack.state-3 .img-4 { opacity: 0; }
+  .hero-img-wrap.active .img-reveal {
+    opacity: 1;
+  }
 
-  .hero-img-stack.state-4 .img-1 { opacity: 0; }
-  .hero-img-stack.state-4 .img-2 { opacity: 0; }
-  .hero-img-stack.state-4 .img-3 { opacity: 0; }
-  .hero-img-stack.state-4 .img-4 { opacity: 1; }
+  /* Marco del spotlight cuadrado — es una línea más de la grilla scan, con diamantes en las esquinas */
+  .hero-spot-frame {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    left: var(--hx, 50%);
+    top: var(--hy, 50%);
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(253,240,237,0.65);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 4;
+  }
+
+  .hero-img-wrap.active .hero-spot-frame {
+    opacity: 1;
+  }
+
+  .hero-spot-frame::before,
+  .hero-spot-frame::after,
+  .hero-spot-frame .corner-l,
+  .hero-spot-frame .corner-r {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background: var(--crema);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .hero-spot-frame::before { top: 0; left: 0; }
+  .hero-spot-frame::after { top: 0; left: 100%; }
+  .hero-spot-frame .corner-l { top: 100%; left: 0; }
+  .hero-spot-frame .corner-r { top: 100%; left: 100%; }
+
 
   /* ── SECCIÓN 2: SERVICIOS ── */
   #servicios {
@@ -580,7 +636,7 @@
     justify-content: center;
     padding: 8rem 8vw 8rem 5vw;
     overflow: visible;
-    border-left: 1px solid rgba(255,255,255,0.12);
+    border-left: 1px solid rgba(254,250,224,0.12);
   }
 
   .sobre-circle {
@@ -621,58 +677,82 @@
     object-fit: contain;
   }
 
-  /* franja de estadísticas — arriba de Sobre Nosotros, loop infinito hacia la izquierda */
+  /* franja de estadísticas — arriba de Sobre Nosotros, con marco que se dibuja progresivamente */
   .stats-strip {
     position: relative;
     width: 100%;
     overflow: hidden;
     background: var(--rojo);
-    border-top: 1px solid rgba(49,39,131,0.18);
-    border-bottom: 1px solid rgba(49,39,131,0.22);
-    padding: 2.6rem 0;
+    padding: 3rem 0;
     z-index: 3;
   }
 
+  .stats-frame-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .stats-frame-svg .frame-line {
+    stroke: rgba(254,250,224,0.45);
+    stroke-width: 1;
+    fill: none;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .stats-frame-svg .frame-dot {
+    fill: var(--blanco);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .stats-strip.drawn .frame-dot {
+    opacity: 1;
+  }
+
   .stats-track {
-    display: flex;
-    width: max-content;
-    gap: clamp(3rem, 7vw, 8rem);
-    padding: 0 clamp(2rem, 5vw, 5rem);
-    animation: none;
-  }
-
-  .stats-track.looping {
-    animation: statsLoop 18s linear infinite;
-  }
-
-  @keyframes statsLoop {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .stat-item {
-    flex: 0 0 auto;
-    min-width: clamp(220px, 22vw, 320px);
-    border-left: 1px solid rgba(49,39,131,0.32);
-    padding-left: 1.5rem;
+    padding: 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 160px;
   }
 
   .stat-num {
     font-family: 'Poppins', sans-serif;
-    font-size: clamp(3.4rem, 7vw, 6rem);
-    font-weight: 900;
-    color: var(--azul);
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    font-weight: 600;
+    color: var(--blanco);
     line-height: 1;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+
+  .stat-num .unit {
+    font-size: 0.4em;
+    font-weight: 500;
+    color: var(--blanco);
+    opacity: 0.85;
   }
 
   .stat-label {
-    max-width: 180px;
     font-size: 0.82rem;
     font-weight: 400;
-    color: rgba(49,39,131,0.78);
+    color: rgba(254,250,224,0.78);
     letter-spacing: 0.01em;
-    line-height: 1.45;
+    line-height: 1.4;
   }
 
   /* ── SECCIÓN 4: CURSOS ── */
@@ -855,7 +935,7 @@
     position: absolute;
     bottom: 0; left: 0; right: 0;
     padding: 1.2rem 1.5rem;
-    background: linear-gradient(transparent, rgba(255,255,255,0.92));
+    background: linear-gradient(transparent, rgba(254,250,224,0.92));
     z-index: 2;
     pointer-events: none;
   }
@@ -914,7 +994,7 @@
   .ventaja-num {
     font-size: 3rem;
     font-weight: 900;
-    color: rgba(255,255,255,0.18);
+    color: rgba(254,250,224,0.18);
     line-height: 1;
     margin-bottom: 1rem;
     transition: color 0.3s;
@@ -992,7 +1072,7 @@
   /* footer */
   footer {
     background: var(--negro);
-    border-top: 1px solid rgba(255,255,255,0.06);
+    border-top: 1px solid rgba(254,250,224,0.06);
     padding: 2rem 8vw;
     display: flex;
     justify-content: space-between;
@@ -1161,17 +1241,22 @@
 
   <div class="hero-img-wrap" id="heroImgWrap">
     <div class="hero-img-stack" id="heroImgStack">
-      <img src="sillonheroviejo.png" alt="Sillón antes de restaurar" class="img-1">
-      <img src="sillonhero.jpg" alt="Sillón en proceso" class="img-2">
-      <img src="sillonheronuevo.png" alt="Sillón restaurado" class="img-3">
-      <img src="sillonherofinal.jpg" alt="Sillón final" class="img-4">
+      <img src="sillonheroviejo.png" alt="Sillón antes de restaurar" class="img-base">
+      <img src="sillonherofinal.jpg" alt="Sillón restaurado" class="img-reveal">
+
+      <div class="hero-spot-frame" id="heroSpotFrame">
+        <span class="corner-l"></span>
+        <span class="corner-r"></span>
+      </div>
+
+      
     </div>
   </div>
 </section>
 
 <!-- 2. SERVICIOS -->
 <section id="servicios">
-  <canvas class="grid-canvas" id="serviciosGrid" data-color="rgba(240,112,48,0.35)" data-step="120"></canvas>
+  <svg class="grid-svg" id="serviciosGrid" data-color="rgba(240,112,48,0.4)" data-step="120"></svg>
 
   <div class="servicios-inner">
     <div class="servicios-img-col reveal-left">
@@ -1220,38 +1305,22 @@
 <section id="sobre">
 
   <div class="stats-strip" id="statsStrip">
+    <svg class="stats-frame-svg" id="statsFrameSvg" preserveAspectRatio="none"></svg>
     <div class="stats-track" id="statsTrack">
       <div class="stat-item">
-        <div class="stat-num" data-target="200" data-prefix="+">0</div>
+        <div class="stat-num"><span class="num-val" data-target="200" data-prefix="+">0</span><span class="unit">MW</span></div>
         <div class="stat-label">Piezas restauradas</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num" data-target="8">0</div>
+        <div class="stat-num"><span class="num-val" data-target="8">0</span><span class="unit">años</span></div>
         <div class="stat-label">Años de trayectoria</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num" data-target="100" data-suffix="%">0</div>
+        <div class="stat-num"><span class="num-val" data-target="100" data-suffix="%">0</span></div>
         <div class="stat-label">Materiales nobles</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num" data-target="3">0</div>
-        <div class="stat-label">Colecciones cápsula</div>
-      </div>
-      <!-- duplicado para el loop infinito -->
-      <div class="stat-item">
-        <div class="stat-num" data-target="200" data-prefix="+">0</div>
-        <div class="stat-label">Piezas restauradas</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" data-target="8">0</div>
-        <div class="stat-label">Años de trayectoria</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" data-target="100" data-suffix="%">0</div>
-        <div class="stat-label">Materiales nobles</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" data-target="3">0</div>
+        <div class="stat-num"><span class="num-val" data-target="3">0</span></div>
         <div class="stat-label">Colecciones cápsula</div>
       </div>
     </div>
@@ -1436,20 +1505,41 @@
   }, { threshold: 0.12 });
   revealEls.forEach(el => obs.observe(el));
 
-  // Hero 4-state: cada hover rota al siguiente estado, se queda fijo en la última imagen
+  // Hero spotlight — al mover el cursor sobre la imagen, revela la silla restaurada
+  // dentro de un cuadrado nítido (sin difuminado) que sigue al mouse
   const heroWrap = document.getElementById('heroImgWrap');
   const heroStack = document.getElementById('heroImgStack');
-  let heroState = 1;
+  const SPOT_SIZE = 130; // debe coincidir con el tamaño de .hero-spot-frame
 
-  function heroNextState() {
-    if (heroState >= 4) return; // ya llegó al final, queda fijo
-    heroState += 1;
-    heroStack.classList.remove('state-2', 'state-3', 'state-4');
-    heroStack.classList.add('state-' + heroState);
-  }
+  heroWrap.addEventListener('mousemove', (e) => {
+    const rect = heroStack.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const half = SPOT_SIZE / 2;
 
-  heroWrap.addEventListener('mouseenter', heroNextState);
-  heroWrap.addEventListener('mouseleave', heroNextState);
+    // Posición del marco visual (en %, relativo al stack)
+    const xPct = (px / rect.width) * 100;
+    const yPct = (py / rect.height) * 100;
+    heroStack.style.setProperty('--hx', xPct + '%');
+    heroStack.style.setProperty('--hy', yPct + '%');
+
+    // Clip-path del cuadrado revelado, en porcentajes exactos sobre el stack
+    const top = Math.max(0, ((py - half) / rect.height) * 100);
+    const bottom = Math.max(0, ((rect.height - (py + half)) / rect.height) * 100);
+    const left = Math.max(0, ((px - half) / rect.width) * 100);
+    const right = Math.max(0, ((rect.width - (px + half)) / rect.width) * 100);
+
+    heroStack.style.setProperty('--ry', top + '%');
+    heroStack.style.setProperty('--ry-b', bottom + '%');
+    heroStack.style.setProperty('--rx', left + '%');
+    heroStack.style.setProperty('--rx-r', right + '%');
+
+    heroWrap.classList.add('active');
+  });
+
+  heroWrap.addEventListener('mouseleave', () => {
+    heroWrap.classList.remove('active');
+  });
 
   // Highlight box "futuros"
   const highlight = document.getElementById('heroHighlight');
@@ -1544,6 +1634,75 @@
 
   document.querySelectorAll('.grid-canvas').forEach(initGrid);
 
+  // ── Grilla SVG con animación de líneas creciendo + nodos (estilo Cipher Digital) ──
+  function initGridSvg(svg) {
+    const color = svg.dataset.color || 'rgba(0,0,0,0.07)';
+    const STEP = parseInt(svg.dataset.step) || 120;
+    const section = svg.closest('section') || svg.parentElement;
+    let drawn = false;
+
+    function build() {
+      const w = section.offsetWidth;
+      const h = section.offsetHeight;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+      const cols = Math.ceil(w / STEP);
+      const rows = Math.ceil(h / STEP);
+      let content = '';
+
+      for (let c = 1; c < cols; c++) {
+        content += `<line class="grid-line" x1="${c*STEP}" y1="0" x2="${c*STEP}" y2="${h}" stroke="${color}" />`;
+      }
+      for (let r = 1; r < rows; r++) {
+        content += `<line class="grid-line" x1="0" y1="${r*STEP}" x2="${w}" y2="${r*STEP}" stroke="${color}" />`;
+      }
+      // nodos en cada intersección
+      for (let c = 1; c < cols; c++) {
+        for (let r = 1; r < rows; r++) {
+          content += `<circle class="grid-dot" cx="${c*STEP}" cy="${r*STEP}" r="2.5" fill="${color}" />`;
+        }
+      }
+
+      svg.innerHTML = content;
+
+      svg.querySelectorAll('.grid-line').forEach(line => {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        const length = Math.hypot(x2 - x1, y2 - y1);
+        line.style.strokeDasharray = length;
+        line.style.strokeDashoffset = length;
+      });
+    }
+
+    build();
+    window.addEventListener('resize', () => { if (!drawn) build(); });
+
+    function animate() {
+      if (drawn) return;
+      drawn = true;
+      const lines = svg.querySelectorAll('.grid-line');
+      lines.forEach((line, i) => {
+        line.style.transition = `stroke-dashoffset 0.6s ease ${i * 0.1}s`;
+        requestAnimationFrame(() => { line.style.strokeDashoffset = '0'; });
+      });
+      setTimeout(() => svg.classList.add('dots-visible'), lines.length * 100 + 400);
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animate();
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    obs.observe(section);
+  }
+
+  document.querySelectorAll('.grid-svg').forEach(initGridSvg);
+
   // Círculo naranja — animación de caída al entrar en Servicios (sección 2)
   const serviciosCircle = document.getElementById('serviciosCircle');
   if (serviciosCircle) {
@@ -1616,39 +1775,92 @@
     sobreObs.observe(sobreSection);
   }
 
-  // ── Franja de estadísticas: cuenta rápido de 0 al número final, luego loop infinito ──
+  // ── Franja de estadísticas: marco se dibuja progresivamente + números cuentan rápido ──
   const statsStrip = document.getElementById('statsStrip');
   const statsTrack = document.getElementById('statsTrack');
+  const statsFrameSvg = document.getElementById('statsFrameSvg');
+
+  function buildStatsFrame() {
+    if (!statsFrameSvg || !statsTrack) return;
+    const w = statsStrip.offsetWidth;
+    const h = statsStrip.offsetHeight;
+    statsFrameSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+    const items = statsTrack.querySelectorAll('.stat-item');
+    const dividers = [];
+    items.forEach((item, i) => {
+      if (i > 0) dividers.push(item.offsetLeft);
+    });
+
+    let svgContent = '';
+    // borde exterior del marco
+    svgContent += `<rect class="frame-line" x="0.5" y="0.5" width="${w-1}" height="${h-1}" />`;
+    // líneas divisorias verticales entre columnas
+    dividers.forEach(x => {
+      svgContent += `<line class="frame-line" x1="${x}" y1="0" x2="${x}" y2="${h}" />`;
+    });
+    // nodos: 4 esquinas + intersecciones de divisores con los bordes
+    const dotPositions = [[0,0],[w,0],[0,h],[w,h]];
+    dividers.forEach(x => { dotPositions.push([x,0]); dotPositions.push([x,h]); });
+    dotPositions.forEach(([cx,cy]) => {
+      svgContent += `<circle class="frame-dot" cx="${cx}" cy="${cy}" r="3" />`;
+    });
+
+    statsFrameSvg.innerHTML = svgContent;
+
+    // configurar el dash de cada línea según su longitud real, arrancando "sin dibujar"
+    statsFrameSvg.querySelectorAll('.frame-line').forEach(line => {
+      const length = line.tagName === 'rect'
+        ? 2 * (parseFloat(line.getAttribute('width')) + parseFloat(line.getAttribute('height')))
+        : Math.abs(parseFloat(line.getAttribute('y2')) - parseFloat(line.getAttribute('y1')));
+      line.style.strokeDasharray = length;
+      line.style.strokeDashoffset = length;
+    });
+  }
+
+  buildStatsFrame();
+  window.addEventListener('resize', buildStatsFrame);
+
   if (statsStrip && statsTrack) {
     let statsAnimated = false;
     const statsObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting && !statsAnimated) {
           statsAnimated = true;
-          const nums = statsTrack.querySelectorAll('.stat-num');
+
+          // dibujar el marco progresivamente
+          statsFrameSvg.querySelectorAll('.frame-line').forEach((line, i) => {
+            line.style.transition = `stroke-dashoffset 0.8s ease ${i * 0.12}s`;
+            requestAnimationFrame(() => {
+              line.style.strokeDashoffset = '0';
+            });
+          });
+          setTimeout(() => statsStrip.classList.add('drawn'), 900);
+
+          // contar los números
+          const nums = statsTrack.querySelectorAll('.num-val');
           nums.forEach(numEl => {
             const target = parseInt(numEl.dataset.target, 10);
             const prefix = numEl.dataset.prefix || '';
             const suffix = numEl.dataset.suffix || '';
-            const duration = 900; // ms, conteo rápido
+            const duration = 900;
             const startTime = performance.now();
 
             function tick(now) {
               const elapsed = now - startTime;
               const t = Math.min(elapsed / duration, 1);
-              const eased = 1 - Math.pow(1 - t, 3); // ease-out rápido
+              const eased = 1 - Math.pow(1 - t, 3);
               const current = Math.round(target * eased);
               numEl.textContent = prefix + current + suffix;
               if (t < 1) {
                 requestAnimationFrame(tick);
               } else {
                 numEl.textContent = prefix + target + suffix;
-                // una vez que termina el conteo, arranca el loop infinito hacia la izquierda
-                statsTrack.classList.add('looping');
               }
             }
             requestAnimationFrame(tick);
           });
+
           statsObs.unobserve(e.target);
         }
       });
