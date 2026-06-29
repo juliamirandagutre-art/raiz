@@ -68,6 +68,32 @@
     background: var(--blanco);
   }
 
+  /* Píldora de precio — reemplaza al cuadradito al pasar sobre un curso */
+  #cursorPrice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    background: var(--crema);
+    color: var(--naranja);
+    border: 1.5px solid var(--naranja);
+    border-radius: 999px;
+    padding: 0.55rem 1.3rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    will-change: transform;
+  }
+
+  #cursorPrice.visible {
+    opacity: 1;
+  }
+
   body {
     font-family: 'Archivo', sans-serif;
     background: var(--crema);
@@ -344,16 +370,6 @@
     pointer-events: auto;
   }
 
-  /* Botón centrado sobre la imagen, independiente del flujo del texto */
-  .hero-cta-floating {
-    position: absolute;
-    top: 50vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 4;
-    pointer-events: auto;
-  }
-
   .hero-label {
     font-size: 0.72rem;
     font-weight: 600;
@@ -408,10 +424,12 @@
     z-index: 1;
     width: 100%;
     height: 100%;
+    padding-top: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    box-sizing: border-box;
   }
 
   .hero-img-stack {
@@ -790,7 +808,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 420px;
+    max-width: 560px;
     object-fit: contain;
   }
 
@@ -836,11 +854,10 @@
     z-index: 2;
     display: flex;
     width: max-content;
-    padding: 0 clamp(2rem, 5vw, 5rem);
   }
 
   .stats-track.looping {
-    animation: statsLoop 12s linear infinite;
+    animation: statsLoop 9s linear infinite;
   }
 
   @keyframes statsLoop {
@@ -851,12 +868,13 @@
   .stat-item {
     position: relative;
     flex: 0 0 auto;
-    min-width: clamp(180px, 18vw, 260px);
+    width: 25vw;
     padding: 0 clamp(2rem, 4vw, 3.5rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-height: 160px;
+    box-sizing: border-box;
   }
 
   /* Divisor vertical entre cada grupo, con rombo en cada punta */
@@ -1071,12 +1089,30 @@
     background: var(--azul);
     opacity: 0;
     transition: opacity 0.35s ease;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
   }
 
   .mosaic-cell.img-cell:hover .hover-tint {
-    opacity: 0.55;
+    opacity: 1;
+  }
+
+  .mosaic-cell.img-cell img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: z-index 0s, transform 0.35s cubic-bezier(0.4,0,0.2,1), width 0.35s cubic-bezier(0.4,0,0.2,1), height 0.35s cubic-bezier(0.4,0,0.2,1), margin 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .mosaic-cell.img-cell:hover img {
+    z-index: 3;
+    width: 108%;
+    height: 108%;
+    object-fit: cover;
+    margin: -4%;
   }
 
   /* esquinas con rombos en cada celda, igual estética que el resto del sitio */
@@ -1106,13 +1142,6 @@
     opacity: 1;
   }
 
-  .mosaic-cell.img-cell img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
   .mosaic-cell.img-cell .capsula-overlay {
     position: absolute;
     bottom: 0; left: 0; right: 0;
@@ -1120,6 +1149,12 @@
     background: linear-gradient(transparent, rgba(254,250,224,0.92));
     z-index: 2;
     pointer-events: none;
+    transition: background 0.35s ease;
+  }
+
+  .mosaic-cell.img-cell:hover .capsula-overlay {
+    background: transparent;
+    z-index: 4;
   }
 
   .mosaic-cell.img-cell .capsula-overlay span {
@@ -1129,6 +1164,11 @@
     text-transform: uppercase;
     color: var(--negro);
     display: block;
+    transition: color 0.35s ease;
+  }
+
+  .mosaic-cell.img-cell:hover .capsula-overlay span {
+    color: var(--blanco);
   }
 
   .mosaic-cell.text-cell {
@@ -1420,6 +1460,7 @@
   <span class="cc-corner-l"></span>
   <span class="cc-corner-r"></span>
 </div>
+<div id="cursorPrice"></div>
 
 <!-- NAVBAR -->
 <nav>
@@ -1455,9 +1496,8 @@
       Transformamos historias.<br>
       Diseñamos <span class="highlight-box" id="heroHighlight"><span>futuros.</span></span>
     </h1>
+    <a href="#servicios" class="btn btn-hero reveal"><span>Conocer más</span></a>
   </div>
-
-  <a href="#servicios" class="btn btn-hero hero-cta-floating reveal"><span>Conocer más</span></a>
 
   <div class="hero-img-wrap" id="heroImgWrap">
     <div class="hero-img-stack" id="heroImgStack">
@@ -1603,21 +1643,21 @@
     </div>
 
     <div class="cursos-grid">
-      <div class="curso-card reveal">
+      <div class="curso-card reveal" data-price="$50.000">
         <div class="curso-num">01</div>
         <img src="ChatGPT_Image_18_jun_2026__05_16_01_p_m_.png" alt="Restauración básica" class="curso-img">
         <div class="curso-name">Restauración Básica de Madera</div>
         <div class="curso-desc">Técnicas esenciales de lijado, sellado y acabado para piezas con deterioro superficial.</div>
         <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
-      <div class="curso-card reveal">
+      <div class="curso-card reveal" data-price="$65.000">
         <div class="curso-num">02</div>
         <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Tapizado contemporáneo" class="curso-img">
         <div class="curso-name">Tapizado Contemporáneo</div>
         <div class="curso-desc">Selección de telas, espumas y técnicas de tapizado moderno aplicadas a estructuras históricas.</div>
-        <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
+        <a href="curso-tapizado.html" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
-      <div class="curso-card reveal">
+      <div class="curso-card reveal" data-price="$40.000">
         <div class="curso-num">03</div>
         <img src="ChatGPT_Image_18_jun_2026__05_22_52_p_m_.png" alt="Diseño y rediseño de piezas" class="curso-img">
         <div class="curso-name">Diseño de Piezas Únicas</div>
@@ -1630,7 +1670,7 @@
 
 <!-- 5. MUEBLES CÁPSULA -->
 <section id="capsula">
-  <svg class="grid-svg" id="capsulaGrid" data-color="rgba(240,112,48,0.4)" data-step="120"></svg>
+  <svg class="grid-svg" id="capsulaGrid" data-color="rgba(240,112,48,0.55)" data-step="120"></svg>
 
   <div class="capsula-header">
     <div>
@@ -1930,37 +1970,60 @@
       let content = '';
 
       if (isCapsula) {
-        // Grilla calculada matemáticamente según la estructura real del mosaico: 4 columnas fijas,
-        // filas cuadradas (mismo ancho que cada columna) — igual lógica que el resto de las grillas del sitio.
+        // Grilla alineada con el padding lateral real del mosaico, con una fila arriba
+        // que respeta el alto real del header (no forzada a ser cuadrada).
         const mosaic = document.getElementById('capsulaMosaic');
-        const totalCells = mosaic ? mosaic.querySelectorAll('.mosaic-cell').length : 12;
+        const header = document.querySelector('.capsula-header');
+
+        if (!mosaic || !header) {
+          svg.innerHTML = '';
+          return;
+        }
+
+        const padLeft = mosaic.offsetLeft;
+        const padRight = w - (mosaic.offsetLeft + mosaic.offsetWidth);
+        const gridLeft = padLeft;
+        const gridRight = w - padRight;
+        const gridW = gridRight - gridLeft;
+
+        const totalCells = mosaic.querySelectorAll('.mosaic-cell').length || 12;
         const cols = 4;
         const rows = Math.ceil(totalCells / cols);
-        const colWidth = w / cols;
-        const rowHeight = colWidth; // celdas cuadradas: alto = ancho de columna
-        const gridH = rows * rowHeight;
+        const colWidth = gridW / cols;
+        const rowHeight = colWidth; // celdas del mosaico: cuadradas (alto = ancho de columna)
+
+        const gridTop = header.offsetTop;
+        const headerBottom = header.offsetTop + header.offsetHeight;
+        const gridBottom = mosaic.offsetTop + rows * rowHeight;
 
         // borde exterior completo (arriba, abajo, izquierda, derecha)
-        content += `<line class="grid-line" x1="0" y1="0" x2="${w}" y2="0" stroke="${color}" />`;
-        content += `<line class="grid-line" x1="0" y1="${gridH}" x2="${w}" y2="${gridH}" stroke="${color}" />`;
-        content += `<line class="grid-line" x1="0" y1="0" x2="0" y2="${gridH}" stroke="${color}" />`;
-        content += `<line class="grid-line" x1="${w}" y1="0" x2="${w}" y2="${gridH}" stroke="${color}" />`;
+        content += `<line class="grid-line" x1="${gridLeft}" y1="${gridTop}" x2="${gridRight}" y2="${gridTop}" stroke="${color}" />`;
+        content += `<line class="grid-line" x1="${gridLeft}" y1="${gridBottom}" x2="${gridRight}" y2="${gridBottom}" stroke="${color}" />`;
+        content += `<line class="grid-line" x1="${gridLeft}" y1="${gridTop}" x2="${gridLeft}" y2="${gridBottom}" stroke="${color}" />`;
+        content += `<line class="grid-line" x1="${gridRight}" y1="${gridTop}" x2="${gridRight}" y2="${gridBottom}" stroke="${color}" />`;
 
-        // divisores internos
+        // línea que separa el header del mosaico (alto real del header)
+        content += `<line class="grid-line" x1="${gridLeft}" y1="${headerBottom}" x2="${gridRight}" y2="${headerBottom}" stroke="${color}" />`;
+
+        // divisores verticales internos (atraviesan header + mosaico)
         for (let c = 1; c < cols; c++) {
-          const x = c * colWidth;
-          content += `<line class="grid-line" x1="${x}" y1="0" x2="${x}" y2="${gridH}" stroke="${color}" />`;
+          const x = gridLeft + c * colWidth;
+          content += `<line class="grid-line" x1="${x}" y1="${gridTop}" x2="${x}" y2="${gridBottom}" stroke="${color}" />`;
         }
+        // divisores horizontales internos del mosaico (filas cuadradas)
         for (let r = 1; r < rows; r++) {
-          const y = r * rowHeight;
-          content += `<line class="grid-line" x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="${color}" />`;
+          const y = mosaic.offsetTop + r * rowHeight;
+          content += `<line class="grid-line" x1="${gridLeft}" y1="${y}" x2="${gridRight}" y2="${y}" stroke="${color}" />`;
         }
 
-        // nodos en todas las intersecciones, incluidas las del borde exterior
+        // nodos en las intersecciones del mosaico (incluida la línea del header)
+        const dotYs = [headerBottom];
+        for (let r = 1; r <= rows; r++) dotYs.push(mosaic.offsetTop + r * rowHeight);
         for (let c = 0; c <= cols; c++) {
-          for (let r = 0; r <= rows; r++) {
-            content += `<circle class="grid-dot" cx="${c*colWidth}" cy="${r*rowHeight}" r="2.5" fill="${color}" />`;
-          }
+          const x = gridLeft + c * colWidth;
+          dotYs.forEach(y => {
+            content += `<circle class="grid-dot" cx="${x}" cy="${y}" r="2.5" fill="${color}" />`;
+          });
         }
       } else {
         const cols = Math.ceil(w / STEP);
@@ -2158,13 +2221,27 @@
 
   // ── Cursor personalizado: cuadradito que sigue al mouse en toda la web ──
   const customCursor = document.getElementById('customCursor');
+  const cursorPrice = document.getElementById('cursorPrice');
   const darkSections = ['#capsula', '#hero', '#cursos', '#elegirnos'];
 
   document.addEventListener('mousemove', (e) => {
+    const elUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
+
+    // si el cursor está sobre un curso, se muestra la píldora con el precio
+    const cursoEl = elUnderCursor && elUnderCursor.closest('.curso-card[data-price]');
+
+    if (cursoEl) {
+      cursorPrice.textContent = cursoEl.dataset.price;
+      cursorPrice.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      cursorPrice.classList.add('visible');
+      customCursor.classList.remove('visible');
+      return;
+    }
+
+    cursorPrice.classList.remove('visible');
     customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
 
     // si el cursor está sobre el spotlight del hero (cuadrado grande), se oculta el chiquito
-    const elUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
     const overHeroSpot = elUnderCursor && elUnderCursor.closest('.hero-img-wrap');
     customCursor.classList.toggle('visible', !overHeroSpot);
 
@@ -2175,6 +2252,7 @@
 
   document.addEventListener('mouseleave', () => {
     customCursor.classList.remove('visible');
+    cursorPrice.classList.remove('visible');
   });
 </script>
 </body>

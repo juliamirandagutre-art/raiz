@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tapizado Contemporáneo — Raíz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rojo: #da3721;
+    --crema: #fefae0;
+    --azul: #312783;
+    --negro: #000000;
+    --blanco: #fefae0;
+    --naranja: #f07030;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  /* Cursor personalizado */
+  #customCursor {
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--azul);
+    pointer-events: none;
+    z-index: 9999;
+    top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+    will-change: transform;
+  }
+  #customCursor.visible { opacity: 1; }
+  #customCursor.on-dark { border-color: var(--blanco); }
+  #customCursor::before, #customCursor::after, #customCursor .cc-corner-l, #customCursor .cc-corner-r {
+    content: '';
+    position: absolute;
+    width: 5px; height: 5px;
+    background: var(--azul);
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: background 0.2s ease;
+  }
+  #customCursor::before { top: 0; left: 0; }
+  #customCursor::after { top: 0; left: 100%; }
+  #customCursor .cc-corner-l { top: 100%; left: 0; }
+  #customCursor .cc-corner-r { top: 100%; left: 100%; }
+  #customCursor.on-dark::before, #customCursor.on-dark::after,
+  #customCursor.on-dark .cc-corner-l, #customCursor.on-dark .cc-corner-r { background: var(--blanco); }
+
+  body {
+    font-family: 'Archivo', sans-serif;
+    background: var(--crema);
+    color: var(--negro);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .nav-logo, .hero-title, .section-title {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: min(90vw, 1040px);
+    height: 58px;
+    padding: 0 1.15rem 0 1.45rem;
+    background: rgba(49,39,131,0.58);
+    border: 1px solid rgba(253,240,237,0.28);
+    border-radius: 999px;
+    box-shadow: 0 16px 38px rgba(0,0,0,0.16);
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    transform: translateX(-50%);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(49,39,131,0.72);
+    border-color: rgba(253,240,237,0.34);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.2);
+  }
+
+  .nav-logo {
+    display: block;
+    text-decoration: none;
+  }
+
+  .nav-logo img {
+    height: 26px;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.1vw, 2rem);
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--crema); }
+
+  .nav-cta {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--negro) !important;
+    background: var(--crema);
+    border-radius: 999px;
+    padding: 0.55rem 1.2rem;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--rojo) !important; color: var(--blanco) !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--crema); transition: all 0.3s; }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 86px;
+    left: 5vw; right: 5vw;
+    background: rgba(49,39,131,0.92);
+    border: 1px solid rgba(253,240,237,0.24);
+    border-radius: 24px;
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    padding: 1.5rem 5vw 2rem;
+    z-index: 99;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .mobile-menu a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(254,250,224,0.85);
+    text-decoration: none;
+  }
+  .mobile-menu.open { display: flex; }
+
+  /* ── BOTÓN GENÉRICO ── */
+  .btn {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.75rem 2rem;
+    border: 2px solid currentColor;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s, background 0.3s, border-color 0.3s;
+  }
+  .btn span { position: relative; z-index: 1; }
+
+  .btn-hero { color: var(--crema); border-color: var(--crema); }
+  .btn-hero:hover { color: var(--negro); background: var(--blanco); border-color: var(--blanco); }
+
+  .btn-crema { color: var(--negro); border-color: var(--negro); }
+  .btn-crema:hover { color: var(--blanco); background: var(--naranja); border-color: var(--naranja); }
+
+  .btn-azul { color: var(--crema); border-color: var(--crema); }
+  .btn-azul:hover { color: var(--negro); background: var(--blanco); border-color: var(--blanco); }
+
+  .btn-rojo { color: var(--crema); border-color: var(--crema); }
+  .btn-rojo:hover { color: var(--negro); background: var(--blanco); border-color: var(--blanco); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  /* ── GRILLA SVG ── */
+  .grid-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .grid-svg .grid-line { fill: none; stroke-width: 1; }
+  .grid-svg .grid-dot { opacity: 0; transition: opacity 0.25s ease; }
+  .grid-svg.dots-visible .grid-dot { opacity: 1; }
+
+  /* section label compartido */
+  .section-label {
+    position: relative;
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding-left: 1.8rem;
+    z-index: 1;
+  }
+  .section-label::before {
+    content: '*';
+    position: absolute;
+    left: -0.5rem; top: -1.6rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 4.6rem;
+    font-weight: 700;
+    opacity: 0.22;
+    line-height: 1;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .section-title {
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.08;
+    margin-bottom: 1.5rem;
+  }
+  .section-body {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ────────────────────────────────────────────
+     S1 HERO — fondo azul (invertido del home)
+  ──────────────────────────────────────────── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    background: var(--azul);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 5vw;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    padding-top: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding-bottom: 6rem;
+  }
+
+  .hero-breadcrumb {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.45);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-breadcrumb a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .hero-breadcrumb a:hover { color: var(--crema); }
+  .hero-breadcrumb span { opacity: 0.4; }
+
+  .hero-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.5);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--crema);
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-title .highlight-box {
+    position: relative;
+    display: inline-block;
+    color: var(--crema);
+  }
+  .hero-title .highlight-box::before {
+    content: '';
+    position: absolute;
+    inset: -4px -8px;
+    background: var(--rojo);
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1) 0.7s;
+    z-index: 0;
+  }
+  .hero-title .highlight-box.animate::before { transform: scaleX(1); }
+  .hero-title .highlight-box span { position: relative; z-index: 1; }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .hero-meta-item .meta-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.4);
+  }
+  .hero-meta-item .meta-val {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--crema);
+  }
+
+  .hero-img-hero {
+    position: absolute;
+    right: 0; top: 0;
+    width: 46%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.22;
+    z-index: 1;
+    mask-image: linear-gradient(to left, rgba(0,0,0,0.8) 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.8) 0%, transparent 100%);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--crema);
+    border: 1px solid rgba(253,240,237,0.35);
+    padding: 0.35rem 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ────────────────────────────────────────────
+     S2 DE QUÉ SE TRATA — fondo crema
+  ──────────────────────────────────────────── */
+  #sobre-curso {
+    position: relative;
+    background: var(--crema);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .sobre-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .sobre-text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 5vw 8rem 8vw;
+  }
+
+  .sobre-text-col .section-label { color: rgba(0,0,0,0.45); }
+  .sobre-text-col .section-title { color: var(--negro); }
+
+  .sobre-img-col {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 8vw 8rem 5vw;
+    background: var(--azul);
+    overflow: hidden;
+  }
+
+  .sobre-img-col::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px,
+      transparent 60px
+    );
+  }
+
+  /* precio destacado */
+  .precio-card {
+    background: var(--azul);
+    color: var(--crema);
+    padding: 2.5rem 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .precio-card .precio-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.5);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .precio-card .precio-val {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 700;
+    color: var(--crema);
+    line-height: 1;
+  }
+  .precio-card .precio-nota {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: rgba(253,240,237,0.55);
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+  }
+
+  .info-item {
+    background: var(--blanco);
+    padding: 1.2rem 1.3rem;
+    transition: background 0.3s;
+  }
+  .info-item:hover { background: var(--crema); }
+  .info-item .info-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .info-item .info-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.4);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  .info-item .info-val {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--negro);
+  }
+
+  /* imagen en la columna derecha (placeholder) */
+  .sobre-img-placeholder {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 3/4;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(253,240,237,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .sobre-img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    opacity: 0.85;
+  }
+  .img-label-overlay {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--crema);
+    z-index: 2;
+  }
+  .img-upload-msg {
+    text-align: center;
+    color: rgba(253,240,237,0.35);
+    font-size: 0.78rem;
+    z-index: 2;
+    position: relative;
+    padding: 2rem;
+  }
+  .img-upload-msg .icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; opacity: 0.4; }
+
+  /* ────────────────────────────────────────────
+     S3 MATERIALES Y TELAS — fondo rojo
+  ──────────────────────────────────────────── */
+  #materiales {
+    position: relative;
+    background: var(--rojo);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .materiales-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 8rem 8vw;
+  }
+
+  .materiales-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+
+  .materiales-header .section-label { color: rgba(253,240,237,0.5); }
+  .materiales-header .section-title { color: var(--crema); }
+  .materiales-header .section-body { color: rgba(253,240,237,0.7); }
+
+  .materiales-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(253,240,237,0.15);
+    border: 1px solid rgba(253,240,237,0.15);
+  }
+
+  .material-card {
+    background: var(--rojo);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.35s, transform 0.35s cubic-bezier(0.4,0,0.2,1), z-index 0s;
+    z-index: 1;
+    cursor: default;
+  }
+  .material-card:hover {
+    background: var(--azul);
+    transform: scale(1.03);
+    z-index: 2;
+  }
+
+  .material-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgba(253,240,237,0.35);
+    margin-bottom: 1.2rem;
+  }
+
+  .material-swatch {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(253,240,237,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .material-swatch.lino { background: #d4c5a9; }
+  .material-swatch.terciopelo { background: linear-gradient(135deg, #4a3f6b 0%, #7b6fa0 50%, #4a3f6b 100%); }
+  .material-swatch.cuero { background: radial-gradient(circle at 30% 30%, #8B6343, #5a3e28); }
+  .material-swatch.bouclé {
+    background: #e8ddd0;
+    background-image: repeating-radial-gradient(circle at 3px 3px, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 100%);
+    background-size: 6px 6px;
+  }
+  .material-swatch.espuma { background: #f0ede8; border-color: rgba(253,240,237,0.1); }
+  .material-swatch.hilo-resistente {
+    background: repeating-linear-gradient(
+      0deg,
+      #c4a882 0px, #c4a882 2px,
+      #e8ddd0 2px, #e8ddd0 8px
+    );
+  }
+
+  .material-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--crema);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .material-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(253,240,237,0.6);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .material-tag {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--crema);
+    border: 1px solid rgba(253,240,237,0.35);
+    padding: 0.25rem 0.7rem;
+  }
+
+  /* ────────────────────────────────────────────
+     S4 EQUIPO — fondo azul
+  ──────────────────────────────────────────── */
+  #equipo {
+    position: relative;
+    background: var(--azul);
+    overflow: hidden;
+  }
+
+  .equipo-inner {
+    position: relative;
+    z-index: 2;
+    padding: 8rem 8vw;
+  }
+
+  .equipo-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+
+  .equipo-header .section-label { color: rgba(253,240,237,0.45); }
+  .equipo-header .section-title { color: var(--crema); }
+  .equipo-header .section-body { color: rgba(253,240,237,0.65); }
+
+  .equipo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(253,240,237,0.12);
+    border: 1px solid rgba(253,240,237,0.12);
+  }
+
+  .equipo-card {
+    background: var(--azul);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .equipo-card:hover { background: rgba(0,0,0,0.2); }
+
+  .equipo-avatar {
+    width: 72px;
+    height: 72px;
+    background: rgba(253,240,237,0.1);
+    border: 1px solid rgba(253,240,237,0.2);
+    border-radius: 50%;
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: rgba(253,240,237,0.3);
+    overflow: hidden;
+    position: relative;
+  }
+  .equipo-avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+
+  .equipo-nombre {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--crema);
+    margin-bottom: 0.3rem;
+  }
+
+  .equipo-rol {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.45);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .equipo-bio {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(253,240,237,0.6);
+    line-height: 1.7;
+  }
+
+  /* ────────────────────────────────────────────
+     S5 QUÉ LO HACE ÚNICO — fondo crema
+  ──────────────────────────────────────────── */
+  #diferencial {
+    position: relative;
+    background: var(--blanco);
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .diferencial-header {
+    position: relative;
+    z-index: 2;
+    padding: 8rem 8vw 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+  }
+
+  .diferencial-header .section-label { color: rgba(0,0,0,0.4); }
+  .diferencial-header .section-title { color: var(--negro); }
+  .diferencial-header .section-body { color: rgba(0,0,0,0.6); }
+
+  .diferencial-mosaic {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 8vw 8rem;
+    flex: 1;
+  }
+
+  .mosaic-cell {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+
+  .mosaic-cell.text-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.8rem;
+    background: var(--crema);
+  }
+
+  .mosaic-cell.text-cell.alt { background: var(--blanco); }
+
+  .mosaic-cell.text-cell.accent {
+    background: var(--azul);
+  }
+
+  .mosaic-cell.text-cell.accent p {
+    color: var(--crema) !important;
+  }
+
+  .mosaic-cell.text-cell p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--negro);
+    text-align: center;
+  }
+
+  .mosaic-cell.text-cell .small {
+    font-family: 'Archivo', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: rgba(0,0,0,0.5);
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .mosaic-cell.text-cell.accent .small {
+    color: rgba(253,240,237,0.55) !important;
+  }
+
+  .mosaic-cell.num-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.8rem;
+    background: var(--rojo);
+  }
+
+  .mosaic-cell.num-cell .big-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--crema);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .mosaic-cell.num-cell .big-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(253,240,237,0.65);
+    text-align: center;
+  }
+
+  /* ────────────────────────────────────────────
+     S6 FAQ — fondo negro
+  ──────────────────────────────────────────── */
+  #faq {
+    position: relative;
+    background: var(--negro);
+    overflow: hidden;
+  }
+
+  .faq-inner {
+    position: relative;
+    z-index: 2;
+    padding: 8rem 8vw;
+  }
+
+  .faq-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+
+  .faq-header .section-label { color: rgba(253,240,237,0.35); }
+  .faq-header .section-title { color: var(--crema); }
+  .faq-header .section-body { color: rgba(253,240,237,0.6); }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid rgba(253,240,237,0.1);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(253,240,237,0.1);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 1.8rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .faq-question span.q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--crema);
+    transition: color 0.2s;
+  }
+
+  .faq-question:hover .q-text { color: var(--naranja); }
+
+  .faq-icon {
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(253,240,237,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s, border-color 0.3s, transform 0.4s;
+    color: rgba(253,240,237,0.5);
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+  .faq-item.open .faq-icon {
+    background: var(--naranja);
+    border-color: var(--naranja);
+    color: var(--blanco);
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease;
+  }
+
+  .faq-item.open .faq-answer {
+    max-height: 300px;
+    padding-bottom: 1.5rem;
+  }
+
+  .faq-answer p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(253,240,237,0.58);
+    max-width: 620px;
+  }
+
+  /* CTA final */
+  .cta-strip {
+    position: relative;
+    z-index: 2;
+    background: var(--azul);
+    padding: 6rem 8vw;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .cta-strip .cta-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--crema);
+    line-height: 1.2;
+  }
+
+  .cta-strip .cta-title strong {
+    font-weight: 700;
+  }
+
+  /* footer */
+  footer {
+    background: var(--negro);
+    border-top: 1px solid rgba(254,250,224,0.06);
+    padding: 2rem 8vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span {
+    font-size: 0.72rem;
+    color: rgba(253,240,237,0.3);
+    letter-spacing: 0.08em;
+  }
+  .footer-logo {
+    display: block;
+    text-decoration: none;
+  }
+
+  .footer-logo img {
+    height: 24px;
+    opacity: 0.45;
+    display: block;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { top: 12px; width: calc(100vw - 24px); height: 56px; padding: 0 1rem; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { top: 78px; left: 12px; right: 12px; }
+
+    .hero-content { padding-top: 100px; padding-bottom: 4rem; }
+    .hero-img-hero { display: none; }
+    .hero-meta { gap: 1.5rem; }
+
+    .sobre-inner { grid-template-columns: 1fr; min-height: auto; }
+    .sobre-text-col { padding: 5rem 5vw 3rem; }
+    .sobre-img-col { padding: 3rem 5vw 5rem; min-height: 55vw; }
+
+    .materiales-header, .equipo-header, .diferencial-header, .faq-header { grid-template-columns: 1fr; gap: 2rem; }
+    .materiales-inner, .equipo-inner, .faq-inner { padding: 5rem 5vw; }
+
+    .materiales-grid, .equipo-grid { grid-template-columns: 1fr; }
+
+    .diferencial-header { padding: 5rem 5vw 3rem; }
+    .diferencial-mosaic { grid-template-columns: 1fr 1fr; padding: 0 5vw 5rem; }
+
+    .cta-strip { grid-template-columns: 1fr; gap: 2rem; }
+
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-left, .reveal-right { transition: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="customCursor">
+  <span class="cc-corner-l"></span>
+  <span class="cc-corner-r"></span>
+</div>
+
+<!-- NAVBAR -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></a>
+  <ul class="nav-links">
+    <li><a href="#sobre-curso">El curso</a></li>
+    <li><a href="#materiales">Materiales</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#diferencial">Diferencial</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#faq" class="nav-cta">Inscribirse</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre-curso">El curso</a>
+  <a href="#materiales">Materiales</a>
+  <a href="#equipo">Equipo</a>
+  <a href="#diferencial">Diferencial</a>
+  <a href="#faq">FAQ</a>
+  <a href="#faq">Inscribirse</a>
+</div>
+
+<!-- ── S1 HERO ── -->
+<section id="hero">
+  <svg class="grid-svg" id="heroGrid" data-color="rgba(253,240,237,0.07)" data-step="100"></svg>
+
+  <!-- imagen de fondo (reemplazar src con la imagen real del curso) -->
+  <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Tapizado contemporáneo" class="hero-img-hero">
+
+  <div class="hero-content">
+    <p class="hero-breadcrumb reveal">
+      <a href="index.html">Inicio</a>
+      <span>/</span>
+      <a href="#cursos">Cursos</a>
+      <span>/</span>
+      Tapizado contemporáneo
+    </p>
+
+    <span class="hero-tag reveal">Curso 02 — Formación</span>
+
+    <p class="hero-label reveal">Intensivo de tapizado</p>
+
+    <h1 class="hero-title reveal">
+      Tapizado<br>
+      <span class="highlight-box" id="heroHighlight"><span>Contemporáneo</span></span>
+    </h1>
+
+    <a href="#faq" class="btn btn-hero reveal"><span>Inscribirme ahora</span></a>
+  </div>
+</section>
+
+<!-- ── S2 DE QUÉ SE TRATA ── -->
+<section id="sobre-curso">
+  <svg class="grid-svg" id="sobreGrid" data-color="rgba(49,39,131,0.12)" data-step="120"></svg>
+
+  <div class="sobre-inner">
+    <div class="sobre-text-col">
+      <p class="section-label reveal">De qué se trata</p>
+      <h2 class="section-title reveal">El arte de<br>transformar<br>estructuras.</h2>
+      <p class="section-body reveal">Un curso intensivo donde vas a aprender a seleccionar telas, trabajar con espumas de distintas densidades y aplicar técnicas de tapizado moderno sobre estructuras con historia propia.</p>
+
+      <div class="info-grid reveal">
+        <div class="info-item">
+          <span class="info-icon">📅</span>
+          <span class="info-label">Duración</span>
+          <span class="info-val">4 jornadas</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">🕐</span>
+          <span class="info-label">Carga horaria</span>
+          <span class="info-val">24 hs totales</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">📍</span>
+          <span class="info-label">Lugar</span>
+          <span class="info-val">Taller Raíz</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">👥</span>
+          <span class="info-label">Grupo</span>
+          <span class="info-val">Máx. 8 personas</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">🎓</span>
+          <span class="info-label">Nivel</span>
+          <span class="info-val">Sin requisitos</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">📋</span>
+          <span class="info-label">Certificado</span>
+          <span class="info-val">Sí, al finalizar</span>
+        </div>
+      </div>
+
+      <div class="precio-card reveal">
+        <span class="precio-label">Inversión total</span>
+        <div class="precio-val">$65.000</div>
+        <span class="precio-nota">Incluye materiales básicos del primer día · Cuota disponible</span>
+      </div>
+
+      <a href="#faq" class="btn btn-crema reveal"><span>Reservar mi lugar</span></a>
+    </div>
+
+    <div class="sobre-img-col reveal-right">
+      <div class="sobre-img-placeholder">
+        <!-- REEMPLAZAR src por la imagen real del curso cuando esté disponible -->
+        <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Curso tapizado" style="opacity:0.6">
+        <div class="img-upload-msg" style="display:none">
+          <span class="icon">🖼</span>
+          Imagen del curso — próximamente
+        </div>
+        <div class="img-label-overlay">Tapizado contemporáneo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── S3 MATERIALES Y TELAS ── -->
+<section id="materiales">
+  <svg class="grid-svg" id="materialesGrid" data-color="rgba(253,240,237,0.08)" data-step="120"></svg>
+
+  <div class="materiales-inner">
+    <div class="materiales-header">
+      <div>
+        <p class="section-label reveal">Materiales y telas</p>
+        <h2 class="section-title reveal" style="color:var(--crema)">Lo que vas<br>a usar.</h2>
+      </div>
+      <div>
+        <p class="section-body reveal" style="color:rgba(253,240,237,0.7); max-width:380px">Trabajamos únicamente con insumos de primera calidad. Conocerás cada material en profundidad: su textura, comportamiento y aplicación en piezas reales.</p>
+        <a href="#faq" class="btn btn-rojo reveal"><span>Consultar lista completa</span></a>
+      </div>
+    </div>
+
+    <div class="materiales-grid">
+      <div class="material-card reveal">
+        <div class="material-num">01</div>
+        <div class="material-swatch lino"></div>
+        <div class="material-name">Lino Natural</div>
+        <div class="material-desc">Tejido vegetal de alta resistencia, ideal para tapizados estructurales. Textura rugosa con caída natural.</div>
+        <span class="material-tag">Tela base</span>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-num">02</div>
+        <div class="material-swatch terciopelo"></div>
+        <div class="material-name">Terciopelo Estructurado</div>
+        <div class="material-desc">Pelo corto y regular que aporta profundidad visual. Disponible en 12 colores de la paleta contemporánea.</div>
+        <span class="material-tag">Tela premium</span>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-num">03</div>
+        <div class="material-swatch cuero"></div>
+        <div class="material-name">Cuero Reconstituido</div>
+        <div class="material-desc">Alternativa sustentable al cuero natural. Misma estética y durabilidad, proceso de producción responsable.</div>
+        <span class="material-tag">Eco-friendly</span>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-num">04</div>
+        <div class="material-swatch bouclé"></div>
+        <div class="material-name">Bouclé de lana</div>
+        <div class="material-desc">Tejido de bucle que añade volumen y carácter a la pieza. Muy utilizado en diseño escandinavo contemporáneo.</div>
+        <span class="material-tag">Textura</span>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-num">05</div>
+        <div class="material-swatch espuma"></div>
+        <div class="material-name">Espumas de Alta Densidad</div>
+        <div class="material-desc">Tres densidades distintas para trabajar según el destino: tapas, respaldos y apoyabrazos requieren especificaciones diferentes.</div>
+        <span class="material-tag">Insumo técnico</span>
+      </div>
+      <div class="material-card reveal">
+        <div class="material-num">06</div>
+        <div class="material-swatch hilo-resistente"></div>
+        <div class="material-name">Hilos y Rematados</div>
+        <div class="material-desc">Selección de hilos encerados, trencillas y rematados decorativos para terminar cada pieza con criterio profesional.</div>
+        <span class="material-tag">Terminaciones</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── S4 EQUIPO ── -->
+<section id="equipo">
+  <svg class="grid-svg" id="equipoGrid" data-color="rgba(253,240,237,0.06)" data-step="120"></svg>
+
+  <div class="equipo-inner">
+    <div class="equipo-header">
+      <div>
+        <p class="section-label reveal">El equipo profesional</p>
+        <h2 class="section-title reveal" style="color:var(--crema)">Las manos<br>que enseñan.</h2>
+      </div>
+      <div>
+        <p class="section-body reveal" style="color:rgba(253,240,237,0.65); max-width:380px">Nuestros docentes son profesionales activos con trayectoria real en restauración y diseño de interiores. No solo saben hacerlo — saben enseñarlo.</p>
+      </div>
+    </div>
+
+    <div class="equipo-grid">
+      <div class="equipo-card reveal">
+        <div class="equipo-avatar">🧵</div>
+        <div class="equipo-nombre">Valentina Roca</div>
+        <span class="equipo-rol">Docente principal · Tapizado</span>
+        <p class="equipo-bio">Licenciada en Diseño de Interiores con especialización en textiles históricos. Más de 12 años tapizando piezas del siglo XX para clientes particulares y hoteles boutique.</p>
+      </div>
+      <div class="equipo-card reveal">
+        <div class="equipo-avatar">🔨</div>
+        <div class="equipo-nombre">Matías Herrero</div>
+        <span class="equipo-rol">Asistente · Estructura y soporte</span>
+        <p class="equipo-bio">Maestro artesano egresado de la Escuela de Artes y Oficios. Responsable de que cada estructura sobre la que tapizamos esté técnicamente impecable.</p>
+      </div>
+      <div class="equipo-card reveal">
+        <div class="equipo-avatar">🎨</div>
+        <div class="equipo-nombre">Lucía Paz</div>
+        <span class="equipo-rol">Asesora · Paleta y composición</span>
+        <p class="equipo-bio">Diseñadora de indumentaria reconvertida al mundo del mobiliario. Su ojo para la combinación de texturas y colores es un activo único del curso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── S5 DIFERENCIAL ── -->
+<section id="diferencial">
+  <svg class="grid-svg" id="diferencialGrid" data-color="rgba(240,112,48,0.5)" data-step="120"></svg>
+
+  <div class="diferencial-header">
+    <div>
+      <p class="section-label reveal">Qué lo hace único</p>
+      <h2 class="section-title reveal">Un curso<br>irrepetible.</h2>
+    </div>
+    <div>
+      <p class="section-body reveal">No enseñamos recetas. Enseñamos criterio. Cada clase trabaja sobre piezas reales del taller, con problemáticas distintas, para que el aprendizaje sea genuino y transferible.</p>
+      <a href="#faq" class="btn btn-crema reveal"><span>Quiero inscribirme</span></a>
+    </div>
+  </div>
+
+  <div class="diferencial-mosaic" id="diferencialMosaic">
+    <div class="mosaic-cell text-cell reveal">
+      <p>Piezas reales,<br>no ejercicios.</p>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell num-cell reveal">
+      <div class="big-num">8</div>
+      <div class="big-label">Alumnos<br>máximo</div>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell text-cell alt reveal">
+      <p class="small">Atención personalizada que no encontrás en cursos masivos. Cada alumno trabaja a su ritmo.</p>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell text-cell accent reveal">
+      <p>Certificado Raíz<br>avalado por el<br>taller.</p>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell num-cell reveal" style="background:var(--azul)">
+      <div class="big-num">24</div>
+      <div class="big-label">Horas de<br>práctica real</div>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell text-cell reveal">
+      <p>Metodología<br>Raíz aplicada<br>al tapizado.</p>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell text-cell alt reveal">
+      <p class="small">Acceso al catálogo de telas del taller para seguir comprando a precio especial post-curso.</p>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell num-cell reveal" style="background:var(--rojo)">
+      <div class="big-num">+3</div>
+      <div class="big-label">Piezas<br>terminadas</div>
+      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ── S6 FAQ ── -->
+<section id="faq">
+  <svg class="grid-svg" id="faqGrid" data-color="rgba(253,240,237,0.04)" data-step="120"></svg>
+
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div>
+        <p class="section-label reveal">Preguntas frecuentes</p>
+        <h2 class="section-title reveal" style="color:var(--crema)">Todo lo<br>que necesitás<br>saber.</h2>
+      </div>
+      <div>
+        <p class="section-body reveal" style="color:rgba(253,240,237,0.6); max-width:380px">Si después de leer las preguntas todavía tenés dudas, escribinos. Respondemos en menos de 24 hs.</p>
+        <a href="mailto:hola@raiz.com.ar" class="btn reveal" style="color:var(--crema);border-color:rgba(253,240,237,0.35)"><span>Escribirnos</span></a>
+      </div>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="q-text">¿Necesito experiencia previa en tapizado?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>No. El curso está diseñado para personas sin experiencia previa. Sí es recomendable tener curiosidad por los materiales y ganas de trabajar con las manos. Arrancamos desde los conceptos más básicos y vamos sumando complejidad jornada a jornada.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="q-text">¿Qué debo llevar el primer día?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>El primer día los materiales básicos están incluidos en el precio del curso. Para las jornadas 2, 3 y 4 vas a ir eligiendo las telas y espumas con las que trabajarás — esos insumos se abonan aparte a precio de taller (muy por debajo del mercado).</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="q-text">¿Cuándo son las próximas fechas?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Los cursos se dictan en ediciones de 4 jornadas consecutivas (jueves a domingo) o 4 sábados seguidos. Las fechas disponibles se publican cada mes. Podés reservar tu lugar con un 30% de seña y el saldo se abona el primer día.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="q-text">¿Me llevo algo terminado al final del curso?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Sí. Al terminar el curso vas a haber tapizado al menos una pieza completa — generalmente una silla o banqueta del stock del taller — que te llevás a tu casa. En algunos casos los alumnos traen sus propias piezas para trabajar sobre ellas (consultanos primero).</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="q-text">¿Hay descuentos por grupo o por ser ex-alumno?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Sí. Los ex-alumnos de Raíz tienen un 15% de descuento en todos nuestros cursos. Los grupos de 3 o más personas que se inscriban juntas acceden a un 10% de descuento grupal. Los descuentos no son acumulables.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="q-text">¿Qué pasa si tengo que cancelar mi inscripción?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Si cancelás con más de 7 días de anticipación devolvemos el 100% de la seña. Entre 3 y 7 días, el 50%. Con menos de 72 hs, podés transferir tu lugar a otra persona o usarlo en una edición futura dentro de los 6 meses siguientes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA final -->
+  <div class="cta-strip">
+    <div>
+      <div class="cta-title reveal">¿Listo para aprender<br>el oficio del <strong>tapizado contemporáneo?</strong></div>
+    </div>
+    <div class="reveal">
+      <a href="mailto:hola@raiz.com.ar" class="btn btn-azul"><span>Quiero inscribirme</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></a>
+  <span>© 2026 Raíz — Diseño para una segunda vida</span>
+  <span>hola@raiz.com.ar</span>
+</footer>
+
+<script>
+  // ── Navbar scroll ──
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── Hamburger ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+  // ── Hero highlight box ──
+  const heroHighlight = document.getElementById('heroHighlight');
+  setTimeout(() => {
+    if (heroHighlight) heroHighlight.classList.add('animate');
+  }, 400);
+
+  // ── FAQ accordion ──
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── Grilla SVG ──
+  function initGridSvg(svg) {
+    const section = svg.closest('section') || svg.parentElement;
+    const color = svg.dataset.color || 'rgba(0,0,0,0.06)';
+    const STEP = parseInt(svg.dataset.step) || 100;
+    let drawn = false;
+
+    function build() {
+      const w = section.offsetWidth;
+      const h = section.offsetHeight;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      let content = '';
+      const cols = Math.ceil(w / STEP);
+      const rows = Math.ceil(h / STEP);
+      for (let c = 1; c < cols; c++) {
+        content += `<line class="grid-line" x1="${c*STEP}" y1="0" x2="${c*STEP}" y2="${h}" stroke="${color}" />`;
+      }
+      for (let r = 1; r < rows; r++) {
+        content += `<line class="grid-line" x1="0" y1="${r*STEP}" x2="${w}" y2="${r*STEP}" stroke="${color}" />`;
+      }
+      for (let c = 1; c < cols; c++) {
+        for (let r = 1; r < rows; r++) {
+          content += `<circle class="grid-dot" cx="${c*STEP}" cy="${r*STEP}" r="2.5" fill="${color}" />`;
+        }
+      }
+      svg.innerHTML = content;
+      svg.querySelectorAll('.grid-line').forEach(line => {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        const length = Math.hypot(x2-x1, y2-y1);
+        line.style.strokeDasharray = length;
+        line.style.strokeDashoffset = length;
+      });
+    }
+
+    build();
+    window.addEventListener('resize', () => { if (!drawn) build(); });
+
+    function animate() {
+      if (drawn) return;
+      drawn = true;
+      build();
+      const lines = svg.querySelectorAll('.grid-line');
+      lines.forEach((line, i) => {
+        line.style.transition = `stroke-dashoffset 0.6s ease ${i * 0.06}s`;
+        requestAnimationFrame(() => { line.style.strokeDashoffset = '0'; });
+      });
+      setTimeout(() => svg.classList.add('dots-visible'), lines.length * 60 + 400);
+    }
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animate(); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    obs.observe(section);
+  }
+
+  document.querySelectorAll('.grid-svg').forEach(initGridSvg);
+
+  // ── Cursor personalizado ──
+  const customCursor = document.getElementById('customCursor');
+  const darkSections = ['#hero', '#materiales', '#equipo', '#faq'];
+
+  document.addEventListener('mousemove', (e) => {
+    customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    customCursor.classList.add('visible');
+    const overDark = el && el.closest(darkSections.join(','));
+    customCursor.classList.toggle('on-dark', !!overDark);
+  });
+
+  document.addEventListener('mouseleave', () => customCursor.classList.remove('visible'));
+</script>
+</body>
+</html>
