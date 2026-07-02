@@ -68,32 +68,6 @@
     background: var(--blanco);
   }
 
-  /* Píldora de precio — reemplaza al cuadradito al pasar sobre un curso */
-  #cursorPrice {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
-    background: var(--crema);
-    color: var(--naranja);
-    border: 1.5px solid var(--naranja);
-    border-radius: 999px;
-    padding: 0.55rem 1.3rem;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    will-change: transform;
-  }
-
-  #cursorPrice.visible {
-    opacity: 1;
-  }
-
   body {
     font-family: 'Archivo', sans-serif;
     background: var(--crema);
@@ -119,7 +93,7 @@
     padding: 0 1.15rem 0 1.45rem;
     background: rgba(218,55,33,0.58);
     border: 1px solid rgba(253,240,237,0.28);
-    border-radius: 999px;
+    border-radius: 0;
     box-shadow: 0 16px 38px rgba(0,0,0,0.16);
     backdrop-filter: blur(18px) saturate(145%);
     -webkit-backdrop-filter: blur(18px) saturate(145%);
@@ -234,7 +208,9 @@
     overflow: hidden;
     transition: color 0.3s, background 0.3s, border-color 0.3s;
   }
-  .btn span { position: relative; z-index: 1; }
+  /* el letter-spacing agrega espacio extra después de la última letra;
+     este margen negativo lo compensa para que el espacio a ambos lados del texto sea igual */
+  .btn span { position: relative; z-index: 1; display: inline-block; margin-right: -0.1em; }
 
   /* Sección 1 Hero — hover blanco */
   .btn-hero {
@@ -247,6 +223,7 @@
   .btn-servicios {
     color: var(--rojo);
     border-color: var(--rojo);
+    align-self: flex-start;
   }
   .btn-servicios:hover { color: var(--blanco); background: var(--naranja); border-color: var(--naranja); }
 
@@ -254,6 +231,7 @@
   .btn-sobre {
     color: var(--crema);
     border-color: var(--crema);
+    align-self: flex-start;
   }
   .btn-sobre:hover { color: var(--negro); background: var(--blanco); border-color: var(--blanco); }
 
@@ -344,7 +322,7 @@
   /* ── SECCIÓN 1: HERO ── */
   #hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 122vh;
     background: var(--rojo);
     display: flex;
     flex-direction: column;
@@ -358,7 +336,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding-top: 110px;
+    padding-top: 90px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -382,7 +360,7 @@
   .hero-title {
     font-size: clamp(2.4rem, 5vw, 4.8rem);
     font-weight: 300;
-    line-height: 1.1;
+    line-height: 1.02;
     color: var(--crema);
     margin-bottom: 1.8rem;
     letter-spacing: -0.01em;
@@ -419,14 +397,13 @@
   }
 
   .hero-img-wrap {
-    position: absolute;
-    inset: 0;
+    position: relative;
     z-index: 1;
-    width: 100%;
-    height: 100%;
-    padding-top: 80px;
+    width: calc(100% + 10vw);
+    margin: 0 -5vw;
+    flex: 1;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     cursor: pointer;
     box-sizing: border-box;
@@ -435,7 +412,7 @@
   .hero-img-stack {
     position: relative;
     width: 100%;
-    height: 100%;
+    align-self: stretch;
   }
 
   .hero-img-stack img {
@@ -465,8 +442,8 @@
   /* Marco del spotlight cuadrado — es una línea más de la grilla scan, con diamantes en las esquinas */
   .hero-spot-frame {
     position: absolute;
-    width: 130px;
-    height: 130px;
+    width: 220px;
+    height: 220px;
     left: var(--hx, 50%);
     top: var(--hy, 50%);
     transform: translate(-50%, -50%);
@@ -623,36 +600,39 @@
   .section-title {
     font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     font-weight: 300;
-    line-height: 1.08;
+    line-height: 1;
     margin-bottom: 1.5rem;
   }
 
   .section-body {
     font-size: 1rem;
     font-weight: 300;
-    line-height: 1.8;
+    line-height: 1.35;
     max-width: 420px;
     margin-bottom: 2.5rem;
   }
 
   /* proceso pasos */
+  /* Contenedor de altura fija: cada tarjeta se posiciona de forma absoluta dentro,
+     así una tarjeta puede crecer al abrirse sin cambiar el alto del contenedor
+     ni empujar nada del resto de la página. */
   .proceso-steps {
     position: relative;
-    display: flex;
-    flex-direction: column;
     margin: 1.5rem 0 2.5rem;
     max-width: 420px;
+    height: 158px;
   }
 
   .paso {
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
     background: var(--blanco);
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 14px;
     padding: 1rem 1.3rem;
-    margin-top: -14px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
@@ -660,14 +640,16 @@
   }
 
   .paso:first-child {
-    margin-top: 0;
+    top: 0;
     z-index: 3;
   }
   .paso:nth-child(2) {
+    top: 48px;
     opacity: 0.88;
     z-index: 2;
   }
   .paso:nth-child(3) {
+    top: 96px;
     opacity: 0.76;
     z-index: 1;
   }
@@ -705,7 +687,7 @@
   }
 
   .paso-info {
-    overflow: hidden;
+    min-width: 0;
   }
 
   .paso-info strong {
@@ -715,25 +697,27 @@
     font-weight: 700;
     letter-spacing: 0.01em;
     text-transform: none;
-    margin-bottom: 0.2rem;
     transition: color 0.3s ease;
   }
 
+  /* la tarjeta (position:absolute, alto:auto) crece sola cuando este texto se expande;
+     como está fuera del flujo, ese crecimiento no mueve nada más de la página */
   .paso-info span {
     display: block;
     font-size: 0.8rem;
     font-weight: 300;
     color: rgba(0,0,0,0.55);
     max-height: 0;
+    margin-top: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease, opacity 0.3s ease, color 0.3s ease;
+    transition: max-height 0.35s ease, margin-top 0.35s ease, opacity 0.3s ease, color 0.3s ease;
   }
 
   .paso:hover .paso-info span {
-    max-height: 60px;
-    opacity: 1;
+    max-height: 70px;
     margin-top: 0.3rem;
+    opacity: 1;
   }
 
   /* ── SECCIÓN 3: SOBRE NOSOTROS ── */
@@ -804,13 +788,83 @@
     transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
   }
 
-  .sobre-img-col img {
+  .sobre-img-wrap {
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: 560px;
+    cursor: default;
+  }
+
+  .sobre-img-stack {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1269 / 1262;
+  }
+
+  .sobre-img-stack img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
   }
+
+  /* Imagen base: siempre visible */
+  .sobre-img-stack .img-base {
+    opacity: 1;
+  }
+
+  /* Imagen revelada: solo visible dentro del cuadrado que sigue al cursor, borde nítido */
+  .sobre-img-stack .img-reveal {
+    opacity: 0;
+    clip-path: inset(var(--sy,50%) var(--sx-r,50%) var(--sy-b,50%) var(--sx,50%));
+    transition: opacity 0.25s ease;
+  }
+
+  .sobre-img-wrap.active .img-reveal {
+    opacity: 1;
+  }
+
+  .sobre-img-wrap.in-zone {
+    cursor: pointer;
+  }
+
+  /* Marco del spotlight cuadrado — igual que el del hero, mismo tamaño (220px) */
+  .sobre-spot-frame {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    left: var(--sx-pos, 50%);
+    top: var(--sy-pos, 50%);
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(254,250,224,0.75);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 4;
+  }
+
+  .sobre-img-wrap.active .sobre-spot-frame {
+    opacity: 1;
+  }
+
+  .sobre-spot-frame::before,
+  .sobre-spot-frame::after,
+  .sobre-spot-frame .corner-l,
+  .sobre-spot-frame .corner-r {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background: var(--blanco);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .sobre-spot-frame::before { top: 0; left: 0; }
+  .sobre-spot-frame::after { top: 0; left: 100%; }
+  .sobre-spot-frame .corner-l { top: 100%; left: 0; }
+  .sobre-spot-frame .corner-r { top: 100%; left: 100%; }
 
   /* franja de estadísticas — arriba de Sobre Nosotros, con marco que se dibuja progresivamente */
   .stats-strip {
@@ -935,7 +989,7 @@
     font-weight: 400;
     color: rgba(254,250,224,0.78);
     letter-spacing: 0.01em;
-    line-height: 1.4;
+    line-height: 1.25;
   }
 
   /* ── SECCIÓN 4: CURSOS ── */
@@ -956,11 +1010,11 @@
   }
 
   .cursos-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: end;
-    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2.5rem;
   }
 
   .cursos-header .section-title { color: var(--crema); }
@@ -1011,14 +1065,21 @@
     font-weight: 700;
     color: var(--crema);
     margin-bottom: 0.5rem;
-    line-height: 1.3;
+    line-height: 1.2;
   }
 
   .curso-desc {
     font-size: 0.82rem;
     font-weight: 300;
     color: rgba(253,240,237,0.65);
-    line-height: 1.6;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+  }
+
+  .curso-precio {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--crema);
     margin-bottom: 1.5rem;
   }
 
@@ -1047,10 +1108,14 @@
     position: relative;
     z-index: 2;
     padding: 8rem 8vw 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .capsula-header .section-body {
+    margin-top: 1.2rem;
   }
 
   .capsula-header .section-title { color: var(--negro); }
@@ -1187,7 +1252,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
     font-weight: 500;
-    line-height: 1.35;
+    line-height: 1.2;
     color: var(--negro);
     text-align: center;
   }
@@ -1197,7 +1262,7 @@
     font-size: 0.78rem;
     font-weight: 400;
     color: rgba(0,0,0,0.55);
-    line-height: 1.5;
+    line-height: 1.2;
     text-align: center;
   }
 
@@ -1241,15 +1306,15 @@
   .ventaja-item:hover { background: rgba(0,0,0,0.2); }
   .ventaja-item:hover .ventaja-titulo { color: var(--crema); }
   .ventaja-item:hover .ventaja-texto { color: rgba(253,240,237,0.7); }
-  .ventaja-item:hover .ventaja-num { color: rgba(253,240,237,0.08); }
+  .ventaja-item:hover .ventaja-icon { opacity: 0.08; }
 
-  .ventaja-num {
-    font-size: 3rem;
-    font-weight: 900;
-    color: rgba(254,250,224,0.18);
-    line-height: 1;
+  .ventaja-icon {
+    height: 7.5rem;
+    width: auto;
+    display: block;
+    opacity: 0.18;
     margin-bottom: 1rem;
-    transition: color 0.3s;
+    transition: opacity 0.3s;
   }
 
   .ventaja-titulo {
@@ -1265,7 +1330,7 @@
   .ventaja-texto {
     font-size: 0.82rem;
     font-weight: 300;
-    line-height: 1.7;
+    line-height: 1.35;
     color: rgba(253,240,237,0.6);
     transition: color 0.3s;
   }
@@ -1364,19 +1429,20 @@
     .hero-content { max-width: 100%; padding-top: 80px; padding-bottom: 2rem; }
     .hero-img-wrap {
       position: relative;
-      width: 100%;
-      height: 50vw;
-      max-width: 100%;
+      flex: none;
+      width: calc(100% + 10vw);
+      margin: 0 -5vw;
+      height: 70vw;
+      max-width: none;
     }
     #hero {
+      min-height: 100vh;
       padding-top: 0;
       padding-bottom: 0;
     }
 
     .servicios-inner,
     .sobre-inner,
-    .cursos-header,
-    .capsula-header,
     .elegirnos-header,
     .contacto-strip {
       grid-template-columns: 1fr;
@@ -1460,7 +1526,6 @@
   <span class="cc-corner-l"></span>
   <span class="cc-corner-r"></span>
 </div>
-<div id="cursorPrice"></div>
 
 <!-- NAVBAR -->
 <nav>
@@ -1621,7 +1686,17 @@
 
     <div class="sobre-img-col reveal-right">
       <div class="sobre-circle" id="sobreCircle"></div>
-      <img src="mesita-madera.png" alt="Mesita restaurada por Raíz">
+      <div class="sobre-img-wrap" id="sobreImgWrap">
+        <div class="sobre-img-stack" id="sobreImgStack">
+          <img src="hombresilla1.png" alt="Silla restaurada" class="img-base">
+          <img src="hombresilla2.png" alt="Silla antes de restaurar" class="img-reveal">
+
+          <div class="sobre-spot-frame" id="sobreSpotFrame">
+            <span class="corner-l"></span>
+            <span class="corner-r"></span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1632,36 +1707,35 @@
 
   <div class="cursos-inner">
     <div class="cursos-header">
-      <div>
-        <p class="section-label reveal" style="color:rgba(253,240,237,0.5)">Formación</p>
-        <h2 class="section-title reveal">Cursos<br>disponibles</h2>
-      </div>
-      <div>
-        <p class="section-body reveal" style="color:rgba(253,240,237,0.7); max-width:380px">Transmitimos el oficio de la restauración. Aprendé a diagnosticar, intervenir y rediseñar piezas con historia propia.</p>
-        <a href="#" class="btn btn-cursos reveal"><span>Ver todos</span></a>
-      </div>
+      <p class="section-label reveal" style="color:rgba(253,240,237,0.5)">Formación</p>
+      <h2 class="section-title reveal">Cursos disponibles</h2>
+      <p class="section-body reveal" style="color:rgba(253,240,237,0.7); max-width:480px; margin-left:auto; margin-right:auto;">Transmitimos el oficio de la restauración. Aprendé a diagnosticar, intervenir y rediseñar piezas con historia propia.</p>
+      <a href="#" class="btn btn-cursos reveal"><span>Ver todos</span></a>
     </div>
 
     <div class="cursos-grid">
-      <div class="curso-card reveal" data-price="$50.000">
+      <div class="curso-card reveal">
         <div class="curso-num">01</div>
         <img src="ChatGPT_Image_18_jun_2026__05_16_01_p_m_.png" alt="Restauración básica" class="curso-img">
         <div class="curso-name">Restauración Básica de Madera</div>
         <div class="curso-desc">Técnicas esenciales de lijado, sellado y acabado para piezas con deterioro superficial.</div>
+        <div class="curso-precio">*$50.000</div>
         <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
-      <div class="curso-card reveal" data-price="$65.000">
+      <div class="curso-card reveal">
         <div class="curso-num">02</div>
         <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Tapizado contemporáneo" class="curso-img">
         <div class="curso-name">Tapizado Contemporáneo</div>
         <div class="curso-desc">Selección de telas, espumas y técnicas de tapizado moderno aplicadas a estructuras históricas.</div>
+        <div class="curso-precio">*$65.000</div>
         <a href="curso-tapizado.html" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
-      <div class="curso-card reveal" data-price="$40.000">
+      <div class="curso-card reveal">
         <div class="curso-num">03</div>
         <img src="ChatGPT_Image_18_jun_2026__05_22_52_p_m_.png" alt="Diseño y rediseño de piezas" class="curso-img">
         <div class="curso-name">Diseño de Piezas Únicas</div>
         <div class="curso-desc">Del diagnóstico al objeto final: metodología Raíz aplicada al rediseño de muebles irrecuperables.</div>
+        <div class="curso-precio">*$40.000</div>
         <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
     </div>
@@ -1762,17 +1836,17 @@
 
     <div class="ventajas-grid">
       <div class="ventaja-item reveal">
-        <div class="ventaja-num">01</div>
+        <img src="iconosierra.png" alt="" class="ventaja-icon">
         <div class="ventaja-titulo">Oficio real</div>
         <div class="ventaja-texto">Cada pieza es intervenida por especialistas con formación en carpintería estructural y diseño de interiores.</div>
       </div>
       <div class="ventaja-item reveal">
-        <div class="ventaja-num">02</div>
+        <img src="iconopincel.png" alt="" class="ventaja-icon">
         <div class="ventaja-titulo">Diseño contemporáneo</div>
         <div class="ventaja-texto">No restauramos para el pasado. Cada intervención tiene un criterio estético actual, pensado para espacios de hoy.</div>
       </div>
       <div class="ventaja-item reveal">
-        <div class="ventaja-num">03</div>
+        <img src="iconosillon.png" alt="" class="ventaja-icon">
         <div class="ventaja-titulo">Piezas únicas</div>
         <div class="ventaja-texto">Cada mueble que restauramos es tratado como un objeto irrepetible. Porque lo es.</div>
       </div>
@@ -1829,7 +1903,7 @@
   // dentro de un cuadrado nítido (sin difuminado) que sigue al mouse
   const heroWrap = document.getElementById('heroImgWrap');
   const heroStack = document.getElementById('heroImgStack');
-  const SPOT_SIZE = 130; // debe coincidir con el tamaño de .hero-spot-frame
+  const SPOT_SIZE = 220; // debe coincidir con el tamaño de .hero-spot-frame
 
   heroWrap.addEventListener('mousemove', (e) => {
     const rect = heroStack.getBoundingClientRect();
@@ -1860,6 +1934,52 @@
   heroWrap.addEventListener('mouseleave', () => {
     heroWrap.classList.remove('active');
   });
+
+  // Spotlight de "Sobre Nosotros" — mismo comportamiento que el del hero, pero
+  // el hoover solo revela la segunda imagen del lado izquierdo, donde está la silla.
+  const sobreWrap = document.getElementById('sobreImgWrap');
+  const sobreStack = document.getElementById('sobreImgStack');
+  const SOBRE_SPOT_SIZE = 220; // debe coincidir con .sobre-spot-frame
+  const SOBRE_CHAIR_ZONE = 0.6; // fracción del ancho donde está la silla (lado izquierdo)
+
+  if (sobreWrap && sobreStack) {
+    sobreWrap.addEventListener('mousemove', (e) => {
+      const rect = sobreStack.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      const half = SOBRE_SPOT_SIZE / 2;
+
+      const xPct = (px / rect.width) * 100;
+
+      // Solo activa el reveal si el cursor está sobre la zona de la silla (izquierda)
+      if (px < 0 || py < 0 || px > rect.width || py > rect.height || xPct > SOBRE_CHAIR_ZONE * 100) {
+        sobreWrap.classList.remove('active', 'in-zone');
+        return;
+      }
+
+      sobreWrap.classList.add('in-zone');
+
+      const yPct = (py / rect.height) * 100;
+      sobreStack.style.setProperty('--sx-pos', xPct + '%');
+      sobreStack.style.setProperty('--sy-pos', yPct + '%');
+
+      const top = Math.max(0, ((py - half) / rect.height) * 100);
+      const bottom = Math.max(0, ((rect.height - (py + half)) / rect.height) * 100);
+      const left = Math.max(0, ((px - half) / rect.width) * 100);
+      const right = Math.max(0, ((rect.width - (px + half)) / rect.width) * 100);
+
+      sobreStack.style.setProperty('--sy', top + '%');
+      sobreStack.style.setProperty('--sy-b', bottom + '%');
+      sobreStack.style.setProperty('--sx', left + '%');
+      sobreStack.style.setProperty('--sx-r', right + '%');
+
+      sobreWrap.classList.add('active');
+    });
+
+    sobreWrap.addEventListener('mouseleave', () => {
+      sobreWrap.classList.remove('active', 'in-zone');
+    });
+  }
 
   // Highlight box "futuros"
   const highlight = document.getElementById('heroHighlight');
@@ -2221,29 +2341,13 @@
 
   // ── Cursor personalizado: cuadradito que sigue al mouse en toda la web ──
   const customCursor = document.getElementById('customCursor');
-  const cursorPrice = document.getElementById('cursorPrice');
   const darkSections = ['#capsula', '#hero', '#cursos', '#elegirnos'];
 
   document.addEventListener('mousemove', (e) => {
     const elUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
 
-    // si el cursor está sobre un curso, se muestra la píldora con el precio
-    const cursoEl = elUnderCursor && elUnderCursor.closest('.curso-card[data-price]');
-
-    if (cursoEl) {
-      cursorPrice.textContent = cursoEl.dataset.price;
-      cursorPrice.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-      cursorPrice.classList.add('visible');
-      customCursor.classList.remove('visible');
-      return;
-    }
-
-    cursorPrice.classList.remove('visible');
     customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-
-    // si el cursor está sobre el spotlight del hero (cuadrado grande), se oculta el chiquito
-    const overHeroSpot = elUnderCursor && elUnderCursor.closest('.hero-img-wrap');
-    customCursor.classList.toggle('visible', !overHeroSpot);
+    customCursor.classList.add('visible');
 
     // si el cursor está sobre una sección de fondo oscuro/saturado, cambia a color claro
     const overDark = elUnderCursor && elUnderCursor.closest(darkSections.join(','));
@@ -2252,7 +2356,6 @@
 
   document.addEventListener('mouseleave', () => {
     customCursor.classList.remove('visible');
-    cursorPrice.classList.remove('visible');
   });
 </script>
 </body>
