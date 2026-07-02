@@ -263,9 +263,10 @@
     min-height: 100vh;
     background: var(--azul);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
+    gap: 3vw;
     padding: 0 5vw;
     overflow: hidden;
   }
@@ -274,18 +275,14 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 900px;
+    max-width: 440px;
+    flex: 1 1 400px;
     padding-top: 130px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
     padding-bottom: 6rem;
-    pointer-events: none;
-  }
-
-  .hero-content a {
-    pointer-events: auto;
   }
 
   .hero-breadcrumb {
@@ -364,23 +361,16 @@
     color: var(--crema);
   }
 
-  .hero-img-col {
-    position: absolute;
-    right: 0; top: 0;
-    width: 42%;
-    height: 100%;
-    z-index: 1;
+  /* ── Hero: columna de imagen con hover de 3 capas ── */
+  .hero-img-wrap {
+    position: relative;
+    z-index: 2;
+    flex: 1 1 520px;
+    max-width: 620px;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8rem 4vw;
-    box-sizing: border-box;
-  }
-
-  .hero-img-wrap {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
     cursor: pointer;
   }
 
@@ -398,30 +388,17 @@
     object-fit: contain;
   }
 
-  /* Imagen base: silla nueva restaurada, siempre visible */
-  .hero-img-stack .img-base {
-    opacity: 1;
-  }
+  /* Imagen base: silla nueva, siempre visible */
+  .hero-img-stack .img-base { opacity: 1; }
 
-  /* Imagenes reveladas: solo visibles dentro del cuadrado que sigue al cursor,
-     y ademas recortadas por una mascara de canvas que recuerda por donde ya paso el cursor */
-  .hero-img-stack .img-reveal {
+  /* Capas reveladas dentro de la ventanita, según si el cursor ya pasó por ahí */
+  .hero-img-stack .img-reveal-1,
+  .hero-img-stack .img-reveal-2 {
     opacity: 0;
     clip-path: inset(var(--ry,50%) var(--rx-r,50%) var(--ry-b,50%) var(--rx,50%));
-    transition: opacity 0.25s ease;
-    mask-repeat: no-repeat;
-    mask-position: 0 0;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: 0 0;
-    -webkit-mask-size: 100% 100%;
   }
 
-  .hero-img-wrap.active .img-reveal {
-    opacity: 1;
-  }
-
-  /* Marco del spotlight cuadrado — igual que el del home, mismo tamaño (220px) */
+  /* Marco del spotlight cuadrado, igual que el del home */
   .hero-spot-frame {
     position: absolute;
     width: 220px;
@@ -1121,8 +1098,9 @@
     .hamburger { display: flex; }
     .mobile-menu { top: 78px; left: 12px; right: 12px; }
 
-    .hero-content { padding-top: 100px; padding-bottom: 4rem; }
-    .hero-img-col { display: none; }
+    #hero { flex-direction: column; justify-content: flex-start; }
+    .hero-content { max-width: 100%; padding-top: 100px; padding-bottom: 2rem; }
+    .hero-img-wrap { max-width: 340px; padding-bottom: 3rem; }
     .hero-meta { gap: 1.5rem; }
 
     .sobre-inner { grid-template-columns: 1fr; min-height: auto; }
@@ -1184,21 +1162,6 @@
 <section id="hero">
   <svg class="grid-svg" id="heroGrid" data-color="rgba(253,240,237,0.07)" data-step="100"></svg>
 
-  <div class="hero-img-col">
-    <div class="hero-img-wrap" id="cursoImgWrap">
-      <div class="hero-img-stack" id="cursoImgStack">
-        <img src="sillacursonueva.png" alt="Silla restaurada, resultado final" class="img-base">
-        <img src="sillacursovieja.png" alt="Silla antes de restaurar" class="img-reveal" id="cursoImgVieja">
-        <img src="sillacursografico.png" alt="Silla con medidas técnicas" class="img-reveal" id="cursoImgGrafico">
-
-        <div class="hero-spot-frame" id="cursoSpotFrame">
-          <span class="corner-l"></span>
-          <span class="corner-r"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="hero-content">
     <p class="hero-breadcrumb reveal">
       <a href="index.html">Inicio</a>
@@ -1218,6 +1181,19 @@
     </h1>
 
     <a href="#faq" class="btn btn-hero reveal"><span>Inscribirme ahora</span></a>
+  </div>
+
+  <div class="hero-img-wrap reveal-right" id="heroImgWrap">
+    <div class="hero-img-stack" id="heroImgStack">
+      <img src="sillacursonueva.png" alt="Silla restaurada" class="img-base">
+      <img src="sillacursovieja.png" alt="Silla antes de restaurar" class="img-reveal-1" id="heroRevealVieja">
+      <img src="sillacursografico.png" alt="Plano técnico de la silla" class="img-reveal-2" id="heroRevealGrafico">
+
+      <div class="hero-spot-frame" id="heroSpotFrame">
+        <span class="corner-l"></span>
+        <span class="corner-r"></span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1556,6 +1532,52 @@
   setTimeout(() => {
     if (heroHighlight) heroHighlight.classList.add('animate');
   }, 400);
+
+  // ── Hero: ventanita — revela la silla vieja con el plano técnico superpuesto ──
+  const heroImgWrap = document.getElementById('heroImgWrap');
+  const heroImgStack = document.getElementById('heroImgStack');
+  const heroRevealVieja = document.getElementById('heroRevealVieja');
+  const heroRevealGrafico = document.getElementById('heroRevealGrafico');
+  const HERO_SPOT_SIZE = 220; // debe coincidir con .hero-spot-frame
+
+  if (heroImgWrap && heroImgStack) {
+    heroImgWrap.addEventListener('mousemove', (e) => {
+      const rect = heroImgStack.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      const half = HERO_SPOT_SIZE / 2;
+
+      if (px < 0 || py < 0 || px > rect.width || py > rect.height) {
+        heroImgWrap.classList.remove('active');
+        return;
+      }
+
+      const xPct = (px / rect.width) * 100;
+      const yPct = (py / rect.height) * 100;
+      heroImgStack.style.setProperty('--hx', xPct + '%');
+      heroImgStack.style.setProperty('--hy', yPct + '%');
+
+      const top = Math.max(0, ((py - half) / rect.height) * 100);
+      const bottom = Math.max(0, ((rect.height - (py + half)) / rect.height) * 100);
+      const left = Math.max(0, ((px - half) / rect.width) * 100);
+      const right = Math.max(0, ((rect.width - (px + half)) / rect.width) * 100);
+
+      heroImgStack.style.setProperty('--ry', top + '%');
+      heroImgStack.style.setProperty('--ry-b', bottom + '%');
+      heroImgStack.style.setProperty('--rx', left + '%');
+      heroImgStack.style.setProperty('--rx-r', right + '%');
+
+      heroRevealVieja.style.opacity = '1';
+      heroRevealGrafico.style.opacity = '1';
+      heroImgWrap.classList.add('active');
+    });
+
+    heroImgWrap.addEventListener('mouseleave', () => {
+      heroImgWrap.classList.remove('active');
+      heroRevealVieja.style.opacity = '0';
+      heroRevealGrafico.style.opacity = '0';
+    });
+  }
 
   // ── FAQ accordion ──
   document.querySelectorAll('.faq-item').forEach(item => {
