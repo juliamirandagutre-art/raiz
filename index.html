@@ -15,6 +15,7 @@
     --negro: #000000;
     --blanco: #fefae0;
     --naranja: #f07030;
+    --crema-card: #f6efc9;
   }
 
   html { scroll-behavior: smooth; }
@@ -310,6 +311,9 @@
     stroke-width: 1;
   }
 
+  /* La grilla de Cápsula es más gruesa que el resto, porque convive sobre fotos y necesita más contraste */
+  #capsulaGrid .grid-line { stroke-width: 1.5; }
+
   .grid-svg .grid-dot {
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -322,7 +326,7 @@
   /* ── SECCIÓN 1: HERO ── */
   #hero {
     position: relative;
-    min-height: 122vh;
+    min-height: 100vh;
     background: var(--rojo);
     display: flex;
     flex-direction: column;
@@ -336,7 +340,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding-top: 90px;
+    padding-top: 105px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -354,7 +358,7 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: rgba(253,240,237,0.6);
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.5rem;
   }
 
   .hero-title {
@@ -362,7 +366,7 @@
     font-weight: 300;
     line-height: 1.02;
     color: var(--crema);
-    margin-bottom: 1.8rem;
+    margin-bottom: 0.8rem;
     letter-spacing: -0.01em;
   }
 
@@ -413,6 +417,8 @@
     position: relative;
     width: 100%;
     align-self: stretch;
+    transform: scale(1.4) translateY(-80px);
+    transform-origin: center top;
   }
 
   .hero-img-stack img {
@@ -1077,10 +1083,12 @@
   }
 
   .curso-precio {
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 1.9rem;
+    font-weight: 800;
     color: var(--crema);
-    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-bottom: 1.4rem;
   }
 
   .curso-tag {
@@ -1098,7 +1106,6 @@
   #capsula {
     position: relative;
     background: var(--blanco);
-    min-height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -1106,8 +1113,8 @@
 
   .capsula-header {
     position: relative;
-    z-index: 2;
-    padding: 8rem 8vw 4rem;
+    z-index: 4;
+    padding: 4rem 8vw 4rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1122,44 +1129,55 @@
   .capsula-header .section-label { color: rgba(0,0,0,0.45); }
   .capsula-header .section-body { color: rgba(0,0,0,0.65); }
 
-  /* Mosaico tipo grilla — alterna fotos de muebles con bloques de frases */
+  /* La grilla de Cápsula va por encima del mosaico para que sea visible (el resto de
+     secciones la deja detrás del contenido, pero acá el mosaico ocupa casi toda el área) */
+  #capsulaGrid { z-index: 3; }
+
+  /* Mosaico tipo grilla — 8 columnas x 6 filas, medido pixel a pixel de la referencia.
+     Cada imagen/leyenda ocupa exactamente 2 columnas x 2 filas. */
+  .capsula-mosaic-wrap {
+    padding: 0 8vw 4rem;
+    flex: 0 0 auto;
+  }
+
   .capsula-mosaic {
     position: relative;
-    z-index: 2;
+    z-index: 4;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    padding: 0 8vw 8rem;
-    flex: 1;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    aspect-ratio: 1 / 1;
+    width: 100%;
   }
 
   .mosaic-cell {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 1 / 1;
+    min-width: 0;
+    min-height: 0;
   }
 
+  .cell-chair    { grid-column: 2 / 4; grid-row: 1 / 3; }
+  .cell-stool    { grid-column: 6 / 8; grid-row: 1 / 3; }
+  .cell-diseno   { grid-column: 2 / 4; grid-row: 3 / 5; }
+  .cell-cabinet  { grid-column: 4 / 6; grid-row: 3 / 5; }
+  .cell-banco    { grid-column: 6 / 8; grid-row: 3 / 5; }
+  .cell-mesa     { grid-column: 2 / 4; grid-row: 5 / 7; }
+  .cell-recuperar{ grid-column: 6 / 8; grid-row: 5 / 7; }
+
   .mosaic-cell.img-cell {
-    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), z-index 0s;
     z-index: 1;
+    background: var(--crema);
+    transition: background 0.35s, transform 0.35s cubic-bezier(0.4,0,0.2,1), z-index 0s;
   }
 
   .mosaic-cell.img-cell:hover {
-    transform: scale(1.06);
     z-index: 5;
+    background: var(--azul);
   }
 
   .mosaic-cell.img-cell .hover-tint {
-    position: absolute;
-    inset: 0;
-    background: var(--azul);
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .mosaic-cell.img-cell:hover .hover-tint {
-    opacity: 1;
+    display: none;
   }
 
   .mosaic-cell.img-cell img {
@@ -1168,16 +1186,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     display: block;
-    transition: z-index 0s, transform 0.35s cubic-bezier(0.4,0,0.2,1), width 0.35s cubic-bezier(0.4,0,0.2,1), height 0.35s cubic-bezier(0.4,0,0.2,1), margin 0.35s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
   }
 
   .mosaic-cell.img-cell:hover img {
-    z-index: 3;
-    width: 108%;
-    height: 108%;
-    object-fit: cover;
-    margin: -4%;
+    transform: scale(0.88);
   }
 
   /* esquinas con rombos en cada celda, igual estética que el resto del sitio */
@@ -1245,7 +1260,7 @@
   }
 
   .mosaic-cell.text-cell.alt {
-    background: var(--blanco);
+    background: var(--crema);
   }
 
   .mosaic-cell.text-cell p {
@@ -1282,10 +1297,8 @@
 
   .elegirnos-header {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: end;
-    margin-bottom: 5rem;
+    grid-template-columns: 1fr;
+    margin-bottom: 3rem;
   }
 
   .ventajas-grid {
@@ -1492,8 +1505,21 @@
     }
 
     .capsula-mosaic {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      aspect-ratio: unset;
       padding: 0 5vw 5rem;
+    }
+    .capsula-mosaic .mosaic-cell {
+      grid-column: 1 / 2 !important;
+      grid-row: auto !important;
+    }
+    .capsula-mosaic .mosaic-cell.img-cell {
+      aspect-ratio: 4 / 3;
+    }
+    .capsula-mosaic .mosaic-cell.text-cell {
+      aspect-ratio: auto;
+      padding: 2rem 1.6rem;
     }
     .mosaic-cell.text-cell p {
       font-size: 0.95rem;
@@ -1718,24 +1744,24 @@
         <div class="curso-num">01</div>
         <img src="ChatGPT_Image_18_jun_2026__05_16_01_p_m_.png" alt="Restauración básica" class="curso-img">
         <div class="curso-name">Restauración Básica de Madera</div>
-        <div class="curso-desc">Técnicas esenciales de lijado, sellado y acabado para piezas con deterioro superficial.</div>
-        <div class="curso-precio">*$50.000</div>
+        <div class="curso-desc">Lijado, sellado y acabado para piezas con deterioro superficial.</div>
+        <div class="curso-precio">$50.000</div>
         <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
       <div class="curso-card reveal">
         <div class="curso-num">02</div>
         <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Tapizado contemporáneo" class="curso-img">
         <div class="curso-name">Tapizado Contemporáneo</div>
-        <div class="curso-desc">Selección de telas, espumas y técnicas de tapizado moderno aplicadas a estructuras históricas.</div>
-        <div class="curso-precio">*$65.000</div>
+        <div class="curso-desc">Telas, espumas y técnicas de tapizado moderno para estructuras históricas.</div>
+        <div class="curso-precio">$65.000</div>
         <a href="curso-tapizado.html" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
       <div class="curso-card reveal">
         <div class="curso-num">03</div>
         <img src="ChatGPT_Image_18_jun_2026__05_22_52_p_m_.png" alt="Diseño y rediseño de piezas" class="curso-img">
         <div class="curso-name">Diseño de Piezas Únicas</div>
-        <div class="curso-desc">Del diagnóstico al objeto final: metodología Raíz aplicada al rediseño de muebles irrecuperables.</div>
-        <div class="curso-precio">*$40.000</div>
+        <div class="curso-desc">Metodología Raíz para rediseñar muebles irrecuperables.</div>
+        <div class="curso-precio">$40.000</div>
         <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
       </div>
     </div>
@@ -1744,12 +1770,12 @@
 
 <!-- 5. MUEBLES CÁPSULA -->
 <section id="capsula">
-  <svg class="grid-svg" id="capsulaGrid" data-color="rgba(240,112,48,0.55)" data-step="120"></svg>
+  <svg class="grid-svg" id="capsulaGrid" data-color="rgba(240,112,48,0.8)" data-step="120"></svg>
 
   <div class="capsula-header">
     <div>
       <p class="section-label reveal" style="color:rgba(0,0,0,0.45)">Muebles Cápsula</p>
-      <h2 class="section-title reveal">Forma, patrón<br>y materia.</h2>
+      <h2 class="section-title reveal">Forma, patrón y materia.</h2>
     </div>
     <div>
       <p class="section-body reveal">Un espacio donde experimentamos y jugamos. Rayas, cuadrillé y maderas combinadas en piezas únicas que no siguen reglas — solo intuición y oficio.</p>
@@ -1757,67 +1783,53 @@
     </div>
   </div>
 
+  <div class="capsula-mosaic-wrap">
   <div class="capsula-mosaic" id="capsulaMosaic">
-    <div class="mosaic-cell img-cell reveal">
+    <div class="mosaic-cell img-cell cell-chair reveal">
       <img src="ChatGPT_Image_18_jun_2026__05_23_39_p_m_.png" alt="Silla rayas blanco negro">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Dúo — Rayas B&N</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell text-cell reveal">
-      <p>Diseño para una<br>segunda vida.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
-    </div>
-    <div class="mosaic-cell text-cell alt reveal">
-      <p class="small">Nogal bicolor, ensamblado a partir de retazos recuperados.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
-    </div>
-    <div class="mosaic-cell img-cell reveal">
+
+    <div class="mosaic-cell img-cell cell-stool reveal">
       <img src="ChatGPT_Image_18_jun_2026__05_25_46_p_m_.png" alt="Banqueta madera rayada">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Trazo — Nogal bicolor</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
 
-    <div class="mosaic-cell text-cell alt reveal">
-      <p class="small">Caoba y crema combinadas en un mismo cuerpo, sin reglas fijas.</p>
+    <div class="mosaic-cell text-cell cell-diseno reveal">
+      <p>Diseño para una<br>segunda vida.</p>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell img-cell reveal">
+
+    <div class="mosaic-cell img-cell cell-cabinet reveal">
       <img src="ChatGPT_Image_18_jun_2026__05_27_21_p_m_.png" alt="Vitrina rayas verticales">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Vértigo — Caoba y crema</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell text-cell reveal">
-      <p>Recuperar<br>es crear.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
-    </div>
-    <div class="mosaic-cell img-cell reveal">
+
+    <div class="mosaic-cell img-cell cell-banco reveal">
       <img src="ChatGPT_Image_18_jun_2026__05_31_41_p_m_.png" alt="Mesa auxiliar rayas">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Franja — Pino y nogal</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
 
-    <div class="mosaic-cell img-cell reveal">
+    <div class="mosaic-cell img-cell cell-mesa reveal">
       <img src="ChatGPT_Image_18_jun_2026__05_36_38_p_m_.png" alt="Mesa cuadrillé mármol">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Cuadrillé — Mármol</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell text-cell alt reveal">
-      <p class="small">Mármol reciclado, cortado y ensamblado en patrón cuadrillé.</p>
+
+    <div class="mosaic-cell text-cell alt cell-recuperar reveal">
+      <p>Recuperar<br>es crear.</p>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell text-cell reveal">
-      <p>Piezas<br>irrepetibles.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
-    </div>
-    <div class="mosaic-cell text-cell alt reveal">
-      <p class="small">Cada pieza cápsula nace de retazos que ya no tenían destino.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
-    </div>
+  </div>
   </div>
 </section>
 
@@ -1829,9 +1841,8 @@
     <div class="elegirnos-header">
       <div>
         <p class="section-label reveal" style="color:rgba(253,240,237,0.5)">Por qué elegirnos</p>
-        <h2 class="section-title reveal" style="color:var(--crema)">Lo que nos<br>hace distintos.</h2>
+        <h2 class="section-title reveal" style="color:var(--crema)">Lo que nos hace distintos.</h2>
       </div>
-      <p class="section-body reveal" style="color:rgba(253,240,237,0.65)">Trabajamos con el rigor del diseño contemporáneo y el respeto por la historia de cada objeto que pasa por nuestras manos.</p>
     </div>
 
     <div class="ventajas-grid">
@@ -1911,17 +1922,27 @@
     const py = e.clientY - rect.top;
     const half = SPOT_SIZE / 2;
 
+    // rect viene ya afectado por el transform scale(1.4) del stack, pero el
+    // clip-path (igual que el % de left/top) se aplica sobre el tamaño de layout
+    // SIN transformar. Hay que pasar todo a esa misma base para que el cuadrado
+    // revelado coincida exactamente con el marco visual (si no, queda más chico
+    // y se ve parte del cuadrado sin máscara).
+    const xFrac = px / rect.width;
+    const yFrac = py / rect.height;
+    const layoutW = heroStack.offsetWidth;
+    const layoutH = heroStack.offsetHeight;
+    const lx = xFrac * layoutW;
+    const ly = yFrac * layoutH;
+
     // Posición del marco visual (en %, relativo al stack)
-    const xPct = (px / rect.width) * 100;
-    const yPct = (py / rect.height) * 100;
-    heroStack.style.setProperty('--hx', xPct + '%');
-    heroStack.style.setProperty('--hy', yPct + '%');
+    heroStack.style.setProperty('--hx', (xFrac * 100) + '%');
+    heroStack.style.setProperty('--hy', (yFrac * 100) + '%');
 
     // Clip-path del cuadrado revelado, en porcentajes exactos sobre el stack
-    const top = Math.max(0, ((py - half) / rect.height) * 100);
-    const bottom = Math.max(0, ((rect.height - (py + half)) / rect.height) * 100);
-    const left = Math.max(0, ((px - half) / rect.width) * 100);
-    const right = Math.max(0, ((rect.width - (px + half)) / rect.width) * 100);
+    const top = Math.max(0, ((ly - half) / layoutH) * 100);
+    const bottom = Math.max(0, ((layoutH - (ly + half)) / layoutH) * 100);
+    const left = Math.max(0, ((lx - half) / layoutW) * 100);
+    const right = Math.max(0, ((layoutW - (lx + half)) / layoutW) * 100);
 
     heroStack.style.setProperty('--ry', top + '%');
     heroStack.style.setProperty('--ry-b', bottom + '%');
@@ -2102,19 +2123,49 @@
 
         const padLeft = mosaic.offsetLeft;
         const padRight = w - (mosaic.offsetLeft + mosaic.offsetWidth);
-        const gridLeft = padLeft;
-        const gridRight = w - padRight;
-        const gridW = gridRight - gridLeft;
+        const innerLeft = padLeft;
+        const innerRight = w - padRight;
+        const gridW = innerRight - innerLeft;
 
-        const totalCells = mosaic.querySelectorAll('.mosaic-cell').length || 12;
-        const cols = 4;
-        const rows = Math.ceil(totalCells / cols);
+        // el mosaico real es de 8 columnas x 8 filas (ver .capsula-mosaic en el CSS)
+        const cols = 8;
+        const rows = 8;
         const colWidth = gridW / cols;
         const rowHeight = colWidth; // celdas del mosaico: cuadradas (alto = ancho de columna)
 
-        const gridTop = header.offsetTop;
         const headerBottom = header.offsetTop + header.offsetHeight;
-        const gridBottom = mosaic.offsetTop + rows * rowHeight;
+        const mosaicTop = mosaic.offsetTop;
+        const mosaicBottom = mosaicTop + rows * rowHeight;
+
+        // Bordes reales de la sección: la grilla ahora cubre TODO el ancho y alto
+        // de la sección (costados y zona sobre el header incluidos), no solo el
+        // área del mosaico. Se usa el mismo tamaño de celda para que quede alineada.
+        const gridLeft = 0;
+        const gridRight = w;
+        const gridTop = 0;
+        const gridBottom = Math.max(mosaicBottom, h);
+
+        // Columnas: misma serie aritmética de las columnas del mosaico (innerLeft + k*colWidth),
+        // extendida hacia ambos costados hasta cubrir 0..w.
+        const colXs = [];
+        {
+          const kStart = Math.ceil((gridLeft - innerLeft) / colWidth);
+          const kEnd = Math.floor((gridRight - innerLeft) / colWidth);
+          for (let k = kStart; k <= kEnd; k++) colXs.push(innerLeft + k * colWidth);
+          if (colXs[0] > 0.5) colXs.unshift(gridLeft);
+          if (gridRight - colXs[colXs.length - 1] > 0.5) colXs.push(gridRight);
+        }
+
+        // Filas: misma serie aritmética de las filas del mosaico (mosaicTop + k*rowHeight),
+        // extendida hacia arriba y abajo hasta cubrir 0..gridBottom.
+        const rowYs = [];
+        {
+          const kStart = Math.ceil((gridTop - mosaicTop) / rowHeight);
+          const kEnd = Math.floor((gridBottom - mosaicTop) / rowHeight);
+          for (let k = kStart; k <= kEnd; k++) rowYs.push(mosaicTop + k * rowHeight);
+          if (rowYs[0] > 0.5) rowYs.unshift(gridTop);
+          if (gridBottom - rowYs[rowYs.length - 1] > 0.5) rowYs.push(gridBottom);
+        }
 
         // borde exterior completo (arriba, abajo, izquierda, derecha)
         content += `<line class="grid-line" x1="${gridLeft}" y1="${gridTop}" x2="${gridRight}" y2="${gridTop}" stroke="${color}" />`;
@@ -2122,29 +2173,30 @@
         content += `<line class="grid-line" x1="${gridLeft}" y1="${gridTop}" x2="${gridLeft}" y2="${gridBottom}" stroke="${color}" />`;
         content += `<line class="grid-line" x1="${gridRight}" y1="${gridTop}" x2="${gridRight}" y2="${gridBottom}" stroke="${color}" />`;
 
-        // línea que separa el header del mosaico (alto real del header)
+        // línea que separa el header del resto (alto real del header)
         content += `<line class="grid-line" x1="${gridLeft}" y1="${headerBottom}" x2="${gridRight}" y2="${headerBottom}" stroke="${color}" />`;
 
-        // divisores verticales internos (atraviesan header + mosaico)
-        for (let c = 1; c < cols; c++) {
-          const x = gridLeft + c * colWidth;
-          content += `<line class="grid-line" x1="${x}" y1="${gridTop}" x2="${x}" y2="${gridBottom}" stroke="${color}" />`;
-        }
-        // divisores horizontales internos del mosaico (filas cuadradas)
-        for (let r = 1; r < rows; r++) {
-          const y = mosaic.offsetTop + r * rowHeight;
-          content += `<line class="grid-line" x1="${gridLeft}" y1="${y}" x2="${gridRight}" y2="${y}" stroke="${color}" />`;
-        }
+        // divisores verticales internos, ahora de punta a punta de la sección
+        colXs.forEach(x => {
+          if (x > 0.5 && x < gridRight - 0.5) {
+            content += `<line class="grid-line" x1="${x}" y1="${gridTop}" x2="${x}" y2="${gridBottom}" stroke="${color}" />`;
+          }
+        });
+        // divisores horizontales internos, ahora de punta a punta de la sección
+        rowYs.forEach(y => {
+          if (y > 0.5 && y < gridBottom - 0.5 && Math.abs(y - headerBottom) > 1) {
+            content += `<line class="grid-line" x1="${gridLeft}" y1="${y}" x2="${gridRight}" y2="${y}" stroke="${color}" />`;
+          }
+        });
 
-        // nodos en las intersecciones del mosaico (incluida la línea del header)
-        const dotYs = [headerBottom];
-        for (let r = 1; r <= rows; r++) dotYs.push(mosaic.offsetTop + r * rowHeight);
-        for (let c = 0; c <= cols; c++) {
-          const x = gridLeft + c * colWidth;
+        // nodos en todas las intersecciones (incluida la línea del header)
+        const dotYs = rowYs.slice();
+        if (!dotYs.some(y => Math.abs(y - headerBottom) < 1)) dotYs.push(headerBottom);
+        colXs.forEach(x => {
           dotYs.forEach(y => {
             content += `<circle class="grid-dot" cx="${x}" cy="${y}" r="2.5" fill="${color}" />`;
           });
-        }
+        });
       } else {
         const cols = Math.ceil(w / STEP);
         const rows = Math.ceil(h / STEP);
@@ -2179,13 +2231,18 @@
     build();
     window.addEventListener('resize', () => { if (!drawn) build(); });
 
+    // En Cápsula la animación arranca antes y corre más rápido que en el resto de las secciones
+    const lineDuration = isCapsula ? 0.3 : 0.6;
+    const lineStagger = isCapsula ? 0.03 : 0.1;
+    const dotsDelay = isCapsula ? 150 : 400;
+
     function animate() {
       if (drawn) return;
       drawn = true;
       build(); // reconstruir con las dimensiones reales y finales de la sección
       const lines = svg.querySelectorAll('.grid-line');
       lines.forEach((line, i) => {
-        line.style.transition = `stroke-dashoffset 0.6s ease ${i * 0.1}s`;
+        line.style.transition = `stroke-dashoffset ${lineDuration}s ease ${i * lineStagger}s`;
         requestAnimationFrame(() => { line.style.strokeDashoffset = '0'; });
       });
       setTimeout(() => {
@@ -2193,7 +2250,7 @@
         // si es la grilla de Muebles Cápsula, también activa los rombos de cada celda del mosaico
         const mosaic = document.getElementById('capsulaMosaic');
         if (isCapsula && mosaic) mosaic.classList.add('dots-on');
-      }, lines.length * 100 + 400);
+      }, lines.length * (lineStagger * 1000) + dotsDelay);
     }
 
     const obs = new IntersectionObserver((entries) => {
@@ -2203,7 +2260,7 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.35 });
+    }, { threshold: isCapsula ? 0.02 : 0.35 });
     obs.observe(section);
   }
 

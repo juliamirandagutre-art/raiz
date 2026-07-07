@@ -486,21 +486,7 @@
     align-items: center;
     justify-content: center;
     padding: 4.5rem 8vw 4.5rem 5vw;
-    background: var(--azul);
     overflow: hidden;
-  }
-
-  .sobre-img-col::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      45deg,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.03) 1px,
-      transparent 1px,
-      transparent 60px
-    );
   }
 
   /* precio destacado */
@@ -510,6 +496,7 @@
     padding: 1.4rem 2rem;
     margin-bottom: 0.9rem;
     position: relative;
+    text-align: center;
   }
   .precio-card .precio-label {
     font-size: 0.68rem;
@@ -586,8 +573,8 @@
     width: 100%;
     max-width: 400px;
     aspect-ratio: 3/4;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(253,240,237,0.18);
+    background: rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.12);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -736,8 +723,10 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--crema);
-    border: 1px solid rgba(253,240,237,0.35);
-    padding: 0.25rem 0.7rem;
+    padding: 0;
+  }
+  .material-tag::before {
+    content: '* ';
   }
 
   /* ────────────────────────────────────────────
@@ -825,7 +814,7 @@
     font-size: 0.82rem;
     font-weight: 300;
     color: rgba(253,240,237,0.6);
-    line-height: 1.7;
+    line-height: 1.35;
   }
 
   /* ────────────────────────────────────────────
@@ -844,10 +833,9 @@
     position: relative;
     z-index: 2;
     padding: 8rem 8vw 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .diferencial-header .section-label { color: rgba(0,0,0,0.4); }
@@ -1199,7 +1187,7 @@
 
 <!-- ── S2 DE QUÉ SE TRATA ── -->
 <section id="sobre-curso">
-  <svg class="grid-svg" id="sobreGrid" data-color="rgba(49,39,131,0.12)" data-step="120"></svg>
+  <svg class="grid-svg" id="sobreGrid" data-color="rgba(49,39,131,0.12)" data-step="100"></svg>
 
   <div class="sobre-inner">
     <div class="sobre-text-col">
@@ -1252,7 +1240,7 @@
     <div class="sobre-img-col reveal-right">
       <div class="sobre-img-placeholder">
         <!-- REEMPLAZAR src por la imagen real del curso cuando esté disponible -->
-        <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Curso tapizado" style="opacity:0.6">
+        <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Curso tapizado">
         <div class="img-upload-msg" style="display:none">
           <span class="icon">🖼</span>
           Imagen del curso — próximamente
@@ -1265,7 +1253,7 @@
 
 <!-- ── S3 MATERIALES Y TELAS ── -->
 <section id="materiales">
-  <svg class="grid-svg" id="materialesGrid" data-color="rgba(253,240,237,0.08)" data-step="120"></svg>
+
 
   <div class="materiales-inner">
     <div class="materiales-header">
@@ -1279,42 +1267,42 @@
         <div class="material-num">01</div>
         <div class="material-swatch lino"></div>
         <div class="material-name">Lino Natural</div>
-        <div class="material-desc">Tejido vegetal de alta resistencia, ideal para tapizados estructurales. Textura rugosa con caída natural.</div>
+        <div class="material-desc">Tejido resistente, ideal para tapizados estructurales.</div>
         <span class="material-tag">Tela base</span>
       </div>
       <div class="material-card reveal">
         <div class="material-num">02</div>
         <div class="material-swatch terciopelo"></div>
         <div class="material-name">Terciopelo Estructurado</div>
-        <div class="material-desc">Pelo corto y regular que aporta profundidad visual. Disponible en 12 colores de la paleta contemporánea.</div>
+        <div class="material-desc">Pelo corto con profundidad visual. 12 colores disponibles.</div>
         <span class="material-tag">Tela premium</span>
       </div>
       <div class="material-card reveal">
         <div class="material-num">03</div>
         <div class="material-swatch cuero"></div>
         <div class="material-name">Cuero Reconstituido</div>
-        <div class="material-desc">Alternativa sustentable al cuero natural. Misma estética y durabilidad, proceso de producción responsable.</div>
+        <div class="material-desc">Alternativa sustentable, misma estética y durabilidad.</div>
         <span class="material-tag">Eco-friendly</span>
       </div>
       <div class="material-card reveal">
         <div class="material-num">04</div>
         <div class="material-swatch bouclé"></div>
         <div class="material-name">Bouclé de lana</div>
-        <div class="material-desc">Tejido de bucle que añade volumen y carácter a la pieza. Muy utilizado en diseño escandinavo contemporáneo.</div>
+        <div class="material-desc">Textura con volumen, clave en diseño escandinavo.</div>
         <span class="material-tag">Textura</span>
       </div>
       <div class="material-card reveal">
         <div class="material-num">05</div>
         <div class="material-swatch espuma"></div>
         <div class="material-name">Espumas de Alta Densidad</div>
-        <div class="material-desc">Tres densidades distintas para trabajar según el destino: tapas, respaldos y apoyabrazos requieren especificaciones diferentes.</div>
+        <div class="material-desc">Tres densidades según la parte de la pieza a tapizar.</div>
         <span class="material-tag">Insumo técnico</span>
       </div>
       <div class="material-card reveal">
         <div class="material-num">06</div>
         <div class="material-swatch hilo-resistente"></div>
         <div class="material-name">Hilos y Rematados</div>
-        <div class="material-desc">Selección de hilos encerados, trencillas y rematados decorativos para terminar cada pieza con criterio profesional.</div>
+        <div class="material-desc">Hilos y trencillas para una terminación profesional.</div>
         <span class="material-tag">Terminaciones</span>
       </div>
     </div>
@@ -1323,13 +1311,12 @@
 
 <!-- ── S4 EQUIPO ── -->
 <section id="equipo">
-  <svg class="grid-svg" id="equipoGrid" data-color="rgba(253,240,237,0.06)" data-step="120"></svg>
 
   <div class="equipo-inner">
     <div class="equipo-header">
       <div>
         <p class="section-label reveal">El equipo profesional</p>
-        <h2 class="section-title reveal" style="color:var(--crema)">Las manos<br>que enseñan.</h2>
+        <h2 class="section-title reveal" style="color:var(--crema)">Las manos que enseñan.</h2>
         <p class="section-body reveal" style="color:rgba(253,240,237,0.65); max-width:380px">Nuestros docentes son profesionales activos con trayectoria real en restauración y diseño de interiores. No solo saben hacerlo — saben enseñarlo.</p>
       </div>
     </div>
@@ -1339,19 +1326,19 @@
         <div class="equipo-avatar">🧵</div>
         <div class="equipo-nombre">Valentina Roca</div>
         <span class="equipo-rol">Docente principal · Tapizado</span>
-        <p class="equipo-bio">Licenciada en Diseño de Interiores con especialización en textiles históricos. Más de 12 años tapizando piezas del siglo XX para clientes particulares y hoteles boutique.</p>
+        <p class="equipo-bio">Especializada en textiles históricos, con más de 12 años tapizando piezas del siglo XX.</p>
       </div>
       <div class="equipo-card reveal">
         <div class="equipo-avatar">🔨</div>
         <div class="equipo-nombre">Matías Herrero</div>
         <span class="equipo-rol">Asistente · Estructura y soporte</span>
-        <p class="equipo-bio">Maestro artesano egresado de la Escuela de Artes y Oficios. Responsable de que cada estructura sobre la que tapizamos esté técnicamente impecable.</p>
+        <p class="equipo-bio">Maestro artesano, responsable de que cada estructura quede técnicamente impecable.</p>
       </div>
       <div class="equipo-card reveal">
         <div class="equipo-avatar">🎨</div>
         <div class="equipo-nombre">Lucía Paz</div>
         <span class="equipo-rol">Asesora · Paleta y composición</span>
-        <p class="equipo-bio">Diseñadora de indumentaria reconvertida al mundo del mobiliario. Su ojo para la combinación de texturas y colores es un activo único del curso.</p>
+        <p class="equipo-bio">Diseñadora de indumentaria con un ojo único para combinar texturas y colores.</p>
       </div>
     </div>
   </div>
@@ -1362,14 +1349,10 @@
   <svg class="grid-svg" id="diferencialGrid" data-color="rgba(240,112,48,0.5)" data-step="120"></svg>
 
   <div class="diferencial-header">
-    <div>
       <p class="section-label reveal">Qué lo hace único</p>
-      <h2 class="section-title reveal">Un curso<br>irrepetible.</h2>
-    </div>
-    <div>
+      <h2 class="section-title reveal">Un curso irrepetible.</h2>
       <p class="section-body reveal">No enseñamos recetas. Enseñamos criterio. Cada clase trabaja sobre piezas reales del taller, con problemáticas distintas, para que el aprendizaje sea genuino y transferible.</p>
       <a href="#faq" class="btn btn-crema reveal"><span>Quiero inscribirme</span></a>
-    </div>
   </div>
 
   <div class="diferencial-mosaic" id="diferencialMosaic">
