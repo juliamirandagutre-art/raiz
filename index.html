@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Raíz — Diseño para una segunda vida</title>
+<link rel="icon" type="image/svg+xml" href="icono-silla.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -262,10 +263,15 @@
 
   /* Sección 4 Cursos — hover blanco */
   .btn-cursos {
+    background: var(--crema);
+    color: var(--rojo);
+    border-color: var(--crema);
+  }
+  .btn-cursos:hover {
+    background: transparent;
     color: var(--crema);
     border-color: var(--crema);
   }
-  .btn-cursos:hover { color: var(--rojo); background: var(--blanco); border-color: var(--blanco); }
 
   /* Sección 5 Cápsula (fondo blanco) — hover naranja */
   .btn-capsula {
@@ -1134,7 +1140,7 @@
     padding: 2.5rem 2rem;
     position: relative;
     overflow: hidden;
-    transition: background 0.35s, transform 0.35s cubic-bezier(0.4,0,0.2,1), z-index 0s;
+    transition: background 0.2s, transform 0.2s cubic-bezier(0.4,0,0.2,1), z-index 0s;
     z-index: 1;
   }
 
@@ -1170,7 +1176,7 @@
 
   .curso-img-stack .curso-img {
     margin-bottom: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.08s ease;
   }
 
   .curso-img-stack .curso-img-hover {
@@ -1184,28 +1190,28 @@
   .curso-img-stack:hover .curso-img-hover { opacity: 1; }
 
   .curso-name {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--crema);
     margin-bottom: 0.5rem;
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   .curso-desc {
     font-size: 0.82rem;
     font-weight: 300;
     color: rgba(253,240,237,0.65);
-    line-height: 1.3;
-    margin-bottom: 0.6rem;
+    line-height: 1.35;
+    margin-bottom: 0.8rem;
   }
 
   .curso-precio {
-    font-size: 1.9rem;
+    font-size: 1.95rem;
     font-weight: 800;
     color: var(--crema);
     letter-spacing: -0.01em;
     line-height: 1;
-    margin-bottom: 1.4rem;
+    margin-bottom: 1.5rem;
   }
 
   .curso-tag {
@@ -1371,7 +1377,7 @@
     object-fit: cover;
     object-position: center;
     display: block;
-    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.18s cubic-bezier(0.4,0,0.2,1);
   }
 
   .mosaic-cell.img-cell:hover img {
@@ -2092,7 +2098,6 @@
       <p class="section-label reveal" style="color:rgba(253,240,237,0.5)">Formación</p>
       <h2 class="section-title reveal">Cursos disponibles</h2>
       <p class="section-body reveal" style="color:rgba(253,240,237,0.7); max-width:480px; margin-left:auto; margin-right:auto;">Transmitimos el oficio de la restauración. Aprendé a diagnosticar, intervenir y rediseñar piezas con historia propia.</p>
-      <a href="#" class="btn btn-cursos reveal"><span>Ver todos</span></a>
     </div>
 
     <div class="cursos-carousel-wrap">
@@ -2108,7 +2113,7 @@
           <div class="curso-name">Restauración Básica de Madera</div>
           <div class="curso-desc">Lijado, sellado y acabado para piezas con deterioro superficial.</div>
           <div class="curso-precio">$50.000</div>
-          <a href="#" class="btn btn-cursos"><span>Ver más</span></a>
+          <a href="curso-tapizado.html" class="btn btn-cursos"><span>VER CURSO</span></a>
         </div>
         <div class="curso-card reveal">
           <div class="curso-num">02</div>
@@ -2119,7 +2124,7 @@
           <div class="curso-name">Tapizado Contemporáneo</div>
           <div class="curso-desc">Telas, espumas y técnicas de tapizado moderno para estructuras históricas.</div>
           <div class="curso-precio">$65.000</div>
-          <a href="curso-tapizado.html" class="btn btn-cursos"><span>Ver más</span></a>
+          <a href="curso-tapizado.html" class="btn btn-cursos"><span>VER CURSO</span></a>
         </div>
         <div class="curso-card reveal">
           <div class="curso-num">03</div>
@@ -2130,7 +2135,7 @@
           <div class="curso-name">Diseño de Piezas Únicas</div>
           <div class="curso-desc">Metodología Raíz para rediseñar muebles irrecuperables.</div>
           <div class="curso-precio">$40.000</div>
-          <a href="#" class="btn btn-cursos"><span>Ver más</span></a>
+          <a href="curso-tapizado.html" class="btn btn-cursos"><span>VER CURSO</span></a>
         </div>
       </div>
       <button type="button" class="cursos-arrow cursos-arrow-right" id="cursosArrowRight" aria-label="Siguiente curso">&#8594;</button>

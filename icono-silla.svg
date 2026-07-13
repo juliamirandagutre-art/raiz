@@ -1,0 +1,23 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo cuadrado crema -->
+  <rect x="0" y="0" width="200" height="200" fill="#fefae0"/>
+
+  <!-- Silla -->
+  <g stroke="#312783" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Respaldo -->
+    <path d="M65 45 L65 100"/>
+    <path d="M135 45 L135 100"/>
+    <path d="M65 45 L135 45"/>
+    <path d="M65 65 L135 65"/>
+    <path d="M65 85 L135 85"/>
+
+    <!-- Asiento -->
+    <path d="M55 100 L145 100 L138 125 L62 125 Z" fill="#312783" fill-opacity="0.08"/>
+
+    <!-- Patas -->
+    <path d="M62 125 L52 160"/>
+    <path d="M138 125 L148 160"/>
+    <path d="M75 125 L68 155"/>
+    <path d="M125 125 L132 155"/>
+  </g>
+</svg>
