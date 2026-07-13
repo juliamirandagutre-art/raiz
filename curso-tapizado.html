@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tapizado Contemporáneo — Raíz</title>
+<link rel="icon" type="image/svg+xml" href="icono-silla.svg">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,7 +41,8 @@
     position: absolute;
     width: 5px; height: 5px;
     background: var(--azul);
-    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
     transition: background 0.2s ease;
   }
   #customCursor::before { top: 0; left: 0; }
@@ -118,18 +120,25 @@
   .nav-links a:hover { color: var(--crema); }
 
   .nav-cta {
+    color: rgba(253,240,237,0.7) !important;
+    background: none;
+    text-decoration: none;
+  }
+  .nav-cta:hover { color: var(--crema) !important; }
+
+  .nav-biblioteca {
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--negro) !important;
     background: var(--crema);
-    border-radius: 999px;
+    border-radius: 0;
     padding: 0.55rem 1.2rem;
     text-decoration: none;
     transition: background 0.2s, color 0.2s !important;
   }
-  .nav-cta:hover { background: var(--rojo) !important; color: var(--blanco) !important; }
+  .nav-biblioteca:hover { background: var(--rojo) !important; color: var(--blanco) !important; }
 
   .hamburger {
     display: none;
@@ -167,6 +176,17 @@
   }
   .mobile-menu.open { display: flex; }
 
+  .mobile-biblioteca {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    text-align: left;
+    color: var(--negro) !important;
+    background: var(--crema);
+    border-radius: 0;
+    padding: 0.75rem 1rem;
+    margin-top: 0.3rem;
+  }
+
   /* ── BOTÓN GENÉRICO ── */
   .btn {
     display: inline-block;
@@ -183,12 +203,12 @@
     overflow: hidden;
     transition: color 0.3s, background 0.3s, border-color 0.3s;
   }
-  .btn span { position: relative; z-index: 1; }
+  .btn span { position: relative; z-index: 1; display: inline-block; margin-right: -0.1em; }
 
   .btn-hero { color: var(--crema); border-color: var(--crema); }
   .btn-hero:hover { color: var(--negro); background: var(--blanco); border-color: var(--blanco); }
 
-  .btn-crema { color: var(--negro); border-color: var(--negro); }
+  .btn-crema { color: var(--rojo); border-color: var(--rojo); }
   .btn-crema:hover { color: var(--blanco); background: var(--naranja); border-color: var(--naranja); }
 
   .btn-azul { color: var(--crema); border-color: var(--crema); }
@@ -244,7 +264,7 @@
   .section-title {
     font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     font-weight: 300;
-    line-height: 1.08;
+    line-height: 1;
     margin-bottom: 1.5rem;
   }
   .section-body {
@@ -278,6 +298,7 @@
     max-width: 440px;
     flex: 1 1 400px;
     padding-top: 130px;
+    margin-top: -60px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -310,31 +331,45 @@
   }
 
   .hero-title {
-    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
     font-weight: 300;
-    line-height: 1.05;
+    line-height: 1.02;
     color: var(--crema);
-    margin-bottom: 2rem;
-    letter-spacing: -0.02em;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.01em;
   }
 
-  .hero-title .highlight-box {
+  .highlight-box {
     position: relative;
     display: inline-block;
     color: var(--crema);
   }
-  .hero-title .highlight-box::before {
+  .highlight-box::before {
     content: '';
     position: absolute;
     inset: -4px -8px;
     background: var(--rojo);
     transform-origin: left center;
     transform: scaleX(0);
-    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1) 0.7s;
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1) 0.5s;
     z-index: 0;
   }
-  .hero-title .highlight-box.animate::before { transform: scaleX(1); }
-  .hero-title .highlight-box span { position: relative; z-index: 1; }
+  .highlight-box.animate::before,
+  .visible .highlight-box::before {
+    transform: scaleX(1);
+  }
+  .highlight-box span { position: relative; z-index: 1; }
+
+  /* Highlight del título del hero: mismo estilo que index.html (subrayado + azul) */
+  .hero-title .highlight-box {
+    text-decoration: underline;
+    text-decoration-color: var(--crema);
+    text-underline-offset: 3px;
+  }
+  .hero-title .highlight-box::before {
+    background: var(--rojo);
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1) 0.7s;
+  }
 
   .hero-meta {
     display: flex;
@@ -391,11 +426,15 @@
   /* Imagen base: silla nueva, siempre visible */
   .hero-img-stack .img-base { opacity: 1; }
 
-  /* Capas reveladas dentro de la ventanita, según si el cursor ya pasó por ahí */
-  .hero-img-stack .img-reveal-1,
-  .hero-img-stack .img-reveal-2 {
+  /* Imagen revelada: solo visible dentro del cuadrado que sigue al cursor, borde nítido */
+  .hero-img-stack .img-reveal {
     opacity: 0;
     clip-path: inset(var(--ry,50%) var(--rx-r,50%) var(--ry-b,50%) var(--rx,50%));
+    transition: opacity 0.25s ease;
+  }
+
+  .hero-img-wrap.active .img-reveal {
+    opacity: 1;
   }
 
   /* Marco del spotlight cuadrado, igual que el del home */
@@ -426,13 +465,16 @@
     width: 9px;
     height: 9px;
     background: var(--crema);
-    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .hero-spot-frame::before { top: 0; left: 0; }
   .hero-spot-frame::after { top: 0; left: 100%; }
   .hero-spot-frame .corner-l { top: 100%; left: 0; }
   .hero-spot-frame .corner-r { top: 100%; left: 100%; }
+
+
 
   .hero-tag {
     display: inline-block;
@@ -455,7 +497,8 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    overflow: hidden;
+    overflow: visible;
+    z-index: 3;
   }
 
   .sobre-inner {
@@ -475,8 +518,8 @@
     padding: 4.5rem 5vw 3.5rem 8vw;
   }
 
-  .sobre-text-col .section-label { color: rgba(0,0,0,0.45); margin-bottom: 0.8rem; }
-  .sobre-text-col .section-title { color: var(--negro); margin-bottom: 0.8rem; }
+  .sobre-text-col .section-label { color: var(--rojo); margin-bottom: 0.8rem; }
+  .sobre-text-col .section-title { color: var(--negro); margin-bottom: 0.8rem; white-space: nowrap; }
   .sobre-text-col .section-body { margin-bottom: 1.3rem; }
   .sobre-text-col .btn { align-self: flex-start; }
 
@@ -486,22 +529,35 @@
     align-items: center;
     justify-content: center;
     padding: 4.5rem 8vw 4.5rem 5vw;
-    overflow: hidden;
+    overflow: visible;
   }
 
   /* precio destacado */
+  /* precio destacado y pagos */
+  .precio-pagos-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 480px;
+  }
+
   .precio-card {
     background: var(--azul);
     color: var(--crema);
-    padding: 1.4rem 2rem;
-    margin-bottom: 0.9rem;
+    padding: 1.4rem 1.6rem;
     position: relative;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .precio-card .precio-label {
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: rgba(253,240,237,0.5);
     margin-bottom: 0.6rem;
@@ -509,17 +565,75 @@
   }
   .precio-card .precio-val {
     font-family: 'Poppins', sans-serif;
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
     font-weight: 700;
     color: var(--crema);
     line-height: 1;
   }
   .precio-card .precio-nota {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 300;
     color: rgba(253,240,237,0.55);
     margin-top: 0.5rem;
     display: block;
+  }
+
+  .pagos-card {
+    background: var(--blanco);
+    border: 1px solid rgba(0,0,0,0.08);
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pagos-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.45);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .pagos-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .pagos-lista li {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--negro);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pagos-lista li::before {
+    content: "✓";
+    color: var(--rojo);
+    font-weight: 700;
+  }
+
+  .pagos-logos {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding-top: 1rem;
+  }
+  .pay-logo {
+    display: block;
+    flex-shrink: 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+  }
+  .pay-logo:hover {
+    transform: translateY(-2px);
   }
 
   .info-grid {
@@ -566,49 +680,174 @@
     color: var(--negro);
   }
 
-  /* imagen en la columna derecha (placeholder) */
-  .sobre-img-placeholder {
+  /* Contenedor de herramientas (Showcase) */
+  .tools-showcase {
     position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 400px;
-    aspect-ratio: 3/4;
-    background: rgba(0,0,0,0.04);
-    border: 1px solid rgba(0,0,0,0.12);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-  .sobre-img-placeholder img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
-    opacity: 0.85;
+    min-height: 550px;
+    display: block;
   }
-  .img-label-overlay {
+
+  .tool-item {
     position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--crema);
+    display: flex;
+    flex-direction: column;
     z-index: 2;
   }
-  .img-upload-msg {
-    text-align: center;
-    color: rgba(253,240,237,0.35);
-    font-size: 0.78rem;
-    z-index: 2;
+
+  .tool-circle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    transform: translateY(-800px) scale(0.15);
+    transition: transform 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .tool-circle.dropped {
+    transform: translateY(0) scale(1);
+  }
+
+  .tool-image {
     position: relative;
-    padding: 2rem;
+    z-index: 2;
+    object-fit: contain;
+    pointer-events: none;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .img-upload-msg .icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; opacity: 0.4; }
+
+  .tool-prensa:hover .tool-image {
+    transform: rotate(15deg) scale(1.06) translateY(-5px);
+  }
+
+  .tool-brocha:hover .tool-image {
+    transform: rotate(-30deg) scale(1.06) translateY(-5px);
+  }
+
+  .tool-abrochadora:hover .tool-image {
+    transform: rotate(-2deg) scale(1.06) translateY(-5px);
+  }
+
+  .tool-label {
+    position: relative;
+    z-index: 3;
+    font-family: 'Archivo', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--negro);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .tool-label .asterisk {
+    color: var(--azul);
+    font-weight: 900;
+    font-size: 1.8rem;
+    opacity: 0.45;
+    line-height: 1;
+    margin-top: -3px;
+  }
+
+  /* Posicionamiento específico */
+  .tool-prensa {
+    left: -10%;
+    top: 20%;
+    width: 250px;
+    height: 480px;
+  }
+  .tool-prensa .tool-image {
+    width: 220px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    transform: rotate(15deg);
+  }
+  .tool-prensa .tool-circle {
+    width: 200px;
+    height: 200px;
+    background: var(--azul);
+    left: 0px;
+    top: 100px;
+    transition-delay: 0s;
+  }
+  .tool-prensa .tool-label {
+    position: absolute;
+    left: -40px;
+    bottom: 60px;
+  }
+
+  .tool-brocha {
+    right: 22%;
+    top: -2%;
+    width: 250px;
+    height: 290px;
+  }
+  .tool-brocha .tool-image {
+    width: 210px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    transform: rotate(-30deg);
+  }
+  .tool-brocha .tool-circle {
+    width: 200px;
+    height: 200px;
+    background: var(--azul);
+    left: 20px;
+    top: -10px;
+    transition-delay: 0.15s;
+  }
+
+  .tool-abrochadora {
+    right: 5%;
+    bottom: -80px;
+    width: 320px;
+    height: 260px;
+    z-index: 3;
+  }
+  .tool-abrochadora .tool-image {
+    width: 270px;
+    position: absolute;
+    right: 30px;
+    bottom: 40px;
+    transform: rotate(-2deg);
+  }
+  .tool-abrochadora .tool-circle {
+    width: 290px;
+    height: 290px;
+    background: var(--rojo);
+    right: -20px;
+    bottom: -25px;
+    transition-delay: 0.3s;
+  }
+
+  /* Etiquetas alineadas a la izquierda */
+  .brocha-label {
+    position: absolute;
+    left: 36%;
+    bottom: 180px;
+    z-index: 10;
+  }
+  .abrochadora-label {
+    position: absolute;
+    right: 120px;
+    left: auto;
+    bottom: -40px;
+    z-index: 10;
+  }
+
+  /* Hide inner labels on desktop */
+  .tool-brocha .tool-label,
+  .tool-abrochadora .tool-label {
+    display: none;
+  }
 
   /* ────────────────────────────────────────────
      S3 MATERIALES Y TELAS — fondo rojo
@@ -650,6 +889,16 @@
     border: 1px solid rgba(253,240,237,0.15);
   }
 
+  .materiales-carousel-wrap {
+    position: relative;
+  }
+  .materiales-arrow {
+    display: none;
+  }
+  .materiales-dots {
+    display: none;
+  }
+
   .material-card {
     background: var(--rojo);
     padding: 2.5rem 2rem;
@@ -674,30 +923,22 @@
   }
 
   .material-swatch {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 1.2rem;
+    width: 85%;
+    aspect-ratio: 1/1;
+    margin: 0 auto 1.4rem auto;
     border: 1px solid rgba(253,240,237,0.2);
     position: relative;
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
   }
 
-  .material-swatch.lino { background: #d4c5a9; }
-  .material-swatch.terciopelo { background: linear-gradient(135deg, #4a3f6b 0%, #7b6fa0 50%, #4a3f6b 100%); }
-  .material-swatch.cuero { background: radial-gradient(circle at 30% 30%, #8B6343, #5a3e28); }
-  .material-swatch.bouclé {
-    background: #e8ddd0;
-    background-image: repeating-radial-gradient(circle at 3px 3px, rgba(0,0,0,0.08) 0, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 100%);
-    background-size: 6px 6px;
-  }
-  .material-swatch.espuma { background: #f0ede8; border-color: rgba(253,240,237,0.1); }
-  .material-swatch.hilo-resistente {
-    background: repeating-linear-gradient(
-      0deg,
-      #c4a882 0px, #c4a882 2px,
-      #e8ddd0 2px, #e8ddd0 8px
-    );
-  }
+  .material-swatch.lino { background-image: url('lino.png'); }
+  .material-swatch.terciopelo { background-image: url('terciopelo.png'); }
+  .material-swatch.cuero { background-image: url('cuero.png'); }
+  .material-swatch.bouclé { background-image: url('lana.png'); }
+  .material-swatch.espuma { background-image: url('espuma.png'); }
+  .material-swatch.hilo-resistente { background-image: url('hilos.png'); }
 
   .material-name {
     font-family: 'Poppins', sans-serif;
@@ -770,17 +1011,9 @@
   .equipo-card:hover { background: rgba(0,0,0,0.2); }
 
   .equipo-avatar {
-    width: 72px;
-    height: 72px;
-    background: rgba(253,240,237,0.1);
-    border: 1px solid rgba(253,240,237,0.2);
-    border-radius: 50%;
+    width: 100%;
+    aspect-ratio: 1/1;
     margin-bottom: 1.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    color: rgba(253,240,237,0.3);
     overflow: hidden;
     position: relative;
   }
@@ -788,8 +1021,8 @@
     position: absolute;
     inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0;
+    object-fit: contain;
+    opacity: 1;
   }
 
   .equipo-nombre {
@@ -817,6 +1050,24 @@
     line-height: 1.35;
   }
 
+  .equipo-circle {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: var(--crema);
+    opacity: 1;
+    right: -60px;
+    bottom: -60px;
+    z-index: 1;
+    pointer-events: none;
+    transform: translateY(-900px) scale(0.2);
+    transition: transform 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .equipo-circle.dropped {
+    transform: translateY(0) scale(1);
+  }
+
   /* ────────────────────────────────────────────
      S5 QUÉ LO HACE ÚNICO — fondo crema
   ──────────────────────────────────────────── */
@@ -838,7 +1089,7 @@
     align-items: flex-start;
   }
 
-  .diferencial-header .section-label { color: rgba(0,0,0,0.4); }
+  .diferencial-header .section-label { color: var(--rojo); }
   .diferencial-header .section-title { color: var(--negro); }
   .diferencial-header .section-body { color: rgba(0,0,0,0.6); }
 
@@ -864,12 +1115,14 @@
     justify-content: center;
     padding: 1.8rem;
     background: var(--crema);
+    border: 1px solid rgba(240,112,48,0.5);
   }
 
   .mosaic-cell.text-cell.alt { background: var(--blanco); }
 
   .mosaic-cell.text-cell.accent {
     background: var(--azul);
+    border: none;
   }
 
   .mosaic-cell.text-cell.accent p {
@@ -908,13 +1161,35 @@
     background: var(--rojo);
   }
 
+  .mosaic-cell.num-cell .big-num-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .mosaic-cell.num-cell .big-icon {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .mosaic-cell.num-cell .big-icon svg {
+    width: 34px;
+    height: 34px;
+    fill: none;
+    stroke: var(--crema);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.85;
+  }
+
   .mosaic-cell.num-cell .big-num {
     font-family: 'Poppins', sans-serif;
     font-size: 3.5rem;
     font-weight: 900;
     color: var(--crema);
     line-height: 1;
-    margin-bottom: 0.4rem;
   }
 
   .mosaic-cell.num-cell .big-label {
@@ -924,6 +1199,28 @@
     text-transform: uppercase;
     color: rgba(253,240,237,0.65);
     text-align: center;
+  }
+
+  .mosaic-cell.img-cell {
+    background: var(--crema);
+    border: 1px solid rgba(240,112,48,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.8rem;
+  }
+  .mosaic-cell.img-cell.sillon-cell {
+    padding: 2.3rem;
+  }
+  .mosaic-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+  .mosaic-cell.img-cell:hover .mosaic-img {
+    transform: scale(1.08);
   }
 
   /* ────────────────────────────────────────────
@@ -942,27 +1239,41 @@
   }
 
   .faq-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: end;
-    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 4rem;
   }
 
   .faq-header .section-label { color: rgba(253,240,237,0.35); }
-  .faq-header .section-title { color: var(--crema); }
-  .faq-header .section-body { color: rgba(253,240,237,0.6); }
+  .faq-header .section-title { color: var(--crema); margin-bottom: 0.5rem; }
 
   .faq-list {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    border-top: 1px solid rgba(253,240,237,0.1);
+    gap: 1rem;
+    border-top: none;
   }
 
   .faq-item {
-    border-bottom: 1px solid rgba(253,240,237,0.1);
+    border: 1px solid rgba(253, 240, 237, 0.12);
+    border-radius: 16px;
+    background: rgba(253, 240, 237, 0.02);
     overflow: hidden;
+    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-item:hover {
+    border-color: rgba(253, 240, 237, 0.25);
+    background: rgba(253, 240, 237, 0.04);
+  }
+
+  .faq-item.open {
+    background: var(--naranja) !important;
+    border-color: var(--naranja) !important;
   }
 
   .faq-question {
@@ -970,88 +1281,261 @@
     background: none;
     border: none;
     text-align: left;
-    padding: 1.8rem 0;
+    padding: 1.6rem 2rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 2rem;
+    gap: 1.2rem;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.35s;
   }
 
-  .faq-question span.q-text {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--crema);
-    transition: color 0.2s;
-  }
-
-  .faq-question:hover .q-text { color: var(--naranja); }
-
-  .faq-icon {
-    width: 28px;
-    height: 28px;
-    border: 1px solid rgba(253,240,237,0.25);
+  .faq-number {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(253, 240, 237, 0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--crema);
     flex-shrink: 0;
-    transition: background 0.3s, border-color 0.3s, transform 0.4s;
-    color: rgba(253,240,237,0.5);
-    font-size: 1rem;
-    font-weight: 300;
+    transition: background 0.35s, border-color 0.35s, color 0.35s;
   }
 
-  .faq-item.open .faq-icon {
-    background: var(--naranja);
-    border-color: var(--naranja);
-    color: var(--blanco);
-    transform: rotate(45deg);
+  .faq-item.open .faq-number {
+    background: var(--crema);
+    border-color: var(--crema);
+    color: var(--naranja);
+  }
+
+  .faq-question span.q-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--crema);
+    transition: color 0.35s;
+  }
+
+  .faq-active-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--crema);
+    margin-left: auto;
+    opacity: 0;
+    transform: scale(0.7) rotate(-45deg);
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+  }
+
+  .faq-item.open .faq-active-icon {
+    opacity: 1;
+    transform: scale(1.1) rotate(0deg);
   }
 
   .faq-answer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease;
+    padding: 0 2rem 0 5.4rem;
   }
 
   .faq-item.open .faq-answer {
-    max-height: 300px;
-    padding-bottom: 1.5rem;
+    max-height: 320px;
+    padding-bottom: 1.8rem;
   }
 
   .faq-answer p {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 300;
-    line-height: 1.8;
-    color: rgba(253,240,237,0.58);
-    max-width: 620px;
+    line-height: 1.65;
+    color: rgba(253, 240, 237, 0.8);
+    max-width: 600px;
+    margin: 0;
   }
 
-  /* CTA final */
+  .faq-item.open .faq-answer p {
+    color: rgba(253, 240, 237, 0.92);
+  }
+
   .cta-strip {
     position: relative;
     z-index: 2;
     background: var(--azul);
     padding: 6rem 8vw;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  .cta-header-row {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .cta-text-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .cta-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.45;
+    color: rgba(253, 240, 237, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-action-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 
   .cta-strip .cta-title {
     font-family: 'Poppins', sans-serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     font-weight: 300;
     color: var(--crema);
-    line-height: 1.2;
+    line-height: 1.1;
+    margin: 0;
+    text-align: center;
   }
 
-  .cta-strip .cta-title strong {
+  /* Integrated Courses inside CTA */
+  .cta-courses-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    border-top: 1px solid rgba(253, 240, 237, 0.1);
+    padding-top: 4rem;
+  }
+
+  .cta-courses-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--crema);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .cta-courses-title img {
+    height: 0.95em;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .cta-courses-carousel-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cta-courses-arrow {
+    display: none;
+  }
+  .cta-courses-dots {
+    display: none;
+  }
+
+  .cta-courses-row .cursos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 0;
+  }
+
+  .curso-card {
+    background: var(--rojo);
+    padding: 2.2rem 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s, transform 0.2s cubic-bezier(0.4,0,0.2,1), z-index 0s;
+    z-index: 1;
+  }
+  .curso-card:hover {
+    background: var(--azul);
+    transform: scale(1.03);
+    z-index: 2;
+  }
+  .curso-num {
+    font-size: 0.7rem;
     font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgba(253,240,237,0.4);
+    margin-bottom: 1.5rem;
+  }
+  .curso-img-stack {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .curso-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.9);
+    transition: opacity 0.08s ease;
+  }
+  .curso-img-stack .curso-img-hover {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    object-fit: cover;
+  }
+  .curso-img-stack:hover .curso-img:not(.curso-img-hover) { opacity: 0; }
+  .curso-img-stack:hover .curso-img-hover { opacity: 1; }
+  .curso-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--crema);
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+  }
+  .curso-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(253,240,237,0.65);
+    line-height: 1.35;
+    margin-bottom: 0.8rem;
+  }
+  .curso-precio {
+    font-size: 1.95rem;
+    font-weight: 800;
+    color: var(--crema);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .btn-cursos {
+    background: var(--crema);
+    color: var(--rojo);
+    border-color: var(--crema);
+  }
+  .btn-cursos:hover {
+    background: transparent;
+    color: var(--crema);
+    border-color: var(--crema);
   }
 
   /* footer */
@@ -1093,18 +1577,304 @@
 
     .sobre-inner { grid-template-columns: 1fr; min-height: auto; }
     .sobre-text-col { padding: 5rem 5vw 3rem; }
-    .sobre-img-col { padding: 3rem 5vw 5rem; min-height: 55vw; }
-    .info-grid { grid-template-columns: 1fr 1fr; }
+     .sobre-text-col .section-title { white-space: normal; }
+     .precio-pagos-wrap {
+       grid-template-columns: 1fr !important;
+       gap: 1rem !important;
+       max-width: 100% !important;
+       margin-bottom: 1.5rem !important;
+     }
+     .sobre-img-col { padding: 4rem 5vw; min-height: auto; overflow: visible !important; }
+    
+    .tools-showcase {
+      transform: none !important;
+      margin: 2rem auto;
+      max-width: 480px;
+      height: auto !important;
+      min-height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 5.5rem !important;
+    }
+    
+    .brocha-label, .abrochadora-label {
+      display: none !important;
+    }
+    
+    .tool-item {
+      position: relative !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 280px !important;
+      height: auto !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: auto !important;
+    }
+
+    .tool-item .tool-circle {
+      position: absolute !important;
+      left: 50% !important;
+      top: 35% !important;
+      transform: translate(-50%, -1000px) scale(0.15) !important;
+      width: 200px !important;
+      height: 200px !important;
+      margin: 0 !important;
+      right: auto !important;
+      bottom: auto !important;
+    }
+    
+    .tool-item .tool-circle.dropped {
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+    
+    .tool-brocha .tool-circle { background: var(--azul) !important; }
+    .tool-prensa .tool-circle { background: var(--azul) !important; }
+    .tool-abrochadora .tool-circle { background: var(--rojo) !important; }
+
+    .tool-item .tool-image {
+      position: relative !important;
+      z-index: 2 !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: auto !important;
+      margin: 0 auto !important;
+    }
+
+    .tool-brocha .tool-image {
+      width: 180px !important;
+      transform: rotate(-30deg) !important;
+    }
+
+    .tool-prensa .tool-image {
+      width: 155px !important;
+      transform: rotate(15deg) !important;
+    }
+
+    .tool-abrochadora .tool-image {
+      width: 220px !important;
+      transform: rotate(-2deg) !important;
+    }
+
+    .tool-item .tool-label {
+      display: flex !important;
+      position: relative !important;
+      z-index: 3 !important;
+      margin-top: 2rem !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: auto !important;
+      justify-content: center !important;
+      text-align: center !important;
+      color: var(--negro) !important;
+    }
+
+    @media (max-width: 480px) {
+      .tools-showcase {
+        transform: none !important;
+        height: auto !important;
+      }
+      .sobre-img-col {
+        min-height: auto !important;
+      }
+    }
+    .info-grid { grid-template-columns: 1fr 1fr 1fr; }
 
     .diferencial-header, .faq-header { grid-template-columns: 1fr; gap: 2rem; }
     .materiales-inner, .equipo-inner, .faq-inner { padding: 5rem 5vw; }
+    .faq-question { padding: 1.3rem 1.5rem !important; gap: 1rem !important; }
+    .faq-number { width: 32px !important; height: 32px !important; font-size: 0.8rem !important; }
+    .faq-question span.q-text { font-size: 0.95rem !important; }
+    .faq-answer { padding: 0 1.5rem 0 4.5rem !important; }
+    .faq-item.open .faq-answer { padding-bottom: 1.4rem !important; max-height: 400px !important; }
+    .faq-answer p { font-size: 0.85rem !important; line-height: 1.5 !important; }
 
-    .materiales-grid, .equipo-grid { grid-template-columns: 1fr; }
+    .equipo-grid { grid-template-columns: 1fr; }
+
+    .materiales-carousel-wrap {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+    }
+
+    .materiales-grid {
+      display: flex !important;
+      grid-template-columns: none !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
+      -webkit-overflow-scrolling: touch !important;
+      border: none !important;
+      background: none !important;
+      gap: 0 !important;
+      flex: 1 !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .materiales-grid::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    .material-card {
+      flex: 0 0 100% !important;
+      width: 100% !important;
+      scroll-snap-align: center !important;
+      border: 1px solid rgba(253,240,237,0.2) !important;
+      margin-bottom: 0 !important;
+    }
+
+    .materiales-arrow {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 50% !important;
+      background: rgba(253,240,237,0.12) !important;
+      border: 1px solid rgba(253,240,237,0.4) !important;
+      color: var(--crema) !important;
+      font-size: 1.1rem !important;
+      cursor: pointer !important;
+      transition: background 0.25s, transform 0.2s !important;
+      -webkit-tap-highlight-color: transparent !important;
+      z-index: 10 !important;
+    }
+
+    .materiales-arrow:active {
+      transform: scale(0.92) !important;
+    }
+
+    .materiales-arrow:hover {
+      background: rgba(253,240,237,0.25) !important;
+    }
+
+    .materiales-dots {
+      display: flex !important;
+      justify-content: center !important;
+      gap: 0.5rem !important;
+      margin-top: 1.4rem !important;
+    }
+
+    .materiales-dot {
+      width: 7px !important;
+      height: 7px !important;
+      border-radius: 50% !important;
+      background: rgba(253,240,237,0.35) !important;
+      transition: background 0.25s, transform 0.25s !important;
+    }
+
+    .materiales-dot.active {
+      background: var(--crema) !important;
+      transform: scale(1.2) !important;
+    }
+
+    .material-card.mobile-hover {
+      background: rgba(253,240,237,0.05) !important;
+    }
 
     .diferencial-header { padding: 5rem 5vw 3rem; }
     .diferencial-mosaic { grid-template-columns: 1fr 1fr; padding: 0 5vw 5rem; }
 
-    .cta-strip { grid-template-columns: 1fr; gap: 2rem; }
+    .cta-strip {
+      padding: 5rem 5vw !important;
+      gap: 3.5rem !important;
+    }
+    .cta-header-row {
+      gap: 1.5rem !important;
+      text-align: center !important;
+    }
+    .cta-strip .cta-title {
+      white-space: normal !important;
+    }
+    .cta-action-wrap {
+      justify-content: center !important;
+    }
+    .cta-desc {
+      font-size: 0.92rem !important;
+      margin: 0 auto !important;
+    }
+
+    .cta-courses-row {
+      padding-top: 3rem !important;
+      gap: 2.2rem !important;
+    }
+    .cta-courses-carousel-wrap {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 1rem !important;
+      width: 100% !important;
+    }
+    .cta-courses-row .cursos-grid {
+      display: flex !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
+      border: none !important;
+      background: none !important;
+      gap: 0 !important;
+      flex: 1 !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    .cta-courses-row .cursos-grid::-webkit-scrollbar {
+      display: none !important;
+    }
+    .curso-card {
+      flex: 0 0 100% !important;
+      width: 100% !important;
+      scroll-snap-align: center !important;
+      margin-bottom: 0 !important;
+      padding: 2.2rem 1.8rem !important;
+    }
+    .cta-courses-arrow {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 50% !important;
+      background: rgba(253,240,237,0.12) !important;
+      border: 1px solid rgba(253,240,237,0.4) !important;
+      color: var(--crema) !important;
+      font-size: 1.1rem !important;
+      cursor: pointer !important;
+      transition: background 0.25s, transform 0.2s !important;
+      -webkit-tap-highlight-color: transparent !important;
+      z-index: 10 !important;
+    }
+    .cta-courses-arrow:active {
+      transform: scale(0.92) !important;
+    }
+    .cta-courses-arrow:hover {
+      background: rgba(253,240,237,0.25) !important;
+    }
+    .cta-courses-dots {
+      display: flex !important;
+      justify-content: center !important;
+      gap: 0.5rem !important;
+      margin-top: 1.4rem !important;
+    }
+    .cta-courses-dot {
+      width: 7px !important;
+      height: 7px !important;
+      border-radius: 50% !important;
+      background: rgba(253,240,237,0.35) !important;
+      transition: background 0.25s, transform 0.25s !important;
+    }
+    .cta-courses-dot.active {
+      background: var(--crema) !important;
+      transform: scale(1.2) !important;
+    }
 
     footer { flex-direction: column; gap: 0.5rem; text-align: center; }
   }
@@ -1123,14 +1893,15 @@
 
 <!-- NAVBAR -->
 <nav id="mainNav">
-  <a href="index.html" class="nav-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></a>
+  <a href="index.html#hero" class="nav-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></a>
   <ul class="nav-links">
-    <li><a href="#sobre-curso">El curso</a></li>
-    <li><a href="#materiales">Materiales</a></li>
-    <li><a href="#equipo">Equipo</a></li>
-    <li><a href="#diferencial">Diferencial</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#faq" class="nav-cta">Inscribirse</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#sobre">Nosotros</a></li>
+    <li><a href="index.html#cursos">Cursos</a></li>
+    <li><a href="index.html#capsula">Cápsula</a></li>
+    <li><a href="index.html#elegirnos">Por qué elegirnos</a></li>
+    <li><a href="index.html#elegirnos" class="nav-cta">Contacto</a></li>
+    <li><a href="https://juliamirandagutre-art.github.io/bibliotecaraiz/" target="_blank" rel="noopener" class="nav-biblioteca">Biblioteca UI</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menú">
     <span></span><span></span><span></span>
@@ -1138,12 +1909,13 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#sobre-curso">El curso</a>
-  <a href="#materiales">Materiales</a>
-  <a href="#equipo">Equipo</a>
-  <a href="#diferencial">Diferencial</a>
-  <a href="#faq">FAQ</a>
-  <a href="#faq">Inscribirse</a>
+  <a href="index.html#servicios">Servicios</a>
+  <a href="index.html#sobre">Nosotros</a>
+  <a href="index.html#cursos">Cursos</a>
+  <a href="index.html#capsula">Cápsula</a>
+  <a href="index.html#elegirnos">Por qué elegirnos</a>
+  <a href="index.html#elegirnos">Contacto</a>
+  <a href="https://juliamirandagutre-art.github.io/bibliotecaraiz/" target="_blank" rel="noopener" class="mobile-biblioteca">Biblioteca UI</a>
 </div>
 
 <!-- ── S1 HERO ── -->
@@ -1165,7 +1937,7 @@
 
     <h1 class="hero-title reveal">
       Tapizado<br>
-      <span class="highlight-box" id="heroHighlight"><span>Contemporáneo</span></span>
+      <span class="highlight-box" id="heroHighlight"><span>contemporáneo</span></span>
     </h1>
 
     <a href="#faq" class="btn btn-hero reveal"><span>Inscribirme ahora</span></a>
@@ -1174,8 +1946,7 @@
   <div class="hero-img-wrap reveal-right" id="heroImgWrap">
     <div class="hero-img-stack" id="heroImgStack">
       <img src="sillacursonueva.png" alt="Silla restaurada" class="img-base">
-      <img src="sillacursovieja.png" alt="Silla antes de restaurar" class="img-reveal-1" id="heroRevealVieja">
-      <img src="sillacursografico.png" alt="Plano técnico de la silla" class="img-reveal-2" id="heroRevealGrafico">
+      <img src="sillacursovieja.png" alt="Silla antes de restaurar" class="img-reveal">
 
       <div class="hero-spot-frame" id="heroSpotFrame">
         <span class="corner-l"></span>
@@ -1187,13 +1958,13 @@
 
 <!-- ── S2 DE QUÉ SE TRATA ── -->
 <section id="sobre-curso">
-  <svg class="grid-svg" id="sobreGrid" data-color="rgba(49,39,131,0.12)" data-step="100"></svg>
+  <svg class="grid-svg" id="sobreGrid" data-color="rgba(240,112,48,0.5)" data-step="100"></svg>
 
   <div class="sobre-inner">
     <div class="sobre-text-col">
       <p class="section-label reveal">De qué se trata</p>
-      <h2 class="section-title reveal">El arte de<br>transformar<br>estructuras.</h2>
-      <p class="section-body reveal">Un curso intensivo para aprender a seleccionar telas, trabajar con espumas y aplicar técnicas de tapizado moderno sobre piezas con historia propia.</p>
+      <h2 class="section-title reveal">El arte de tapizar.</h2>
+      <p class="section-body reveal">Aprendé a elegir telas, trabajar espumas y tapizar piezas con historia propia.</p>
 
       <div class="info-grid reveal">
         <div class="info-item">
@@ -1202,50 +1973,96 @@
           <span class="info-val">4 jornadas</span>
         </div>
         <div class="info-item">
-          <span class="info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15.5 14"></polyline></svg></span>
-          <span class="info-label">Carga horaria</span>
-          <span class="info-val">24 hs totales</span>
+          <span class="info-icon"><svg viewBox="0 0 24 24"><path d="M2 8.5 12 4l10 4.5-10 4.5-10-4.5z"></path><path d="M6 10.8v4.6c0 1.6 2.7 2.9 6 2.9s6-1.3 6-2.9v-4.6"></path><path d="M21.5 8.5v6"></path></svg></span>
+          <span class="info-label">Nivel</span>
+          <span class="info-val">Sin requisitos</span>
         </div>
         <div class="info-item">
           <span class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 14.9 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.3"></circle></svg></span>
           <span class="info-label">Lugar</span>
           <span class="info-val">Taller Raíz</span>
         </div>
-        <div class="info-item">
-          <span class="info-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"></path><circle cx="17.5" cy="8.5" r="2.3"></circle><path d="M16.2 13.7c2.7.4 4.8 2.7 4.8 5.5"></path></svg></span>
-          <span class="info-label">Grupo</span>
-          <span class="info-val">Máx. 8 personas</span>
-        </div>
-        <div class="info-item">
-          <span class="info-icon"><svg viewBox="0 0 24 24"><path d="M2 8.5 12 4l10 4.5-10 4.5-10-4.5z"></path><path d="M6 10.8v4.6c0 1.6 2.7 2.9 6 2.9s6-1.3 6-2.9v-4.6"></path><path d="M21.5 8.5v6"></path></svg></span>
-          <span class="info-label">Nivel</span>
-          <span class="info-val">Sin requisitos</span>
-        </div>
-        <div class="info-item">
-          <span class="info-icon"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="1.5"></rect><rect x="9" y="1.5" width="6" height="3" rx="0.8"></rect><polyline points="8.5 12 11 14.5 15.5 9.5"></polyline></svg></span>
-          <span class="info-label">Certificado</span>
-          <span class="info-val">Sí, al finalizar</span>
-        </div>
       </div>
 
-      <div class="precio-card reveal">
-        <span class="precio-label">Inversión total</span>
-        <div class="precio-val">$65.000</div>
-        <span class="precio-nota">Incluye materiales básicos del primer día<br>Cuota disponible</span>
+      <div class="precio-pagos-wrap reveal">
+        <div class="precio-card">
+          <span class="precio-label">Inversión total</span>
+          <div class="precio-val">$65.000</div>
+          <span class="precio-nota">Incluye materiales básicos</span>
+        </div>
+        <div class="pagos-card">
+          <span class="pagos-label">Medios de pago</span>
+          <ul class="pagos-lista">
+            <li>Transferencia bancaria</li>
+            <li>Efectivo en taller (10% off)</li>
+            <li>Tarjetas en 3 cuotas</li>
+          </ul>
+          <div class="pagos-logos">
+            <!-- Visa -->
+            <svg class="pay-logo" viewBox="0 0 36 24" width="36" height="24" aria-label="Visa">
+              <rect width="36" height="24" rx="4" fill="#FFF" stroke="#E5E5E5" stroke-width="1"/>
+              <text x="50%" y="62%" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-style="italic" font-size="12" fill="#1A1F71" text-anchor="middle">VISA</text>
+            </svg>
+            <!-- Mastercard -->
+            <svg class="pay-logo" viewBox="0 0 36 24" width="36" height="24" aria-label="Mastercard">
+              <rect width="36" height="24" rx="4" fill="#1E1E1E"/>
+              <circle cx="15.5" cy="12" r="6.5" fill="#EB001B"/>
+              <circle cx="20.5" cy="12" r="6.5" fill="#F59F00" fill-opacity="0.85"/>
+            </svg>
+            <!-- Mercado Pago -->
+            <span class="pay-logo pay-logo-img" aria-label="Mercado Pago" style="width:36px;height:24px;overflow:hidden;">
+              <img src="mercadopago.png" alt="Mercado Pago" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:4px;background:#FFF;border:1px solid #E5E5E5;">
+            </span>
+            <!-- Generic Card -->
+            <svg class="pay-logo" viewBox="0 0 36 24" width="36" height="24" aria-label="Tarjeta de Crédito y Débito">
+              <rect width="36" height="24" rx="4" fill="#4B4B4B"/>
+              <rect x="3" y="5" width="30" height="4" fill="#1A1A1A"/>
+              <rect x="5" y="14" width="8" height="5" rx="1" fill="#FFF" opacity="0.3"/>
+              <rect x="26" y="15" width="5" height="3" rx="0.5" fill="#FFF" opacity="0.6"/>
+            </svg>
+          </div>
+        </div>
       </div>
 
       <a href="#faq" class="btn btn-crema reveal"><span>Reservar mi lugar</span></a>
     </div>
 
-    <div class="sobre-img-col reveal-right">
-      <div class="sobre-img-placeholder">
-        <!-- REEMPLAZAR src por la imagen real del curso cuando esté disponible -->
-        <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Curso tapizado">
-        <div class="img-upload-msg" style="display:none">
-          <span class="icon">🖼</span>
-          Imagen del curso — próximamente
+    <div class="sobre-img-col reveal-right" style="overflow: visible;">
+      <div class="tools-showcase">
+        <!-- Etiquetas alineadas a la izquierda -->
+        <span class="tool-label brocha-label">
+          <span class="asterisk">*</span>BROCHA DE PINTURA
+        </span>
+        <span class="tool-label abrochadora-label">
+          <span class="asterisk">*</span>ABROCHADORA
+        </span>
+
+        <!-- Prensa sargento -->
+        <div class="tool-item tool-prensa">
+          <div class="tool-circle"></div>
+          <img src="prensa.png" alt="Prensa sargento" class="tool-image">
+          <span class="tool-label">
+            <span class="asterisk">*</span>PRENSA SARGENTO
+          </span>
         </div>
-        <div class="img-label-overlay">Tapizado contemporáneo</div>
+        
+        <!-- Brocha de pintura -->
+        <div class="tool-item tool-brocha">
+          <div class="tool-circle"></div>
+          <img src="brocha.png" alt="Brocha de pintura" class="tool-image">
+          <span class="tool-label">
+            <span class="asterisk">*</span>BROCHA DE PINTURA
+          </span>
+        </div>
+        
+        <!-- Abrochadora -->
+        <div class="tool-item tool-abrochadora">
+          <div class="tool-circle"></div>
+          <img src="engra.png" alt="Abrochadora" class="tool-image">
+          <span class="tool-label">
+            <span class="asterisk">*</span>ABROCHADORA
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -1262,55 +2079,68 @@
       <a href="#faq" class="btn btn-rojo reveal"><span>Consultar lista completa</span></a>
     </div>
 
-    <div class="materiales-grid">
-      <div class="material-card reveal">
-        <div class="material-num">01</div>
-        <div class="material-swatch lino"></div>
-        <div class="material-name">Lino Natural</div>
-        <div class="material-desc">Tejido resistente, ideal para tapizados estructurales.</div>
-        <span class="material-tag">Tela base</span>
+    <div class="materiales-carousel-wrap">
+      <button type="button" class="materiales-arrow materiales-arrow-left" id="materialesArrowLeft" aria-label="Material anterior">&#8592;</button>
+      <div class="materiales-grid" id="materialesGridTrack">
+        <div class="material-card reveal">
+          <div class="material-num">01</div>
+          <div class="material-swatch lino"></div>
+          <div class="material-name">Lino Natural</div>
+          <div class="material-desc">Tejido resistente, ideal para tapizados estructurales.</div>
+          <span class="material-tag">Tela base</span>
+        </div>
+        <div class="material-card reveal">
+          <div class="material-num">02</div>
+          <div class="material-swatch terciopelo"></div>
+          <div class="material-name">Terciopelo Estructurado</div>
+          <div class="material-desc">Pelo corto con profundidad visual. 12 colores disponibles.</div>
+          <span class="material-tag">Tela premium</span>
+        </div>
+        <div class="material-card reveal">
+          <div class="material-num">03</div>
+          <div class="material-swatch cuero"></div>
+          <div class="material-name">Cuero Reconstituido</div>
+          <div class="material-desc">Alternativa sustentable, misma estética y durabilidad.</div>
+          <span class="material-tag">Eco-friendly</span>
+        </div>
+        <div class="material-card reveal">
+          <div class="material-num">04</div>
+          <div class="material-swatch bouclé"></div>
+          <div class="material-name">Bouclé de lana</div>
+          <div class="material-desc">Textura con volumen, clave en diseño escandinavo.</div>
+          <span class="material-tag">Textura</span>
+        </div>
+        <div class="material-card reveal">
+          <div class="material-num">05</div>
+          <div class="material-swatch espuma"></div>
+          <div class="material-name">Espumas de Alta Densidad</div>
+          <div class="material-desc">Tres densidades según la parte de la pieza a tapizar.</div>
+          <span class="material-tag">Insumo técnico</span>
+        </div>
+        <div class="material-card reveal">
+          <div class="material-num">06</div>
+          <div class="material-swatch hilo-resistente"></div>
+          <div class="material-name">Hilos y Rematados</div>
+          <div class="material-desc">Hilos y trencillas para una terminación profesional.</div>
+          <span class="material-tag">Terminaciones</span>
+        </div>
       </div>
-      <div class="material-card reveal">
-        <div class="material-num">02</div>
-        <div class="material-swatch terciopelo"></div>
-        <div class="material-name">Terciopelo Estructurado</div>
-        <div class="material-desc">Pelo corto con profundidad visual. 12 colores disponibles.</div>
-        <span class="material-tag">Tela premium</span>
-      </div>
-      <div class="material-card reveal">
-        <div class="material-num">03</div>
-        <div class="material-swatch cuero"></div>
-        <div class="material-name">Cuero Reconstituido</div>
-        <div class="material-desc">Alternativa sustentable, misma estética y durabilidad.</div>
-        <span class="material-tag">Eco-friendly</span>
-      </div>
-      <div class="material-card reveal">
-        <div class="material-num">04</div>
-        <div class="material-swatch bouclé"></div>
-        <div class="material-name">Bouclé de lana</div>
-        <div class="material-desc">Textura con volumen, clave en diseño escandinavo.</div>
-        <span class="material-tag">Textura</span>
-      </div>
-      <div class="material-card reveal">
-        <div class="material-num">05</div>
-        <div class="material-swatch espuma"></div>
-        <div class="material-name">Espumas de Alta Densidad</div>
-        <div class="material-desc">Tres densidades según la parte de la pieza a tapizar.</div>
-        <span class="material-tag">Insumo técnico</span>
-      </div>
-      <div class="material-card reveal">
-        <div class="material-num">06</div>
-        <div class="material-swatch hilo-resistente"></div>
-        <div class="material-name">Hilos y Rematados</div>
-        <div class="material-desc">Hilos y trencillas para una terminación profesional.</div>
-        <span class="material-tag">Terminaciones</span>
-      </div>
+      <button type="button" class="materiales-arrow materiales-arrow-right" id="materialesArrowRight" aria-label="Siguiente material">&#8594;</button>
+    </div>
+    <div class="materiales-dots" id="materialesDots">
+      <span class="materiales-dot active"></span>
+      <span class="materiales-dot"></span>
+      <span class="materiales-dot"></span>
+      <span class="materiales-dot"></span>
+      <span class="materiales-dot"></span>
+      <span class="materiales-dot"></span>
     </div>
   </div>
 </section>
 
 <!-- ── S4 EQUIPO ── -->
 <section id="equipo">
+  <div class="equipo-circle" id="equipoCircle"></div>
 
   <div class="equipo-inner">
     <div class="equipo-header">
@@ -1323,22 +2153,19 @@
 
     <div class="equipo-grid">
       <div class="equipo-card reveal">
-        <div class="equipo-avatar">🧵</div>
+        <div class="equipo-avatar"><img src="profe1.png" alt="Valentina Roca"></div>
         <div class="equipo-nombre">Valentina Roca</div>
         <span class="equipo-rol">Docente principal · Tapizado</span>
-        <p class="equipo-bio">Especializada en textiles históricos, con más de 12 años tapizando piezas del siglo XX.</p>
       </div>
       <div class="equipo-card reveal">
-        <div class="equipo-avatar">🔨</div>
+        <div class="equipo-avatar"><img src="profe2.png" alt="Matías Herrero"></div>
         <div class="equipo-nombre">Matías Herrero</div>
         <span class="equipo-rol">Asistente · Estructura y soporte</span>
-        <p class="equipo-bio">Maestro artesano, responsable de que cada estructura quede técnicamente impecable.</p>
       </div>
       <div class="equipo-card reveal">
-        <div class="equipo-avatar">🎨</div>
+        <div class="equipo-avatar"><img src="profe3.png" alt="Lucía Paz"></div>
         <div class="equipo-nombre">Lucía Paz</div>
         <span class="equipo-rol">Asesora · Paleta y composición</span>
-        <p class="equipo-bio">Diseñadora de indumentaria con un ojo único para combinar texturas y colores.</p>
       </div>
     </div>
   </div>
@@ -1351,8 +2178,6 @@
   <div class="diferencial-header">
       <p class="section-label reveal">Qué lo hace único</p>
       <h2 class="section-title reveal">Un curso irrepetible.</h2>
-      <p class="section-body reveal">No enseñamos recetas. Enseñamos criterio. Cada clase trabaja sobre piezas reales del taller, con problemáticas distintas, para que el aprendizaje sea genuino y transferible.</p>
-      <a href="#faq" class="btn btn-crema reveal"><span>Quiero inscribirme</span></a>
   </div>
 
   <div class="diferencial-mosaic" id="diferencialMosaic">
@@ -1361,36 +2186,47 @@
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
     <div class="mosaic-cell num-cell reveal">
-      <div class="big-num">8</div>
+      <div class="big-num-row">
+        <span class="big-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="10" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+        <div class="big-num">8</div>
+      </div>
       <div class="big-label">Alumnos<br>máximo</div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell text-cell alt reveal">
-      <p class="small">Atención personalizada que no encontrás en cursos masivos. Cada alumno trabaja a su ritmo.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
+    <div class="mosaic-cell img-cell sillon-cell reveal">
+      <img src="sillonazul.png" alt="Sillón tapizado con estampado azul" class="mosaic-img">
     </div>
     <div class="mosaic-cell text-cell accent reveal">
       <p>Certificado Raíz<br>avalado por el<br>taller.</p>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
     <div class="mosaic-cell num-cell reveal" style="background:var(--azul)">
-      <div class="big-num">24</div>
+      <div class="big-num-row">
+        <span class="big-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg></span>
+        <div class="big-num">24</div>
+      </div>
       <div class="big-label">Horas de<br>práctica real</div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
+    </div>
+    <div class="mosaic-cell img-cell banqui-cell reveal">
+      <img src="banqui.png" alt="Banqueta tapizada con estampado abstracto" class="mosaic-img">
     </div>
     <div class="mosaic-cell text-cell reveal">
       <p>Metodología<br>Raíz aplicada<br>al tapizado.</p>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
-    <div class="mosaic-cell text-cell alt reveal">
-      <p class="small">Acceso al catálogo de telas del taller para seguir comprando a precio especial post-curso.</p>
-      <span class="diamond-bl"></span><span class="diamond-br"></span>
-    </div>
     <div class="mosaic-cell num-cell reveal" style="background:var(--rojo)">
-      <div class="big-num">+3</div>
+      <div class="big-num-row">
+        <span class="big-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <div class="big-num">+3</div>
+      </div>
       <div class="big-label">Piezas<br>terminadas</div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
+  </div>
+
+  <div style="display:flex; justify-content:center; padding: 2.5rem 5vw 5rem;">
+    <a href="#faq" class="btn btn-crema reveal"><span>Quiero inscribirme</span></a>
   </div>
 </section>
 
@@ -1400,21 +2236,19 @@
 
   <div class="faq-inner">
     <div class="faq-header">
-      <div>
-        <p class="section-label reveal">Preguntas frecuentes</p>
-        <h2 class="section-title reveal" style="color:var(--crema)">Todo lo<br>que necesitás<br>saber.</h2>
-      </div>
-      <div>
-        <p class="section-body reveal" style="color:rgba(253,240,237,0.6); max-width:380px">Si después de leer las preguntas todavía tenés dudas, escribinos. Respondemos en menos de 24 hs.</p>
-        <a href="mailto:hola@raiz.com.ar" class="btn reveal" style="color:var(--crema);border-color:rgba(253,240,237,0.35)"><span>Escribirnos</span></a>
-      </div>
+      <p class="section-label reveal">Preguntas frecuentes</p>
+      <h2 class="section-title reveal" style="color:var(--crema)">Todo lo que necesitás saber.</h2>
+      <a href="mailto:hola@raiz.com.ar" class="btn reveal" style="color:var(--crema);border-color:rgba(253,240,237,0.35);margin-top:0.8rem"><span>Escribirnos</span></a>
     </div>
 
     <div class="faq-list">
       <div class="faq-item">
         <button class="faq-question">
+          <span class="faq-number">1</span>
           <span class="q-text">¿Necesito experiencia previa en tapizado?</span>
-          <span class="faq-icon">+</span>
+          <span class="faq-active-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="20" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>
+          </span>
         </button>
         <div class="faq-answer">
           <p>No. El curso está diseñado para personas sin experiencia previa. Sí es recomendable tener curiosidad por los materiales y ganas de trabajar con las manos. Arrancamos desde los conceptos más básicos y vamos sumando complejidad jornada a jornada.</p>
@@ -1422,8 +2256,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-question">
+          <span class="faq-number">2</span>
           <span class="q-text">¿Qué debo llevar el primer día?</span>
-          <span class="faq-icon">+</span>
+          <span class="faq-active-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="20" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>
+          </span>
         </button>
         <div class="faq-answer">
           <p>El primer día los materiales básicos están incluidos en el precio del curso. Para las jornadas 2, 3 y 4 vas a ir eligiendo las telas y espumas con las que trabajarás — esos insumos se abonan aparte a precio de taller (muy por debajo del mercado).</p>
@@ -1431,8 +2268,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-question">
+          <span class="faq-number">3</span>
           <span class="q-text">¿Cuándo son las próximas fechas?</span>
-          <span class="faq-icon">+</span>
+          <span class="faq-active-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="20" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>
+          </span>
         </button>
         <div class="faq-answer">
           <p>Los cursos se dictan en ediciones de 4 jornadas consecutivas (jueves a domingo) o 4 sábados seguidos. Las fechas disponibles se publican cada mes. Podés reservar tu lugar con un 30% de seña y el saldo se abona el primer día.</p>
@@ -1440,8 +2280,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-question">
+          <span class="faq-number">4</span>
           <span class="q-text">¿Me llevo algo terminado al final del curso?</span>
-          <span class="faq-icon">+</span>
+          <span class="faq-active-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="20" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>
+          </span>
         </button>
         <div class="faq-answer">
           <p>Sí. Al terminar el curso vas a haber tapizado al menos una pieza completa — generalmente una silla o banqueta del stock del taller — que te llevás a tu casa. En algunos casos los alumnos traen sus propias piezas para trabajar sobre ellas (consultanos primero).</p>
@@ -1449,8 +2292,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-question">
+          <span class="faq-number">5</span>
           <span class="q-text">¿Hay descuentos por grupo o por ser ex-alumno?</span>
-          <span class="faq-icon">+</span>
+          <span class="faq-active-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="20" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>
+          </span>
         </button>
         <div class="faq-answer">
           <p>Sí. Los ex-alumnos de Raíz tienen un 15% de descuento en todos nuestros cursos. Los grupos de 3 o más personas que se inscriban juntas acceden a un 10% de descuento grupal. Los descuentos no son acumulables.</p>
@@ -1458,8 +2304,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-question">
+          <span class="faq-number">6</span>
           <span class="q-text">¿Qué pasa si tengo que cancelar mi inscripción?</span>
-          <span class="faq-icon">+</span>
+          <span class="faq-active-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="4" width="16" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="20" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>
+          </span>
         </button>
         <div class="faq-answer">
           <p>Si cancelás con más de 7 días de anticipación devolvemos el 100% de la seña. Entre 3 y 7 días, el 50%. Con menos de 72 hs, podés transferir tu lugar a otra persona o usarlo en una edición futura dentro de los 6 meses siguientes.</p>
@@ -1468,16 +2317,56 @@
     </div>
   </div>
 
-  <!-- CTA final -->
+  <!-- CTA final con cursos integrados -->
   <div class="cta-strip">
-    <div>
-      <div class="cta-title reveal">¿Listo para aprender<br>el oficio del <strong>tapizado contemporáneo?</strong></div>
+    <div class="cta-header-row">
+      <div class="cta-text-wrap">
+        <div class="cta-title reveal">¿Listo para aprender<br><span class="highlight-box"><span>tapizado contemporáneo?</span></span></div>
+        <p class="cta-desc reveal">No necesitás conocimientos previos, solo ganas de experimentar y trabajar con tus manos. Reservá tu lugar con una seña del 30% y empezá a crear.</p>
+      </div>
+      <div class="cta-action-wrap reveal">
+        <a href="mailto:hola@raiz.com.ar" class="btn btn-azul"><span>Quiero inscribirme</span></a>
+      </div>
     </div>
-    <div class="reveal">
-      <a href="mailto:hola@raiz.com.ar" class="btn btn-azul"><span>Quiero inscribirme</span></a>
+    
+    <div class="cta-courses-row">
+      <h3 class="cta-courses-title reveal">¡Sumate a otros cursos de <img src="logo-raiz-blanco.png" alt="Raíz">!</h3>
+      <div class="cta-courses-carousel-wrap">
+        <button type="button" class="cta-courses-arrow cta-courses-arrow-left" id="ctaCursosArrowLeft" aria-label="Curso anterior">&#8592;</button>
+        <div class="cursos-grid" id="ctaCursosGridTrack">
+          <!-- Curso 1 -->
+          <div class="curso-card reveal">
+            <div class="curso-num">01</div>
+            <div class="curso-img-stack">
+              <img src="ChatGPT_Image_18_jun_2026__05_16_01_p_m_.png" alt="Restauración básica" class="curso-img" loading="lazy" decoding="async">
+              <img src="diagramacurso3.png" alt="Diagrama técnico de medidas" class="curso-img curso-img-hover" loading="lazy" decoding="async">
+            </div>
+            <div class="curso-name">Restauración Básica de Madera</div>
+            <div class="curso-desc">Lijado, sellado y acabado para piezas con deterioration superficial.</div>
+            <div class="curso-precio">$50.000</div>
+            <a href="index.html#cursos" class="btn btn-cursos"><span>VER CURSO</span></a>
+          </div>
+          <!-- Curso 3 -->
+          <div class="curso-card reveal">
+            <div class="curso-num">03</div>
+            <div class="curso-img-stack">
+              <img src="ChatGPT_Image_18_jun_2026__05_22_52_p_m_.png" alt="Diseño y rediseño de piezas" class="curso-img" loading="lazy" decoding="async">
+              <img src="diagramacurso1.png" alt="Diagrama técnico de medidas" class="curso-img curso-img-hover" loading="lazy" decoding="async">
+            </div>
+            <div class="curso-name">Diseño de Piezas Únicas</div>
+            <div class="curso-desc">Metodología Raíz para rediseñar muebles irrecuperables.</div>
+            <div class="curso-precio">$40.000</div>
+            <a href="index.html#cursos" class="btn btn-cursos"><span>VER CURSO</span></a>
+          </div>
+        </div>
+        <button type="button" class="cta-courses-arrow cta-courses-arrow-right" id="ctaCursosArrowRight" aria-label="Siguiente curso">&#8594;</button>
+      </div>
+      <div class="cta-courses-dots" id="ctaCursosDots">
+        <span class="cta-courses-dot active"></span>
+        <span class="cta-courses-dot"></span>
+      </div>
     </div>
   </div>
-</section>
 
 <footer>
   <a href="index.html" class="footer-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></a>
@@ -1516,11 +2405,10 @@
     if (heroHighlight) heroHighlight.classList.add('animate');
   }, 400);
 
-  // ── Hero: ventanita — revela la silla vieja con el plano técnico superpuesto ──
+  // ── Hero spotlight — al mover el cursor sobre la imagen, revela la silla vieja
+  // dentro de un cuadrado nítido (sin difuminado) que sigue al mouse, igual que en index ──
   const heroImgWrap = document.getElementById('heroImgWrap');
   const heroImgStack = document.getElementById('heroImgStack');
-  const heroRevealVieja = document.getElementById('heroRevealVieja');
-  const heroRevealGrafico = document.getElementById('heroRevealGrafico');
   const HERO_SPOT_SIZE = 220; // debe coincidir con .hero-spot-frame
 
   if (heroImgWrap && heroImgStack) {
@@ -1530,37 +2418,204 @@
       const py = e.clientY - rect.top;
       const half = HERO_SPOT_SIZE / 2;
 
-      if (px < 0 || py < 0 || px > rect.width || py > rect.height) {
-        heroImgWrap.classList.remove('active');
-        return;
-      }
+      const xFrac = px / rect.width;
+      const yFrac = py / rect.height;
+      const layoutW = heroImgStack.offsetWidth;
+      const layoutH = heroImgStack.offsetHeight;
+      const lx = xFrac * layoutW;
+      const ly = yFrac * layoutH;
 
-      const xPct = (px / rect.width) * 100;
-      const yPct = (py / rect.height) * 100;
-      heroImgStack.style.setProperty('--hx', xPct + '%');
-      heroImgStack.style.setProperty('--hy', yPct + '%');
+      heroImgStack.style.setProperty('--hx', (xFrac * 100) + '%');
+      heroImgStack.style.setProperty('--hy', (yFrac * 100) + '%');
 
-      const top = Math.max(0, ((py - half) / rect.height) * 100);
-      const bottom = Math.max(0, ((rect.height - (py + half)) / rect.height) * 100);
-      const left = Math.max(0, ((px - half) / rect.width) * 100);
-      const right = Math.max(0, ((rect.width - (px + half)) / rect.width) * 100);
+      const top = Math.max(0, ((ly - half) / layoutH) * 100);
+      const bottom = Math.max(0, ((layoutH - (ly + half)) / layoutH) * 100);
+      const left = Math.max(0, ((lx - half) / layoutW) * 100);
+      const right = Math.max(0, ((layoutW - (lx + half)) / layoutW) * 100);
 
       heroImgStack.style.setProperty('--ry', top + '%');
       heroImgStack.style.setProperty('--ry-b', bottom + '%');
       heroImgStack.style.setProperty('--rx', left + '%');
       heroImgStack.style.setProperty('--rx-r', right + '%');
 
-      heroRevealVieja.style.opacity = '1';
-      heroRevealGrafico.style.opacity = '1';
       heroImgWrap.classList.add('active');
     });
 
     heroImgWrap.addEventListener('mouseleave', () => {
       heroImgWrap.classList.remove('active');
-      heroRevealVieja.style.opacity = '0';
-      heroRevealGrafico.style.opacity = '0';
     });
   }
+
+  // ── Carrusel de materiales en mobile: flechas + dots sincronizados con el scroll ──
+  (function () {
+    const track = document.getElementById('materialesGridTrack');
+    const btnLeft = document.getElementById('materialesArrowLeft');
+    const btnRight = document.getElementById('materialesArrowRight');
+    const dots = document.querySelectorAll('#materialesDots .materiales-dot');
+    if (!track || !btnLeft || !btnRight) return;
+
+    function getCards() {
+      return Array.from(track.querySelectorAll('.material-card'));
+    }
+
+    function goTo(index) {
+      const cards = getCards();
+      if (!cards[index]) return;
+      track.scrollTo({ left: cards[index].offsetLeft, behavior: 'smooth' });
+    }
+
+    function currentIndex() {
+      const cards = getCards();
+      let closest = 0;
+      let minDist = Infinity;
+      cards.forEach((card, i) => {
+        const dist = Math.abs(card.offsetLeft - track.scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      return closest;
+    }
+
+    let hoverTimeout;
+
+    function clearMobileHover() {
+      getCards().forEach(card => card.classList.remove('mobile-hover'));
+    }
+
+    function scheduleMobileHover() {
+      clearTimeout(hoverTimeout);
+      clearMobileHover();
+      hoverTimeout = setTimeout(() => {
+        const cards = getCards();
+        const idx = currentIndex();
+        if (cards[idx]) cards[idx].classList.add('mobile-hover');
+      }, 1500);
+    }
+
+    function updateDots() {
+      const idx = currentIndex();
+      const lastIdx = getCards().length - 1;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+      btnLeft.style.visibility = idx <= 0 ? 'hidden' : 'visible';
+      btnRight.style.visibility = idx >= lastIdx ? 'hidden' : 'visible';
+      scheduleMobileHover();
+    }
+
+    btnLeft.addEventListener('click', () => {
+      const idx = Math.max(0, currentIndex() - 1);
+      goTo(idx);
+    });
+
+    btnRight.addEventListener('click', () => {
+      const cards = getCards();
+      const idx = Math.min(cards.length - 1, currentIndex() + 1);
+      goTo(idx);
+    });
+
+    let scrollTimeout;
+    track.addEventListener('scroll', () => {
+      clearTimeout(hoverTimeout);
+      clearMobileHover();
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateDots, 80);
+    });
+
+    window.addEventListener('resize', updateDots);
+    updateDots();
+  })();
+
+  // ── Carrusel de cursos sugeridos al final en mobile ──
+  (function () {
+    const track = document.getElementById('ctaCursosGridTrack');
+    const btnLeft = document.getElementById('ctaCursosArrowLeft');
+    const btnRight = document.getElementById('ctaCursosArrowRight');
+    const dots = document.querySelectorAll('#ctaCursosDots .cta-courses-dot');
+    if (!track || !btnLeft || !btnRight) return;
+
+    function getCards() {
+      return Array.from(track.querySelectorAll('.curso-card'));
+    }
+
+    function goTo(index) {
+      const cards = getCards();
+      if (!cards[index]) return;
+      track.scrollTo({ left: cards[index].offsetLeft, behavior: 'smooth' });
+    }
+
+    function currentIndex() {
+      const cards = getCards();
+      let closest = 0;
+      let minDist = Infinity;
+      cards.forEach((card, i) => {
+        const dist = Math.abs(card.offsetLeft - track.scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      return closest;
+    }
+
+    function updateDots() {
+      const idx = currentIndex();
+      const lastIdx = getCards().length - 1;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+      btnLeft.style.visibility = idx <= 0 ? 'hidden' : 'visible';
+      btnRight.style.visibility = idx >= lastIdx ? 'hidden' : 'visible';
+    }
+
+    btnLeft.addEventListener('click', () => {
+      const idx = Math.max(0, currentIndex() - 1);
+      goTo(idx);
+    });
+
+    btnRight.addEventListener('click', () => {
+      const cards = getCards();
+      const idx = Math.min(cards.length - 1, currentIndex() + 1);
+      goTo(idx);
+    });
+
+    let scrollTimeout;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateDots, 80);
+    });
+
+    window.addEventListener('resize', updateDots);
+    updateDots();
+  })();
+
+  // ── Animación de caída de los círculos de herramientas en sobre-curso ──
+  (function () {
+    const section = document.getElementById('sobre-curso');
+    const circles = document.querySelectorAll('#sobre-curso .tool-circle');
+    if (!section || circles.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          circles.forEach(circle => circle.classList.add('dropped'));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(section);
+  })();
+
+  // ── Animación de caída del círculo en equipo ──
+  (function () {
+    const section = document.getElementById('equipo');
+    const circle = document.getElementById('equipoCircle');
+    if (!section || !circle) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          circle.classList.add('dropped');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(section);
+  })();
 
   // ── FAQ accordion ──
   document.querySelectorAll('.faq-item').forEach(item => {
@@ -1573,44 +2628,71 @@
   });
 
   // ── Grilla SVG ──
+  const GRID_MOBILE_BP = 900; // mismo breakpoint que el media query general
+  function isMobileView() { return window.innerWidth <= GRID_MOBILE_BP; }
+
   function initGridSvg(svg) {
+    const color = svg.dataset.color || 'rgba(0,0,0,0.07)';
     const section = svg.closest('section') || svg.parentElement;
-    const color = svg.dataset.color || 'rgba(0,0,0,0.06)';
-    const STEP = parseInt(svg.dataset.step) || 100;
     let drawn = false;
 
     function build() {
       const w = section.offsetWidth;
       const h = section.offsetHeight;
       svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
       let content = '';
-      const cols = Math.ceil(w / STEP);
-      const rows = Math.ceil(h / STEP);
-      for (let c = 1; c < cols; c++) {
-        content += `<line class="grid-line" x1="${c*STEP}" y1="0" x2="${c*STEP}" y2="${h}" stroke="${color}" />`;
+      // Mismas columnas que la grilla de Muebles Cápsula en index: 6 columnas con 8vw
+      // de margen a cada lado (4 en mobile), para que las líneas coincidan entre secciones.
+      // Si el SVG define data-cols, se respeta ese número (p. ej. para calzar con un grid propio).
+      const numCols = svg.dataset.cols ? parseInt(svg.dataset.cols, 10) : (isMobileView() ? 4 : 6);
+      const padLeft = w * 0.08;
+      const gridW = w - padLeft * 2;
+      const colWidth = gridW / numCols;
+      const colXs = [];
+      {
+        const kStart = Math.ceil((0 - padLeft) / colWidth);
+        const kEnd = Math.floor((w - padLeft) / colWidth);
+        for (let k = kStart; k <= kEnd; k++) colXs.push(padLeft + k * colWidth);
       }
+      const rows = Math.ceil(h / colWidth);
+
+      colXs.forEach(x => {
+        content += `<line class="grid-line" x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="${color}" />`;
+      });
       for (let r = 1; r < rows; r++) {
-        content += `<line class="grid-line" x1="0" y1="${r*STEP}" x2="${w}" y2="${r*STEP}" stroke="${color}" />`;
+        content += `<line class="grid-line" x1="0" y1="${r*colWidth}" x2="${w}" y2="${r*colWidth}" stroke="${color}" />`;
       }
-      for (let c = 1; c < cols; c++) {
+      // nodos en cada intersección
+      colXs.forEach(x => {
         for (let r = 1; r < rows; r++) {
-          content += `<circle class="grid-dot" cx="${c*STEP}" cy="${r*STEP}" r="2.5" fill="${color}" />`;
+          content += `<circle class="grid-dot" cx="${x}" cy="${r*colWidth}" r="2.5" fill="${color}" />`;
         }
-      }
+      });
+
       svg.innerHTML = content;
+
       svg.querySelectorAll('.grid-line').forEach(line => {
         const x1 = parseFloat(line.getAttribute('x1'));
         const y1 = parseFloat(line.getAttribute('y1'));
         const x2 = parseFloat(line.getAttribute('x2'));
         const y2 = parseFloat(line.getAttribute('y2'));
-        const length = Math.hypot(x2-x1, y2-y1);
+        const length = Math.hypot(x2 - x1, y2 - y1);
         line.style.strokeDasharray = length;
         line.style.strokeDashoffset = length;
       });
     }
 
     build();
-    window.addEventListener('resize', () => { if (!drawn) build(); });
+    window.addEventListener('resize', () => {
+      build();
+      if (drawn) {
+        svg.querySelectorAll('.grid-line').forEach(line => {
+          line.style.transition = 'none';
+          line.style.strokeDashoffset = '0';
+        });
+      }
+    });
 
     function animate() {
       if (drawn) return;
@@ -1618,17 +2700,22 @@
       build();
       const lines = svg.querySelectorAll('.grid-line');
       lines.forEach((line, i) => {
-        line.style.transition = `stroke-dashoffset 0.6s ease ${i * 0.06}s`;
+        line.style.transition = `stroke-dashoffset 0.6s ease ${i * 0.1}s`;
         requestAnimationFrame(() => { line.style.strokeDashoffset = '0'; });
       });
-      setTimeout(() => svg.classList.add('dots-visible'), lines.length * 60 + 400);
+      setTimeout(() => {
+        svg.classList.add('dots-visible');
+      }, lines.length * 100 + 400);
     }
 
-    const obs = new IntersectionObserver(entries => {
+    const obs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) { animate(); obs.unobserve(e.target); }
+        if (e.isIntersecting) {
+          animate();
+          obs.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.35 });
     obs.observe(section);
   }
 
