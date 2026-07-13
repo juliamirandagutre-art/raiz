@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Raíz — Diseño para una segunda vida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,7 +55,8 @@
     width: 5px;
     height: 5px;
     background: var(--rojo);
-    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
     transition: background 0.2s ease;
   }
 
@@ -133,19 +136,29 @@
   .nav-links a:hover { color: var(--crema); }
 
   .nav-cta {
+    color: rgba(253,240,237,0.7) !important;
+    background: none;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover {
+    color: var(--crema) !important;
+  }
+
+  .nav-biblioteca {
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--negro) !important;
     background: var(--crema);
-    border-radius: 999px;
+    border-radius: 0;
     padding: 0.55rem 1.2rem;
     text-decoration: none;
     transition: background 0.2s, color 0.2s !important;
   }
 
-  .nav-cta:hover {
+  .nav-biblioteca:hover {
     background: var(--rojo) !important;
     color: var(--blanco) !important;
   }
@@ -175,7 +188,7 @@
     right: 5vw;
     background: rgba(218,55,33,0.72);
     border: 1px solid rgba(253,240,237,0.24);
-    border-radius: 24px;
+    border-radius: 0;
     backdrop-filter: blur(18px) saturate(145%);
     -webkit-backdrop-filter: blur(18px) saturate(145%);
     padding: 1.5rem 5vw 2rem;
@@ -192,6 +205,17 @@
     text-decoration: none;
   }
   .mobile-menu.open { display: flex; }
+
+  .mobile-biblioteca {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    text-align: left;
+    color: var(--negro) !important;
+    background: var(--crema);
+    border-radius: 0;
+    padding: 0.75rem 1rem;
+    margin-top: 0.3rem;
+  }
 
   /* ── BOTÓN GENÉRICO ── */
   .btn {
@@ -288,6 +312,16 @@
   }
   .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
+  /* Variante sin fade de opacidad: solo desliza. Se usa en elementos que deben
+     mantenerse siempre opacos (ej. cards sobre el círculo de Elegirnos), para
+     que nunca se transparenten y pierdan legibilidad durante la animación. */
+  .reveal-solid {
+    opacity: 1;
+    transform: translateY(40px);
+    transition: transform 0.7s ease;
+  }
+  .reveal-solid.visible { transform: translateY(0); }
+
   /* ── GRILLA BAUHAUS — dibuja línea por línea ── */
   .grid-canvas {
     position: absolute;
@@ -350,6 +384,7 @@
 
   .hero-content .btn {
     pointer-events: auto;
+    margin-top: 1.2rem;
   }
 
   .hero-label {
@@ -396,6 +431,37 @@
   }
 
   .hero-title .highlight-box span {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Variante roja/naranja del subrayado, reutilizable fuera del hero
+     (ej: "tu pieza" en Contacto) */
+  .highlight-box-red {
+    position: relative;
+    display: inline-block;
+    color: var(--crema);
+    text-decoration: underline;
+    text-decoration-color: var(--crema);
+    text-underline-offset: 3px;
+  }
+
+  .highlight-box-red::before {
+    content: '';
+    position: absolute;
+    inset: -4px -8px;
+    background: var(--rojo);
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1) 0.2s;
+    z-index: 0;
+  }
+
+  .highlight-box-red.animate::before {
+    transform: scaleX(1);
+  }
+
+  .highlight-box-red span {
     position: relative;
     z-index: 1;
   }
@@ -473,7 +539,8 @@
     width: 9px;
     height: 9px;
     background: var(--crema);
-    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .hero-spot-frame::before { top: 0; left: 0; }
@@ -789,9 +856,9 @@
   }
 
   .sobre-circle.shrink {
-    transform: translateY(-50%) translateX(var(--travel-x, 600px)) scale(0.4);
+    transform: translateY(calc(-50% + 240px)) translateX(calc(var(--travel-x, 600px) + 220px)) scale(0.5);
     opacity: 0;
-    transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.8s ease;
+    transition: transform 1.5s ease, opacity 1.2s ease;
   }
 
   .sobre-img-wrap {
@@ -864,7 +931,8 @@
     width: 9px;
     height: 9px;
     background: var(--blanco);
-    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .sobre-spot-frame::before { top: 0; left: 0; }
@@ -882,28 +950,23 @@
     z-index: 3;
   }
 
-  /* Líneas crema animadas arriba y abajo de toda la franja */
-  .stats-strip::before,
-  .stats-strip::after {
-    content: '';
+  .franja-dot {
     position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-image: repeating-linear-gradient(90deg, var(--blanco) 0 6px, transparent 6px 16px);
-    background-size: 160px 1px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blanco);
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
   }
+  .dot-tl { top: 0; left: 0; transform: translate(-50%, -50%); }
+  .dot-tr { top: 0; right: 0; transform: translate(50%, -50%); }
+  .dot-bl { bottom: 0; left: 0; transform: translate(-50%, 50%); }
+  .dot-br { bottom: 0; right: 0; transform: translate(50%, 50%); }
 
-  .stats-strip::before { top: 0; }
-  .stats-strip::after { bottom: 0; }
-
-  .stats-strip.drawn::before,
-  .stats-strip.drawn::after {
-    opacity: 0.85;
-    animation: marchingAnts 6s linear infinite;
-  }
+  .stats-strip.drawn .franja-dot { opacity: 0.85; }
 
   @keyframes marchingAnts {
     to { background-position-x: -160px; }
@@ -960,7 +1023,8 @@
     width: 7px;
     height: 7px;
     background: var(--blanco);
-    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .stat-item::after { top: 14%; }
@@ -1028,11 +1092,41 @@
   .cursos-header .section-body { color: rgba(253,240,237,0.75); }
 
   .cursos-grid {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: rgba(253,240,237,0.2);
     border: 1px solid rgba(253,240,237,0.2);
+  }
+
+  /* Círculo que continúa el recorrido del de Sobre Nosotros: cae desde arriba
+     de la sección azul, aterriza detrás de la primera card (abajo-izq) y
+     viaja por el contorno inferior de las cards hasta la última (abajo-der) */
+  .cursos-landing-circle {
+    position: absolute;
+    top: var(--land-start-top, 0px);
+    left: var(--land-start-left, 0px);
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: var(--azul);
+    border: 2px solid var(--blanco);
+    z-index: 0;
+    opacity: 0.95;
+    transform: translateY(-1100px) scale(1.15);
+    transition: transform 1.9s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .cursos-landing-circle.appear {
+    transform: translateY(0) scale(0.8);
+  }
+
+  .cursos-landing-circle.travel {
+    top: var(--land-end-top, 0px);
+    left: var(--land-end-left, 0px);
+    transform: translateY(0) scale(0.5);
+    transition: top 2.6s cubic-bezier(0.45, 0, 0.55, 1), left 2.6s cubic-bezier(0.45, 0, 0.55, 1), transform 2.6s ease;
   }
 
   .curso-card {
@@ -1065,6 +1159,29 @@
     margin-bottom: 1.5rem;
     filter: brightness(0.9);
   }
+
+  /* Stack de imagen con hover — igual que en Restauración integral: al apoyar
+     el cursor, la imagen base se desvanece y aparece el diagrama técnico. */
+  .curso-img-stack {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .curso-img-stack .curso-img {
+    margin-bottom: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .curso-img-stack .curso-img-hover {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    object-fit: cover;
+  }
+
+  .curso-img-stack:hover .curso-img:not(.curso-img-hover) { opacity: 0; }
+  .curso-img-stack:hover .curso-img-hover { opacity: 1; }
 
   .curso-name {
     font-size: 1.1rem;
@@ -1102,11 +1219,78 @@
     padding: 0.3rem 0.8rem;
   }
 
+  /* Carrusel de cursos: en desktop las flechas van ocultas, la grid se ve como grilla normal */
+  .cursos-carousel-wrap {
+    position: relative;
+  }
+
+  .cursos-arrow {
+    display: none;
+  }
+
+  .cursos-dots {
+    display: none;
+  }
+
+  /* ── Barras decorativas que "continúan" el recorrido del círculo hacia Cápsula ── */
+  .capsula-bar {
+    position: absolute;
+    width: 6px;
+    background: var(--azul);
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 1.4s cubic-bezier(0.45, 0, 0.2, 1);
+    z-index: 5;
+    pointer-events: none;
+  }
+  .capsula-bar.drawn { transform: scaleY(1); }
+
+  .capsula-bar-right {
+    /* top/left/height se calculan por JS para nacer en el mismo punto (X,Y)
+       donde terminó el círculo de la sección anterior y seguir la línea vertical
+       de la grilla hacia abajo. */
+  }
+
+  /* La barra izquierda ahora es horizontal: sigue una línea de fila de la grilla. */
+  .capsula-bar-left {
+    width: var(--h-bar-length, 0px);
+    height: 6px;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  .capsula-bar-left.drawn { transform: scaleX(1); }
+
+  .capsula-circle-outline {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid var(--azul);
+    background: transparent;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .capsula-circle-outline.drawn {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .capsula-bar-bottom {
+    width: 8px;
+    top: 78%;
+    height: 22%;
+  }
+
   /* ── SECCIÓN 5: MUEBLES CÁPSULA ── */
   #capsula {
     position: relative;
     background: var(--blanco);
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
   }
@@ -1114,7 +1298,7 @@
   .capsula-header {
     position: relative;
     z-index: 4;
-    padding: 4rem 8vw 4rem;
+    padding: 5rem 8vw 4rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1127,7 +1311,6 @@
 
   .capsula-header .section-title { color: var(--negro); }
   .capsula-header .section-label { color: rgba(0,0,0,0.45); }
-  .capsula-header .section-body { color: rgba(0,0,0,0.65); }
 
   /* La grilla de Cápsula va por encima del mosaico para que sea visible (el resto de
      secciones la deja detrás del contenido, pero acá el mosaico ocupa casi toda el área) */
@@ -1136,7 +1319,7 @@
   /* Mosaico tipo grilla — 8 columnas x 6 filas, medido pixel a pixel de la referencia.
      Cada imagen/leyenda ocupa exactamente 2 columnas x 2 filas. */
   .capsula-mosaic-wrap {
-    padding: 0 8vw 4rem;
+    padding: 0 8vw 5rem;
     flex: 0 0 auto;
   }
 
@@ -1144,9 +1327,9 @@
     position: relative;
     z-index: 4;
     display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    grid-template-rows: repeat(8, minmax(0, 1fr));
-    aspect-ratio: 1 / 1;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: repeat(6, minmax(0, 1fr));
+    aspect-ratio: 6 / 6;
     width: 100%;
   }
 
@@ -1157,13 +1340,13 @@
     min-height: 0;
   }
 
-  .cell-chair    { grid-column: 2 / 4; grid-row: 1 / 3; }
-  .cell-stool    { grid-column: 6 / 8; grid-row: 1 / 3; }
-  .cell-diseno   { grid-column: 2 / 4; grid-row: 3 / 5; }
-  .cell-cabinet  { grid-column: 4 / 6; grid-row: 3 / 5; }
-  .cell-banco    { grid-column: 6 / 8; grid-row: 3 / 5; }
-  .cell-mesa     { grid-column: 2 / 4; grid-row: 5 / 7; }
-  .cell-recuperar{ grid-column: 6 / 8; grid-row: 5 / 7; }
+  .cell-chair    { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .cell-stool    { grid-column: 5 / 7; grid-row: 1 / 3; }
+  .cell-diseno   { grid-column: 1 / 3; grid-row: 3 / 5; }
+  .cell-cabinet  { grid-column: 3 / 5; grid-row: 3 / 5; }
+  .cell-banco    { grid-column: 5 / 7; grid-row: 3 / 5; }
+  .cell-mesa     { grid-column: 1 / 3; grid-row: 5 / 7; }
+  .cell-recuperar{ grid-column: 5 / 7; grid-row: 5 / 7; }
 
   .mosaic-cell.img-cell {
     z-index: 1;
@@ -1195,31 +1378,10 @@
     transform: scale(0.88);
   }
 
-  /* esquinas con rombos en cada celda, igual estética que el resto del sitio */
-  .mosaic-cell::before,
-  .mosaic-cell::after,
-  .mosaic-cell .diamond-bl,
-  .mosaic-cell .diamond-br {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: var(--naranja);
-    transform: translate(-50%, -50%) rotate(45deg);
-    z-index: 3;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .mosaic-cell::before { top: 0; left: 0; }
-  .mosaic-cell::after { top: 0; left: 100%; }
-  .mosaic-cell .diamond-bl { top: 100%; left: 0; }
-  .mosaic-cell .diamond-br { top: 100%; left: 100%; }
-
-  .capsula-mosaic.dots-on .mosaic-cell::before,
-  .capsula-mosaic.dots-on .mosaic-cell::after,
-  .capsula-mosaic.dots-on .mosaic-cell .diamond-bl,
-  .capsula-mosaic.dots-on .mosaic-cell .diamond-br {
-    opacity: 1;
+  /* Trazo en cada celda, mismo color y grosor que la grilla, para que las
+     celdas se vean recuadradas de forma consistente con el resto del sitio */
+  .mosaic-cell {
+    border: 1px solid rgba(240,112,48,0.4);
   }
 
   .mosaic-cell.img-cell .capsula-overlay {
@@ -1289,6 +1451,26 @@
     overflow: hidden;
   }
 
+  /* Círculo naranja/rojo de fondo, misma animación de caída que el círculo de Servicios */
+  .elegirnos-circle {
+    position: absolute;
+    top: 8%;
+    left: -90px;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: var(--rojo);
+    opacity: 0.9;
+    z-index: 0;
+    transform: translateY(-1200px) scale(0.15);
+    transition: transform 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+    pointer-events: none;
+  }
+
+  .elegirnos-circle.dropped {
+    transform: translateY(0) scale(1);
+  }
+
   .elegirnos-top {
     position: relative;
     z-index: 2;
@@ -1316,10 +1498,10 @@
     position: relative;
   }
 
-  .ventaja-item:hover { background: rgba(0,0,0,0.2); }
+  .ventaja-item:hover { background: #221c5c; }
   .ventaja-item:hover .ventaja-titulo { color: var(--crema); }
   .ventaja-item:hover .ventaja-texto { color: rgba(253,240,237,0.7); }
-  .ventaja-item:hover .ventaja-icon { opacity: 0.08; }
+  .ventaja-item:hover .ventaja-icon { transform: scale(1.08); }
 
   .ventaja-icon {
     height: 7.5rem;
@@ -1327,7 +1509,7 @@
     display: block;
     opacity: 0.18;
     margin-bottom: 1rem;
-    transition: opacity 0.3s;
+    transition: transform 0.3s;
   }
 
   .ventaja-titulo {
@@ -1439,7 +1621,7 @@
       right: 12px;
     }
 
-    .hero-content { max-width: 100%; padding-top: 80px; padding-bottom: 2rem; }
+    .hero-content { max-width: 100%; padding-top: 120px; padding-bottom: 2rem; }
     .hero-img-wrap {
       position: relative;
       flex: none;
@@ -1449,9 +1631,13 @@
       max-width: none;
     }
     #hero {
-      min-height: 100vh;
+      min-height: auto;
       padding-top: 0;
-      padding-bottom: 0;
+      padding-bottom: 3rem;
+    }
+
+    .hero-content .btn {
+      margin-top: 2rem;
     }
 
     .servicios-inner,
@@ -1466,6 +1652,20 @@
       min-height: auto;
     }
 
+    .servicios-inner {
+      gap: 0.5rem;
+    }
+
+    .cursos-header {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .cursos-header .section-body {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
     .servicios-text-col,
     .sobre-text-col {
       padding: 4rem 5vw 2rem;
@@ -1475,6 +1675,14 @@
     .servicios-img-col,
     .sobre-img-col {
       padding: 2rem 5vw 4rem;
+    }
+
+    .servicios-text-col {
+      padding-top: 1.5rem;
+    }
+
+    .servicios-img-col {
+      padding-bottom: 1.5rem;
     }
 
     .stats-strip {
@@ -1500,29 +1708,171 @@
       padding: 5rem 5vw;
     }
 
+    .cursos-carousel-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .cursos-grid {
-      grid-template-columns: 1fr;
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      border: none;
+      background: none;
+      gap: 0;
+      flex: 1;
+      /* oculta la barra de scroll nativa; se navega con las flechas o el dedo */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .cursos-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .curso-card {
+      flex: 0 0 100%;
+      width: 100%;
+      scroll-snap-align: center;
+      border: 1px solid rgba(253,240,237,0.2);
+    }
+
+    .cursos-landing-circle {
+      display: none;
+    }
+
+    .cursos-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(253,240,237,0.12);
+      border: 1px solid rgba(253,240,237,0.4);
+      color: var(--crema);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cursos-arrow:active {
+      transform: scale(0.92);
+    }
+
+    .cursos-arrow:hover {
+      background: rgba(253,240,237,0.25);
+    }
+
+    .cursos-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.4rem;
+    }
+
+    .cursos-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(253,240,237,0.35);
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .curso-card.mobile-hover {
+      background: var(--azul);
+      transform: scale(1.03);
+      z-index: 2;
+    }
+
+    .curso-card.mobile-hover .curso-img-stack .curso-img:not(.curso-img-hover) {
+      opacity: 0;
+    }
+
+    .curso-card.mobile-hover .curso-img-stack .curso-img-hover {
+      opacity: 1;
     }
 
     .capsula-mosaic {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
       grid-template-rows: none;
+      grid-auto-rows: auto;
       aspect-ratio: unset;
+      gap: 3px;
       padding: 0 5vw 5rem;
     }
+
+    /* Bento: celdas grandes ocupan las 2 columnas, celdas chicas van de a pares */
     .capsula-mosaic .mosaic-cell {
-      grid-column: 1 / 2 !important;
       grid-row: auto !important;
     }
+
+    .capsula-mosaic .cell-chair,
+    .capsula-mosaic .cell-cabinet,
+    .capsula-mosaic .cell-recuperar {
+      grid-column: 1 / 3 !important;
+    }
+
+    .capsula-mosaic .cell-stool,
+    .capsula-mosaic .cell-diseno,
+    .capsula-mosaic .cell-banco,
+    .capsula-mosaic .cell-mesa {
+      grid-column: auto !important;
+    }
+
     .capsula-mosaic .mosaic-cell.img-cell {
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 1 / 1;
     }
+
+    .capsula-mosaic .cell-chair,
+    .capsula-mosaic .cell-cabinet {
+      aspect-ratio: 1 / 1;
+    }
+
     .capsula-mosaic .mosaic-cell.text-cell {
-      aspect-ratio: auto;
-      padding: 2rem 1.6rem;
+      aspect-ratio: 1 / 1;
+      padding: 1.6rem 1.2rem;
     }
+
+    .capsula-mosaic .cell-recuperar.text-cell {
+      aspect-ratio: 1 / 1;
+    }
+
     .mosaic-cell.text-cell p {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+    }
+
+    .capsula-mosaic .mosaic-cell.img-cell .capsula-overlay {
+      padding: 0.7rem 0.8rem;
+    }
+
+    .capsula-mosaic .mosaic-cell.img-cell .capsula-overlay span {
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+    }
+
+    .mosaic-cell.img-cell.mobile-hover {
+      z-index: 5;
+      background: var(--azul);
+    }
+
+    .mosaic-cell.img-cell.mobile-hover img {
+      transform: scale(0.88);
+    }
+
+    .mosaic-cell.img-cell.mobile-hover .capsula-overlay {
+      background: transparent;
+      z-index: 4;
+    }
+
+    .mosaic-cell.img-cell.mobile-hover .capsula-overlay span {
+      color: var(--blanco);
     }
 
     .ventajas-grid {
@@ -1541,7 +1891,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-left, .reveal-right { transition: none; opacity: 1; transform: none; }
+    .reveal, .reveal-left, .reveal-right, .reveal-solid { transition: none; opacity: 1; transform: none; }
     .hero-title .underline-anim::after { transition: none; width: 100%; }
   }
 </style>
@@ -1555,7 +1905,7 @@
 
 <!-- NAVBAR -->
 <nav>
-  <a href="#hero" class="nav-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></a>
+  <a href="#hero" class="nav-logo"><img src="logo-raiz-blanco.png" alt="Raíz" loading="eager" decoding="async"></a>
   <ul class="nav-links">
     <li><a href="#servicios">Servicios</a></li>
     <li><a href="#sobre">Nosotros</a></li>
@@ -1563,6 +1913,7 @@
     <li><a href="#capsula">Cápsula</a></li>
     <li><a href="#elegirnos">Por qué elegirnos</a></li>
     <li><a href="#elegirnos" class="nav-cta">Contacto</a></li>
+    <li><a href="https://juliamirandagutre-art.github.io/bibliotecaraiz/" target="_blank" rel="noopener" class="nav-biblioteca">Biblioteca UI</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menú">
     <span></span><span></span><span></span>
@@ -1576,6 +1927,7 @@
   <a href="#capsula">Cápsula</a>
   <a href="#elegirnos">Por qué elegirnos</a>
   <a href="#elegirnos">Contacto</a>
+  <a href="https://juliamirandagutre-art.github.io/bibliotecaraiz/" target="_blank" rel="noopener" class="mobile-biblioteca">Biblioteca UI</a>
 </div>
 
 <!-- 1. HERO -->
@@ -1592,8 +1944,8 @@
 
   <div class="hero-img-wrap" id="heroImgWrap">
     <div class="hero-img-stack" id="heroImgStack">
-      <img src="sillonheroviejo.png" alt="Sillón antes de restaurar" class="img-base">
-      <img src="sillonherofinal.jpg" alt="Sillón restaurado" class="img-reveal">
+      <img src="sillonheroviejo.png" alt="Sillón antes de restaurar" class="img-base" loading="eager" fetchpriority="high" decoding="async">
+      <img src="sillonherofinal.jpg" alt="Sillón restaurado" class="img-reveal" loading="eager" decoding="async">
 
       <div class="hero-spot-frame" id="heroSpotFrame">
         <span class="corner-l"></span>
@@ -1607,20 +1959,20 @@
 
 <!-- 2. SERVICIOS -->
 <section id="servicios">
-  <svg class="grid-svg" id="serviciosGrid" data-color="rgba(240,112,48,0.5)" data-step="120"></svg>
+  <svg class="grid-svg" id="serviciosGrid" data-color="rgba(240,112,48,0.4)" data-step="120"></svg>
 
   <div class="servicios-inner">
     <div class="servicios-img-col reveal-left">
       <div class="servicios-circle" id="serviciosCircle"></div>
       <div class="servicios-img-stack">
-        <img src="plano-mesita.png" alt="Plano técnico de restauración" class="img-base">
-        <img src="plano-mesita-diagrama.png" alt="Diagrama detallado de restauración" class="img-hover">
+        <img src="plano-mesita.png" alt="Plano técnico de restauración" class="img-base" loading="lazy" decoding="async">
+        <img src="plano-mesita-diagrama.png" alt="Diagrama detallado de restauración" class="img-hover" loading="lazy" decoding="async">
       </div>
     </div>
 
     <div class="servicios-text-col">
       <p class="section-label reveal" style="color:var(--rojo)">Servicio principal</p>
-      <h2 class="section-title reveal">Restauración<br>Integral</h2>
+      <h2 class="section-title reveal">Restauración<br>integral</h2>
       <p class="section-body reveal">Nos dedicamos a restaurar y reinventar piezas con historia, combinando oficio tradicional y diseño actual.</p>
 
       <div class="proceso-steps">
@@ -1656,6 +2008,10 @@
 <section id="sobre">
 
   <div class="stats-strip" id="statsStrip">
+    <span class="franja-dot dot-tl"></span>
+    <span class="franja-dot dot-tr"></span>
+    <span class="franja-dot dot-bl"></span>
+    <span class="franja-dot dot-br"></span>
     <div class="stats-track" id="statsTrack">
       <div class="stat-item">
         <span class="diamond-bottom"></span>
@@ -1705,7 +2061,7 @@
     <div class="sobre-text-col">
       <p class="section-label reveal" style="color:rgba(253,240,237,0.5)">Quiénes somos</p>
       <h2 class="section-title reveal" style="color:var(--crema)">Mirar atrás<br>para construir<br>adelante.</h2>
-      <p class="section-body reveal" style="color:rgba(253,240,237,0.7); max-width:380px">Somos un estudio de diseño y restauración fundado sobre una premisa: cada mueble tiene una historia que merece continuar. Combinamos conocimiento artesanal con sensibilidad contemporánea.</p>
+      <p class="section-body reveal" style="color:rgba(253,240,237,0.7); max-width:380px">Somos un estudio de diseño y restauración fundado sobre una premisa: cada mueble tiene una historia que merece continuar.</p>
 
       <a href="#" class="btn btn-sobre reveal"><span>Nuestra historia</span></a>
     </div>
@@ -1714,8 +2070,8 @@
       <div class="sobre-circle" id="sobreCircle"></div>
       <div class="sobre-img-wrap" id="sobreImgWrap">
         <div class="sobre-img-stack" id="sobreImgStack">
-          <img src="hombresilla1.png" alt="Silla restaurada" class="img-base">
-          <img src="hombresilla2.png" alt="Silla antes de restaurar" class="img-reveal">
+          <img src="hombresilla1.png" alt="Silla restaurada" class="img-base" loading="lazy" decoding="async">
+          <img src="hombresilla2.png" alt="Silla antes de restaurar" class="img-reveal" loading="lazy" decoding="async">
 
           <div class="sobre-spot-frame" id="sobreSpotFrame">
             <span class="corner-l"></span>
@@ -1729,7 +2085,7 @@
 
 <!-- 4. CURSOS -->
 <section id="cursos">
-  <canvas class="grid-canvas" id="cursosGrid" data-color="rgba(49,39,131,0.3)" data-step="120"></canvas>
+  <canvas class="grid-canvas" id="cursosGrid" data-color="rgba(240,112,48,0.8)" data-step="120"></canvas>
 
   <div class="cursos-inner">
     <div class="cursos-header">
@@ -1739,61 +2095,85 @@
       <a href="#" class="btn btn-cursos reveal"><span>Ver todos</span></a>
     </div>
 
-    <div class="cursos-grid">
-      <div class="curso-card reveal">
-        <div class="curso-num">01</div>
-        <img src="ChatGPT_Image_18_jun_2026__05_16_01_p_m_.png" alt="Restauración básica" class="curso-img">
-        <div class="curso-name">Restauración Básica de Madera</div>
-        <div class="curso-desc">Lijado, sellado y acabado para piezas con deterioro superficial.</div>
-        <div class="curso-precio">$50.000</div>
-        <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
+    <div class="cursos-carousel-wrap">
+      <button type="button" class="cursos-arrow cursos-arrow-left" id="cursosArrowLeft" aria-label="Curso anterior">&#8592;</button>
+      <div class="cursos-grid" id="cursosGridTrack">
+        <span class="cursos-landing-circle" id="cursosLandingCircle"></span>
+        <div class="curso-card reveal">
+          <div class="curso-num">01</div>
+          <div class="curso-img-stack">
+            <img src="ChatGPT_Image_18_jun_2026__05_16_01_p_m_.png" alt="Restauración básica" class="curso-img" loading="lazy" decoding="async">
+            <img src="diagramacurso3.png" alt="Diagrama técnico de medidas" class="curso-img curso-img-hover" loading="lazy" decoding="async">
+          </div>
+          <div class="curso-name">Restauración Básica de Madera</div>
+          <div class="curso-desc">Lijado, sellado y acabado para piezas con deterioro superficial.</div>
+          <div class="curso-precio">$50.000</div>
+          <a href="#" class="btn btn-cursos"><span>Ver más</span></a>
+        </div>
+        <div class="curso-card reveal">
+          <div class="curso-num">02</div>
+          <div class="curso-img-stack">
+            <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Tapizado contemporáneo" class="curso-img" loading="lazy" decoding="async">
+            <img src="diagramacurso2.png" alt="Diagrama técnico de medidas" class="curso-img curso-img-hover" loading="lazy" decoding="async">
+          </div>
+          <div class="curso-name">Tapizado Contemporáneo</div>
+          <div class="curso-desc">Telas, espumas y técnicas de tapizado moderno para estructuras históricas.</div>
+          <div class="curso-precio">$65.000</div>
+          <a href="curso-tapizado.html" class="btn btn-cursos"><span>Ver más</span></a>
+        </div>
+        <div class="curso-card reveal">
+          <div class="curso-num">03</div>
+          <div class="curso-img-stack">
+            <img src="ChatGPT_Image_18_jun_2026__05_22_52_p_m_.png" alt="Diseño y rediseño de piezas" class="curso-img" loading="lazy" decoding="async">
+            <img src="diagramacurso1.png" alt="Diagrama técnico de medidas" class="curso-img curso-img-hover" loading="lazy" decoding="async">
+          </div>
+          <div class="curso-name">Diseño de Piezas Únicas</div>
+          <div class="curso-desc">Metodología Raíz para rediseñar muebles irrecuperables.</div>
+          <div class="curso-precio">$40.000</div>
+          <a href="#" class="btn btn-cursos"><span>Ver más</span></a>
+        </div>
       </div>
-      <div class="curso-card reveal">
-        <div class="curso-num">02</div>
-        <img src="ChatGPT_Image_18_jun_2026__05_20_05_p_m_.png" alt="Tapizado contemporáneo" class="curso-img">
-        <div class="curso-name">Tapizado Contemporáneo</div>
-        <div class="curso-desc">Telas, espumas y técnicas de tapizado moderno para estructuras históricas.</div>
-        <div class="curso-precio">$65.000</div>
-        <a href="curso-tapizado.html" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
-      </div>
-      <div class="curso-card reveal">
-        <div class="curso-num">03</div>
-        <img src="ChatGPT_Image_18_jun_2026__05_22_52_p_m_.png" alt="Diseño y rediseño de piezas" class="curso-img">
-        <div class="curso-name">Diseño de Piezas Únicas</div>
-        <div class="curso-desc">Metodología Raíz para rediseñar muebles irrecuperables.</div>
-        <div class="curso-precio">$40.000</div>
-        <a href="#" class="btn btn-cursos" style="font-size:0.65rem; padding:0.4rem 1rem"><span>Ver más</span></a>
-      </div>
+      <button type="button" class="cursos-arrow cursos-arrow-right" id="cursosArrowRight" aria-label="Siguiente curso">&#8594;</button>
+    </div>
+    <div class="cursos-dots" id="cursosDots">
+      <span class="cursos-dot active"></span>
+      <span class="cursos-dot"></span>
+      <span class="cursos-dot"></span>
     </div>
   </div>
 </section>
 
 <!-- 5. MUEBLES CÁPSULA -->
 <section id="capsula">
-  <svg class="grid-svg" id="capsulaGrid" data-color="rgba(240,112,48,0.8)" data-step="120"></svg>
+  <svg class="grid-svg" id="capsulaGrid" data-color="rgba(240,112,48,0.4)" data-step="120"></svg>
+
+  <span class="capsula-bar capsula-bar-right" id="capsulaBarRight"></span>
+  <span class="capsula-bar capsula-bar-left" id="capsulaBarLeft"></span>
+  <span class="capsula-circle-outline" id="capsulaCircleOutline"></span>
+  <span class="capsula-bar capsula-bar-bottom" id="capsulaBarBottom"></span>
 
   <div class="capsula-header">
     <div>
-      <p class="section-label reveal" style="color:rgba(0,0,0,0.45)">Muebles Cápsula</p>
+      <p class="section-label reveal" style="color:var(--rojo)">Muebles Cápsula</p>
       <h2 class="section-title reveal">Forma, patrón y materia.</h2>
     </div>
     <div>
-      <p class="section-body reveal">Un espacio donde experimentamos y jugamos. Rayas, cuadrillé y maderas combinadas en piezas únicas que no siguen reglas — solo intuición y oficio.</p>
-      <a href="#" class="btn btn-capsula reveal"><span>Ver colección</span></a>
+      <p class="section-body reveal">Rayas, cuadrillé y maderas combinadas en piezas únicas. Solo intuición y oficio.</p>
+      <a href="#" class="btn btn-servicios reveal"><span>Ver colección</span></a>
     </div>
   </div>
 
   <div class="capsula-mosaic-wrap">
   <div class="capsula-mosaic" id="capsulaMosaic">
     <div class="mosaic-cell img-cell cell-chair reveal">
-      <img src="ChatGPT_Image_18_jun_2026__05_23_39_p_m_.png" alt="Silla rayas blanco negro">
+      <img src="ChatGPT_Image_18_jun_2026__05_23_39_p_m_.png" alt="Silla rayas blanco negro" loading="lazy" decoding="async">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Dúo — Rayas B&N</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
 
     <div class="mosaic-cell img-cell cell-stool reveal">
-      <img src="ChatGPT_Image_18_jun_2026__05_25_46_p_m_.png" alt="Banqueta madera rayada">
+      <img src="ChatGPT_Image_18_jun_2026__05_25_46_p_m_.png" alt="Banqueta madera rayada" loading="lazy" decoding="async">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Trazo — Nogal bicolor</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
@@ -1805,21 +2185,21 @@
     </div>
 
     <div class="mosaic-cell img-cell cell-cabinet reveal">
-      <img src="ChatGPT_Image_18_jun_2026__05_27_21_p_m_.png" alt="Vitrina rayas verticales">
+      <img src="ChatGPT_Image_18_jun_2026__05_27_21_p_m_.png" alt="Vitrina rayas verticales" loading="lazy" decoding="async">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Vértigo — Caoba y crema</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
 
     <div class="mosaic-cell img-cell cell-banco reveal">
-      <img src="ChatGPT_Image_18_jun_2026__05_31_41_p_m_.png" alt="Mesa auxiliar rayas">
+      <img src="ChatGPT_Image_18_jun_2026__05_31_41_p_m_.png" alt="Mesa auxiliar rayas" loading="lazy" decoding="async">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Franja — Pino y nogal</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
     </div>
 
     <div class="mosaic-cell img-cell cell-mesa reveal">
-      <img src="ChatGPT_Image_18_jun_2026__05_36_38_p_m_.png" alt="Mesa cuadrillé mármol">
+      <img src="ChatGPT_Image_18_jun_2026__05_36_38_p_m_.png" alt="Mesa cuadrillé mármol" loading="lazy" decoding="async">
       <span class="hover-tint"></span>
       <div class="capsula-overlay"><span>Cuadrillé — Mármol</span></div>
       <span class="diamond-bl"></span><span class="diamond-br"></span>
@@ -1835,7 +2215,8 @@
 
 <!-- 6. POR QUÉ ELEGIRNOS + CONTACTO -->
 <section id="elegirnos">
-  <canvas class="grid-canvas" id="elegirnosGrid" data-color="rgba(0,0,0,0.12)" data-step="120"></canvas>
+
+  <span class="elegirnos-circle" id="elegirnosCircle"></span>
 
   <div class="elegirnos-top">
     <div class="elegirnos-header">
@@ -1846,18 +2227,18 @@
     </div>
 
     <div class="ventajas-grid">
-      <div class="ventaja-item reveal">
-        <img src="iconosierra.png" alt="" class="ventaja-icon">
+      <div class="ventaja-item reveal-solid">
+        <img src="iconosierra.png" alt="" class="ventaja-icon" loading="lazy" decoding="async">
         <div class="ventaja-titulo">Oficio real</div>
         <div class="ventaja-texto">Cada pieza es intervenida por especialistas con formación en carpintería estructural y diseño de interiores.</div>
       </div>
-      <div class="ventaja-item reveal">
-        <img src="iconopincel.png" alt="" class="ventaja-icon">
+      <div class="ventaja-item reveal-solid">
+        <img src="iconopincel.png" alt="" class="ventaja-icon" loading="lazy" decoding="async">
         <div class="ventaja-titulo">Diseño contemporáneo</div>
         <div class="ventaja-texto">No restauramos para el pasado. Cada intervención tiene un criterio estético actual, pensado para espacios de hoy.</div>
       </div>
-      <div class="ventaja-item reveal">
-        <img src="iconosillon.png" alt="" class="ventaja-icon">
+      <div class="ventaja-item reveal-solid">
+        <img src="iconosillon.png" alt="" class="ventaja-icon" loading="lazy" decoding="async">
         <div class="ventaja-titulo">Piezas únicas</div>
         <div class="ventaja-texto">Cada mueble que restauramos es tratado como un objeto irrepetible. Porque lo es.</div>
       </div>
@@ -1868,7 +2249,7 @@
   <div class="contacto-strip">
     <div>
       <p class="section-label reveal" style="color:rgba(253,240,237,0.4)">Contacto</p>
-      <h2 class="section-title reveal">Hablemos<br>de tu pieza.</h2>
+      <h2 class="section-title reveal">Hablemos<br>de <span class="highlight-box highlight-box-red" id="contactoHighlight"><span>tu pieza.</span></span></h2>
       <p class="section-body reveal">Contanos qué tenés, qué imaginás, y te respondemos con una propuesta a medida.</p>
       <div style="margin-top:2rem">
         <p style="font-size:0.8rem; color:rgba(253,240,237,0.4); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.4rem">Email</p>
@@ -1880,16 +2261,130 @@
       <input type="text" placeholder="Tu nombre">
       <input type="email" placeholder="Tu email">
       <textarea placeholder="Contanos sobre tu mueble..."></textarea>
-      <a href="#" class="btn btn-contacto" style="margin-top:0.5rem; text-align:center"><span>Enviar mensaje</span></a>
+      <a href="#" class="btn btn-contacto" style="margin-top:0.5rem; align-self:flex-start"><span>Enviar mensaje</span></a>
     </div>
   </div>
 </section>
 
 <footer>
-  <span>© 2024 Raíz — Diseño para una segunda vida</span>
-  <span class="footer-logo"><img src="logo-raiz-blanco.png" alt="Raíz"></span>
+  <span>© 2026 Raíz — Diseño para una segunda vida</span>
+  <span class="footer-logo"><img src="logo-raiz-blanco.png" alt="Raíz" loading="lazy" decoding="async"></span>
   <span>Buenos Aires, Argentina</span>
 </footer>
+
+<script>
+// ── Carrusel de cursos en mobile: flechas + dots sincronizados con el scroll ──
+(function () {
+  const track = document.getElementById('cursosGridTrack');
+  const btnLeft = document.getElementById('cursosArrowLeft');
+  const btnRight = document.getElementById('cursosArrowRight');
+  const dots = document.querySelectorAll('#cursosDots .cursos-dot');
+  if (!track || !btnLeft || !btnRight) return;
+
+  function getCards() {
+    return Array.from(track.querySelectorAll('.curso-card'));
+  }
+
+  function goTo(index) {
+    const cards = getCards();
+    if (!cards[index]) return;
+    track.scrollTo({ left: cards[index].offsetLeft, behavior: 'smooth' });
+  }
+
+  function currentIndex() {
+    const cards = getCards();
+    let closest = 0;
+    let minDist = Infinity;
+    cards.forEach((card, i) => {
+      const dist = Math.abs(card.offsetLeft - track.scrollLeft);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    return closest;
+  }
+
+  let hoverTimeout;
+
+  function clearMobileHover() {
+    getCards().forEach(card => card.classList.remove('mobile-hover'));
+  }
+
+  function scheduleMobileHover() {
+    clearTimeout(hoverTimeout);
+    clearMobileHover();
+    hoverTimeout = setTimeout(() => {
+      const cards = getCards();
+      const idx = currentIndex();
+      if (cards[idx]) cards[idx].classList.add('mobile-hover');
+    }, 1500);
+  }
+
+  function updateDots() {
+    const idx = currentIndex();
+    const lastIdx = getCards().length - 1;
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+    btnLeft.style.visibility = idx <= 0 ? 'hidden' : 'visible';
+    btnRight.style.visibility = idx >= lastIdx ? 'hidden' : 'visible';
+    scheduleMobileHover();
+  }
+
+  btnLeft.addEventListener('click', () => {
+    const idx = Math.max(0, currentIndex() - 1);
+    goTo(idx);
+  });
+
+  btnRight.addEventListener('click', () => {
+    const cards = getCards();
+    const idx = Math.min(cards.length - 1, currentIndex() + 1);
+    goTo(idx);
+  });
+
+  let scrollTimeout;
+  track.addEventListener('scroll', () => {
+    clearTimeout(hoverTimeout);
+    clearMobileHover();
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateDots, 80);
+  });
+
+  window.addEventListener('resize', updateDots);
+  updateDots();
+})();
+
+// ── Mismo truco en Muebles Cápsula: la celda de imagen centrada en pantalla
+// se pone azul/zoom sola después de 1.5s, solo en mobile ──
+(function () {
+  const mq = window.matchMedia('(max-width: 900px)');
+  const cells = Array.from(document.querySelectorAll('.mosaic-cell.img-cell'));
+  if (!cells.length) return;
+
+  const timers = new WeakMap();
+
+  function clearCell(cell) {
+    clearTimeout(timers.get(cell));
+    cell.classList.remove('mobile-hover');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    if (!mq.matches) return;
+    entries.forEach((entry) => {
+      const cell = entry.target;
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
+        clearTimeout(timers.get(cell));
+        const t = setTimeout(() => cell.classList.add('mobile-hover'), 1500);
+        timers.set(cell, t);
+      } else {
+        clearCell(cell);
+      }
+    });
+  }, { threshold: [0, 0.65, 1] });
+
+  cells.forEach((cell) => observer.observe(cell));
+
+  mq.addEventListener('change', (e) => {
+    if (!e.matches) cells.forEach(clearCell);
+  });
+})();
+</script>
 
 <script>
   // Hamburger
@@ -1899,7 +2394,7 @@
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
 
   // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-solid');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) {
@@ -2006,6 +2501,20 @@
   const highlight = document.getElementById('heroHighlight');
   if (highlight) setTimeout(() => highlight.classList.add('animate'), 500);
 
+  // Highlight box roja "tu pieza" — se anima al entrar en viewport
+  const contactoHighlight = document.getElementById('contactoHighlight');
+  if (contactoHighlight) {
+    const contactoHighlightObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          contactoHighlight.classList.add('animate');
+          contactoHighlightObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    contactoHighlightObs.observe(contactoHighlight);
+  }
+
   // Navbar scroll
   const navbar = document.querySelector('nav');
   window.addEventListener('scroll', () => {
@@ -2015,7 +2524,6 @@
   // ── CANVAS GRID — dibuja línea por línea ──
   function initGrid(canvas) {
     const color = canvas.dataset.color || 'rgba(0,0,0,0.07)';
-    const STEP = parseInt(canvas.dataset.step) || 80;
     const section = canvas.closest('section') || canvas.parentElement;
     let drawn = false;
 
@@ -2026,25 +2534,52 @@
     resize();
     window.addEventListener('resize', () => { if (drawn) { resize(); drawAll(); } });
 
+    // Mismas columnas que la grilla de Muebles Cápsula: 8 columnas repartidas
+    // en el ancho con 8vw de margen a cada lado (4 en mobile), para que las
+    // líneas verticales coincidan al pasar de una sección a otra.
+    function getColXs() {
+      const numCols = isMobileView() ? 4 : 6;
+      const padLeft = canvas.width * 0.08;
+      const gridW = canvas.width - padLeft * 2;
+      const colWidth = gridW / numCols;
+      const colXs = [];
+      const kStart = Math.ceil((0 - padLeft) / colWidth);
+      const kEnd = Math.floor((canvas.width - padLeft) / colWidth);
+      for (let k = kStart; k <= kEnd; k++) colXs.push(padLeft + k * colWidth);
+      return { colXs, colWidth };
+    }
+
+    function drawDots(ctx, colXs, colWidth, rows) {
+      ctx.fillStyle = color;
+      colXs.forEach(x => {
+        for (let r = 0; r <= rows; r++) {
+          ctx.beginPath();
+          ctx.arc(x, r * colWidth, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    }
+
     function drawAll() {
       const ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = color;
       ctx.lineWidth = 1;
-      const cols = Math.ceil(canvas.width / STEP);
-      const rows = Math.ceil(canvas.height / STEP);
-      for (let c = 1; c < cols; c++) {
+      const { colXs, colWidth } = getColXs();
+      const rows = Math.ceil(canvas.height / colWidth);
+      colXs.forEach(x => {
         ctx.beginPath();
-        ctx.moveTo(c * STEP, 0);
-        ctx.lineTo(c * STEP, canvas.height);
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
         ctx.stroke();
-      }
+      });
       for (let r = 1; r < rows; r++) {
         ctx.beginPath();
-        ctx.moveTo(0, r * STEP);
-        ctx.lineTo(canvas.width, r * STEP);
+        ctx.moveTo(0, r * colWidth);
+        ctx.lineTo(canvas.width, r * colWidth);
         ctx.stroke();
       }
+      drawDots(ctx, colXs, colWidth, rows);
     }
 
     function animateGrid() {
@@ -2055,18 +2590,21 @@
       ctx.strokeStyle = color;
       ctx.lineWidth = 1;
 
-      const cols = Math.ceil(canvas.width / STEP);
-      const rows = Math.ceil(canvas.height / STEP);
+      const { colXs, colWidth } = getColXs();
+      const rows = Math.ceil(canvas.height / colWidth);
       const lines = [];
 
-      for (let c = 1; c < cols; c++) lines.push({ type: 'v', pos: c * STEP });
-      for (let r = 1; r < rows; r++) lines.push({ type: 'h', pos: r * STEP });
+      colXs.forEach(x => lines.push({ type: 'v', pos: x }));
+      for (let r = 1; r < rows; r++) lines.push({ type: 'h', pos: r * colWidth });
 
       let i = 0;
       const delay = 120;
 
       function drawNext() {
-        if (i >= lines.length) return;
+        if (i >= lines.length) {
+          drawDots(ctx, colXs, colWidth, rows);
+          return;
+        }
         const line = lines[i++];
         ctx.beginPath();
         if (line.type === 'v') {
@@ -2096,11 +2634,14 @@
   document.querySelectorAll('.grid-canvas').forEach(initGrid);
 
   // ── Grilla SVG con animación de líneas creciendo + nodos (estilo Cipher Digital) ──
+  const GRID_MOBILE_BP = 900; // mismo breakpoint que el media query general
+  function isMobileView() { return window.innerWidth <= GRID_MOBILE_BP; }
+
   function initGridSvg(svg) {
     const color = svg.dataset.color || 'rgba(0,0,0,0.07)';
     const STEP = parseInt(svg.dataset.step) || 120;
     const section = svg.closest('section') || svg.parentElement;
-    const isCapsula = svg.id === 'capsulaGrid';
+    const isCapsulaId = svg.id === 'capsulaGrid';
     let drawn = false;
 
     function build() {
@@ -2109,6 +2650,10 @@
       svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
 
       let content = '';
+      // En mobile el mosaico de Cápsula pasa a ser de una sola columna, así que
+      // la grilla "precisa" (alineada celda por celda) ya no tiene sentido ahí:
+      // se usa la grilla genérica con menos columnas, igual que el resto de las secciones.
+      const isCapsula = svg.id === 'capsulaGrid' && !isMobileView();
 
       if (isCapsula) {
         // Grilla alineada con el padding lateral real del mosaico, con una fila arriba
@@ -2127,9 +2672,9 @@
         const innerRight = w - padRight;
         const gridW = innerRight - innerLeft;
 
-        // el mosaico real es de 8 columnas x 8 filas (ver .capsula-mosaic en el CSS)
-        const cols = 8;
-        const rows = 8;
+        // el mosaico real es de 6 columnas x 6 filas (ver .capsula-mosaic en el CSS)
+        const cols = 6;
+        const rows = 6;
         const colWidth = gridW / cols;
         const rowHeight = colWidth; // celdas del mosaico: cuadradas (alto = ancho de columna)
 
@@ -2198,21 +2743,33 @@
           });
         });
       } else {
-        const cols = Math.ceil(w / STEP);
-        const rows = Math.ceil(h / STEP);
-
-        for (let c = 1; c < cols; c++) {
-          content += `<line class="grid-line" x1="${c*STEP}" y1="0" x2="${c*STEP}" y2="${h}" stroke="${color}" />`;
+        // Mismas columnas que la grilla de Muebles Cápsula: 8 columnas con 8vw
+        // de margen a cada lado (4 en mobile, para que no quede demasiado densa
+        // en pantallas angostas), para que las líneas coincidan entre secciones.
+        const numCols = isMobileView() ? 4 : 6;
+        const padLeft = w * 0.08;
+        const gridW = w - padLeft * 2;
+        const colWidth = gridW / numCols;
+        const colXs = [];
+        {
+          const kStart = Math.ceil((0 - padLeft) / colWidth);
+          const kEnd = Math.floor((w - padLeft) / colWidth);
+          for (let k = kStart; k <= kEnd; k++) colXs.push(padLeft + k * colWidth);
         }
+        const rows = Math.ceil(h / colWidth);
+
+        colXs.forEach(x => {
+          content += `<line class="grid-line" x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="${color}" />`;
+        });
         for (let r = 1; r < rows; r++) {
-          content += `<line class="grid-line" x1="0" y1="${r*STEP}" x2="${w}" y2="${r*STEP}" stroke="${color}" />`;
+          content += `<line class="grid-line" x1="0" y1="${r*colWidth}" x2="${w}" y2="${r*colWidth}" stroke="${color}" />`;
         }
         // nodos en cada intersección
-        for (let c = 1; c < cols; c++) {
+        colXs.forEach(x => {
           for (let r = 1; r < rows; r++) {
-            content += `<circle class="grid-dot" cx="${c*STEP}" cy="${r*STEP}" r="2.5" fill="${color}" />`;
+            content += `<circle class="grid-dot" cx="${x}" cy="${r*colWidth}" r="2.5" fill="${color}" />`;
           }
-        }
+        });
       }
 
       svg.innerHTML = content;
@@ -2229,12 +2786,22 @@
     }
 
     build();
-    window.addEventListener('resize', () => { if (!drawn) build(); });
+    window.addEventListener('resize', () => {
+      build();
+      if (drawn) {
+        // ya se dibujó antes: al redimensionar (p.ej. girar el celular) se
+        // recalculan las líneas pero se muestran directo, sin repetir la animación
+        svg.querySelectorAll('.grid-line').forEach(line => {
+          line.style.transition = 'none';
+          line.style.strokeDashoffset = '0';
+        });
+      }
+    });
 
     // En Cápsula la animación arranca antes y corre más rápido que en el resto de las secciones
-    const lineDuration = isCapsula ? 0.3 : 0.6;
-    const lineStagger = isCapsula ? 0.03 : 0.1;
-    const dotsDelay = isCapsula ? 150 : 400;
+    const lineDuration = isCapsulaId ? 0.3 : 0.6;
+    const lineStagger = isCapsulaId ? 0.03 : 0.1;
+    const dotsDelay = isCapsulaId ? 150 : 400;
 
     function animate() {
       if (drawn) return;
@@ -2249,7 +2816,7 @@
         svg.classList.add('dots-visible');
         // si es la grilla de Muebles Cápsula, también activa los rombos de cada celda del mosaico
         const mosaic = document.getElementById('capsulaMosaic');
-        if (isCapsula && mosaic) mosaic.classList.add('dots-on');
+        if (isCapsulaId && mosaic) mosaic.classList.add('dots-on');
       }, lines.length * (lineStagger * 1000) + dotsDelay);
     }
 
@@ -2260,7 +2827,7 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: isCapsula ? 0.02 : 0.35 });
+    }, { threshold: isCapsulaId ? 0.02 : 0.35 });
     obs.observe(section);
   }
 
@@ -2280,6 +2847,20 @@
     circleObs.observe(document.getElementById('servicios'));
   }
 
+  // Círculo rojo — misma animación de caída, detrás del título y las cards de "Por qué elegirnos"
+  const elegirnosCircle = document.getElementById('elegirnosCircle');
+  if (elegirnosCircle) {
+    const elegirnosCircleObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          elegirnosCircle.classList.add('dropped');
+          elegirnosCircleObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    elegirnosCircleObs.observe(document.getElementById('elegirnos'));
+  }
+
   // ── Círculo de Sobre Nosotros (sección 3) ──
   // Fase 1: al entrar a la sección, aparece de golpe (seco, sin degradé) del lado izquierdo,
   //         azul con trazo blanco, chico — y el círculo rojo de Servicios se oculta.
@@ -2289,6 +2870,204 @@
   const sobreCircle = document.getElementById('sobreCircle');
   const sobreSection = document.getElementById('sobre');
   const sobreImgCol = document.querySelector('.sobre-img-col');
+
+  // ── Círculo que continúa el recorrido en Cursos (sección 4) ──
+  // Aparece detrás de la primera card (arriba-izq) y viaja detrás de la
+  // última (abajo-der), achicándose un poco más, apenas se entra a la sección.
+  const cursosLandingCircle = document.getElementById('cursosLandingCircle');
+  const cursosGrid = document.querySelector('.cursos-grid');
+  const cursosCards = document.querySelectorAll('.curso-card');
+
+  function setLandingPositions() {
+    if (!cursosLandingCircle || !cursosGrid || cursosCards.length < 2) return;
+    const gridRect = cursosGrid.getBoundingClientRect();
+    const firstRect = cursosCards[0].getBoundingClientRect();
+    const lastRect = cursosCards[cursosCards.length - 1].getBoundingClientRect();
+    const size = 110;
+    const radius = size / 2;
+
+    const rowBottom = Math.max(firstRect.bottom, lastRect.bottom);
+
+    const startTop = rowBottom - gridRect.top - radius;
+    const startLeft = firstRect.left - gridRect.left - radius;
+    const endTop = rowBottom - gridRect.top - radius;
+    const endLeft = lastRect.right - gridRect.left - radius;
+
+    cursosLandingCircle.style.setProperty('--land-start-top', startTop + 'px');
+    cursosLandingCircle.style.setProperty('--land-start-left', startLeft + 'px');
+    cursosLandingCircle.style.setProperty('--land-end-top', endTop + 'px');
+    cursosLandingCircle.style.setProperty('--land-end-left', endLeft + 'px');
+  }
+  setLandingPositions();
+  window.addEventListener('resize', setLandingPositions);
+
+  function playCursosLanding() {
+    if (!cursosLandingCircle) return;
+    setLandingPositions();
+    cursosLandingCircle.classList.remove('travel');
+    cursosLandingCircle.classList.add('appear');
+    setTimeout(() => {
+      setLandingPositions();
+      cursosLandingCircle.classList.add('travel');
+    }, 2000);
+  }
+
+  function resetCursosLanding() {
+    if (!cursosLandingCircle) return;
+    cursosLandingCircle.classList.remove('appear', 'travel');
+  }
+
+  // ── Barras de Cápsula: la de la derecha continúa el recorrido desde donde
+  // quedó el círculo azul en Cursos (misma posición horizontal) ──
+  const capsulaSection = document.getElementById('capsula');
+  const capsulaBarRight = document.getElementById('capsulaBarRight');
+  const capsulaBarLeft = document.getElementById('capsulaBarLeft');
+  const capsulaCircleOutline = document.getElementById('capsulaCircleOutline');
+  const capsulaBarBottom = document.getElementById('capsulaBarBottom');
+  const firstCursoCard = cursosCards[0];
+  const lastCursoCard = cursosCards[cursosCards.length - 1];
+
+  // Calcula las mismas líneas de grilla (columnas y filas) que dibuja initGridSvg
+  // para la sección Cápsula, así las barras pueden "engancharse" exactamente a ellas.
+  function getCapsulaGridLines() {
+    const mosaic = document.getElementById('capsulaMosaic');
+    const header = document.querySelector('.capsula-header');
+    if (!capsulaSection || !mosaic || !header) return null;
+
+    const w = capsulaSection.offsetWidth;
+    const padLeft = mosaic.offsetLeft;
+    const padRight = w - (mosaic.offsetLeft + mosaic.offsetWidth);
+    const innerLeft = padLeft;
+    const innerRight = w - padRight;
+    const gridW = innerRight - innerLeft;
+
+    const cols = 6, rows = 6;
+    const colWidth = gridW / cols;
+    const rowHeight = colWidth;
+
+    const headerBottom = header.offsetTop + header.offsetHeight;
+    const mosaicTop = mosaic.offsetTop;
+    const mosaicBottom = mosaicTop + rows * rowHeight;
+
+    const gridLeft = 0, gridRight = w, gridTop = 0;
+    const gridBottom = Math.max(mosaicBottom, capsulaSection.offsetHeight);
+
+    const colXs = [];
+    const kStartC = Math.ceil((gridLeft - innerLeft) / colWidth);
+    const kEndC = Math.floor((gridRight - innerLeft) / colWidth);
+    for (let k = kStartC; k <= kEndC; k++) colXs.push(innerLeft + k * colWidth);
+    if (colXs[0] > 0.5) colXs.unshift(gridLeft);
+    if (gridRight - colXs[colXs.length - 1] > 0.5) colXs.push(gridRight);
+
+    const rowYs = [headerBottom];
+    const kStartR = Math.ceil((gridTop - mosaicTop) / rowHeight);
+    const kEndR = Math.floor((gridBottom - mosaicTop) / rowHeight);
+    for (let k = kStartR; k <= kEndR; k++) rowYs.push(mosaicTop + k * rowHeight);
+    rowYs.sort((a, b) => a - b);
+
+    return { colXs, rowYs, headerBottom };
+  }
+
+  function closestValue(arr, target) {
+    return arr.reduce((best, v) => Math.abs(v - target) < Math.abs(best - target) ? v : best, arr[0]);
+  }
+
+  function setCapsulaBarPositions() {
+    if (!capsulaSection || !capsulaBarRight) return;
+    const secRect = capsulaSection.getBoundingClientRect();
+    const grid = getCapsulaGridLines();
+    if (!grid) return;
+
+    // ── Barra derecha: nace en el mismo X,Y en que terminó el círculo azul
+    // de la sección Cursos (aunque eso quede POR ENCIMA del borde de Cápsula,
+    // es decir todavía sobre la sección naranja), pisando ese círculo, y baja
+    // siguiendo la línea vertical de grilla más cercana hasta el mosaico. ──
+    if (lastCursoCard && firstCursoCard) {
+      const firstRect = firstCursoCard.getBoundingClientRect();
+      const lastRect = lastCursoCard.getBoundingClientRect();
+      const rowBottom = Math.max(firstRect.bottom, lastRect.bottom);
+
+      const bornXViewport = lastRect.right;
+      const bornYViewport = rowBottom;
+
+      const bornXInSec = bornXViewport - secRect.left;
+      // Sin clamping: puede ser negativo a propósito, para nacer todavía
+      // dentro de la sección anterior y pisar el círculo azul de Cursos.
+      const bornYInSec = bornYViewport - secRect.top;
+
+      const rightX = closestValue(grid.colXs, bornXInSec);
+      // Baja hasta la primera línea de fila interna del mosaico (debajo del header)
+      const targetRow = grid.rowYs.find(y => y > grid.headerBottom + 1) ?? grid.headerBottom;
+
+      capsulaBarRight.style.left = (rightX - 3) + 'px';
+      capsulaBarRight.style.top = bornYInSec + 'px';
+      capsulaBarRight.style.height = Math.max(0, targetRow - bornYInSec) + 'px';
+    }
+
+    // ── Barra izquierda + círculo hueco: ahora ubicados en la esquina de la
+    // celda "Dúo — Rayas B&N" (silla rayas blanco y negro), corriendo horizontal
+    // sobre la línea de grilla que pasa por su borde inferior. ──
+    const chairCell = document.querySelector('.cell-chair');
+    if (chairCell) {
+      const cRect = chairCell.getBoundingClientRect();
+      const chairLeftInSec = cRect.left - secRect.left;
+      const chairBottomInSec = cRect.bottom - secRect.top;
+
+      const leftColX = closestValue(grid.colXs, chairLeftInSec);
+      const cornerRowY = closestValue(grid.rowYs, chairBottomInSec);
+      const hBarLength = grid.colXs.length > 1 ? (grid.colXs[1] - grid.colXs[0]) : 120;
+
+      capsulaBarLeft.style.left = leftColX + 'px';
+      capsulaBarLeft.style.top = (cornerRowY - 3) + 'px';
+      capsulaBarLeft.style.setProperty('--h-bar-length', hBarLength + 'px');
+
+      capsulaCircleOutline.style.left = (leftColX - 35) + 'px';
+      capsulaCircleOutline.style.top = (cornerRowY - 35) + 'px';
+    }
+
+    // ── Barra inferior: misma columna que "Recuperar es crear" pero arrancando
+    // más abajo (desde el borde inferior de esa celda) y extendiéndose hasta el
+    // borde real de la sección, para conectar visualmente con la sección siguiente. ──
+    const recuperarCell = document.querySelector('.cell-recuperar');
+    if (recuperarCell) {
+      const rRect = recuperarCell.getBoundingClientRect();
+      const bottomX = closestValue(grid.colXs, rRect.left - secRect.left);
+      const bottomTop = closestValue(grid.rowYs, rRect.bottom - secRect.top);
+      const sectionBottom = capsulaSection.offsetHeight;
+      capsulaBarBottom.style.left = (bottomX - 4) + 'px';
+      capsulaBarBottom.style.top = bottomTop + 'px';
+      capsulaBarBottom.style.height = Math.max(0, sectionBottom - bottomTop) + 'px';
+    }
+  }
+  setCapsulaBarPositions();
+  window.addEventListener('resize', setCapsulaBarPositions);
+
+  if (capsulaSection) {
+    let capsulaBarsPlayed = false;
+    const capsulaBarsObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !capsulaBarsPlayed) {
+          capsulaBarsPlayed = true;
+          setCapsulaBarPositions();
+          capsulaBarRight.classList.add('drawn');
+          setTimeout(() => {
+            capsulaBarLeft.classList.add('drawn');
+            capsulaCircleOutline.classList.add('drawn');
+          }, 500);
+          setTimeout(() => {
+            capsulaBarBottom.classList.add('drawn');
+          }, 1000);
+        } else if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+          capsulaBarsPlayed = false;
+          capsulaBarRight.classList.remove('drawn');
+          capsulaBarLeft.classList.remove('drawn');
+          capsulaCircleOutline.classList.remove('drawn');
+          capsulaBarBottom.classList.remove('drawn');
+        }
+      });
+    }, { threshold: 0.12 });
+    capsulaBarsObs.observe(capsulaSection);
+  }
 
   if (sobreCircle && sobreSection) {
     let phase = 0; // 0 = no iniciado, 1 = snap hecho, 2 = viajó, 3 = se achicó
@@ -2327,13 +3106,17 @@
           phase = 0;
           if (serviciosCircle) serviciosCircle.classList.remove('fall-away');
           sobreCircle.classList.remove('snap', 'traveled', 'shrink');
-        } else if (!e.isIntersecting && phase >= 1 && e.boundingClientRect.top < 0) {
-          // Salimos de la sección por arriba (seguimos bajando) — se achica y desaparece
+          resetCursosLanding();
+        } else if (phase >= 1 && phase < 3 && e.boundingClientRect.top < 0 && e.intersectionRatio < 0.65) {
+          // Salimos de la sección por arriba (seguimos bajando): un poco antes
+          // de perderla de vista del todo, el círculo cae y sigue hacia la
+          // derecha mientras se achica, y en Cursos arranca el recorrido
           phase = 3;
           sobreCircle.classList.add('shrink');
+          playCursosLanding();
         }
       });
-    }, { threshold: [0, 0.15] });
+    }, { threshold: [0, 0.15, 0.65] });
 
     sobreObs.observe(sobreSection);
   }
@@ -2414,6 +3197,17 @@
   document.addEventListener('mouseleave', () => {
     customCursor.classList.remove('visible');
   });
+</script>
+
+<script>
+  // Registro del service worker: cachea el sitio para que las próximas
+  // visitas carguen instantáneo. Si el navegador no lo soporta o falla,
+  // no afecta en nada el funcionamiento normal de la página.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
 </script>
 </body>
 </html>
